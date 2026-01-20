@@ -88,6 +88,11 @@ app/
 2.  **Write Tests**: Create a `__spec.ts` or `.test.ts` file in `__tests__` before implementing the logic.
 3.  **Implement UI**: Once logic is solid, build the UI components in the feature's `components` folder using the tested logic.
 4.  **Assemble**: Import the feature component into the `app` directory page.
+5.  **Responsive UI Strategy**:
+    - For complex UIs where Mobile and Desktop layouts differ significantly, **create separate component files**.
+    - Naming convention: `FeatureName.mobile.tsx` and `FeatureName.desktop.tsx`.
+    - Use a wrapper component or media queries to conditionally render them.
+    - _Avoid excessive CSS media query overrides within a single large component._
 
 ---
 
