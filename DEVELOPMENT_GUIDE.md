@@ -1,6 +1,6 @@
 # Development Guide
 
-This document outlines the development standards and architectural guidelines for the **Love Attachment Type** project.
+This document outlines the development standards and architectural guidelines for the **Luvid** project.
 
 ## 1. Development Process
 
