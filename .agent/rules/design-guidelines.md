@@ -1,3 +1,8 @@
+---
+trigger: model_decision
+description: This must be referenced for any UI implementation or design change that affects the screen.
+---
+
 # Luvid Design Guidelines
 
 This document defines the visual language and user interface standards for **Luvid**.
@@ -27,34 +32,42 @@ Inspired by modern dashboard aesthetics, the design prioritizes clarity, softnes
 - **Surface**: White (`#FFFFFF`) with subtle shadows.
 - **Effect**: Soft drop shadows (`shadow-sm`, `shadow-md`) rather than heavy borders.
 
-### Color Palette
+### Color Palette (Luvid Theme)
 
-(Inferred from reference images: Vibrant accents on neutral backgrounds)
-
-- **Primary Brand**: **Luvid Violet** & **Vivid Pink** (Gradient friendly).
-  - _Usage_: CTA buttons, active states, key data visualizations.
-- **Secondary**: Teal/Mint (Growth, Health), Orange/Coral (Energy).
-- **Background**:
-  - App Bkg: `#F4F7FE` (Cool Light Gray)
-  - Card Bkg: `#FFFFFF`
+- **Concept**: _Vivid Pastel_ - Soft, approachable, yet lively colors. Reduced intensity for a gentler feel.
+- **Brand Colors**:
+  - **Primary (Love)**: `Pastel Rose` (`#FF8096`) - Soft but distinct pinkish-red.
+  - **Secondary (Mystery)**: `Pastel Violet` (`#A78BFA`) - Dreamy purple.
+  - **Accent**: `Pastel Amber` (`#FDE68A`) - Warm highlight.
+- **Surfaces**:
+  - **Background**: `Cool Gray` (`#F4F7FE`) - Modern, clean, professional.
+  - **Sidebar**: `White` (`#FFFFFF`) - Cleanest canvas for navigation.
+  - **Card**: `White` (`#FFFFFF`) - Pure white for content clarity.
 - **Text**:
-  - Headings: `#2B3674` (Dark Blue-Grey) - Softer than pure black.
-  - Body: `#A3AED0` (Cool Grey) - For secondary text.
+  - **Headings**: `Charcoal` (`#1F2937`) - Soft black.
+  - **Body**: `Slate` (`#64748B`) - Readable gray.
 
 ### Typography
 
-- **Font**: Modern Sans-Serif (e.g., `Inter`, `DM Sans`, `Plus Jakarta Sans`).
-- **Scale (Compact)**: Overall font sizes are **one step smaller** than standard defaults for a dense, crisp look.
-  - **Default Body**: `text-sm` (14px) instead of 16px.
+- **Font Family**:
+  - **Headings/Logo**: `Nunito` (Rounded, Friendly).
+  - **Body**: `Geist Sans` (Clean, Legible).
+- **Scale (Compact Dashboard)**: Optimized for information density.
+  - **Page Titles**: `text-2xl` (Bold, Tight tracking).
+  - **Section/Card Titles**: `text-sm` (Bold).
+  - **Body Text**: `text-xs` (Regular/Medium).
+  - **Metadata/Labels**: `text-[10px]` or `text-xs` (Subtle).
 - **Hierarchy**:
-  - **Page Titles**: `text-2xl` or `text-xl` (Bold).
-  - **Card Titles**: `text-base` or `text-sm` (Semi-bold).
-  - **Body/Text**: `text-sm` (Regular).
-  - **Captions/Labels**: `text-xs` (Medium, subtle color).
+  - **Primary**: `text-heading` (Charcoal).
+  - **Secondary**: `text-foreground/80` (Soft Gray).
+  - **Tertiary**: `text-muted-foreground` (Light Gray).
 
-### Visual Elements
+### Logo & Iconography
 
-- **Icons**: Filled or Soft-tone icons. Rounded edges.
+- **Logo**: Text-based `Luvid` using _Nunito ExtraBold_.
+- **Icons**:
+  - Style: Rounded, Stroke-based (e.g., standard Lucide/Feather).
+  - Color: Inherit text color or Primary Violet active state.
 - **Charts**: Curved lines (Spline), Gradient fills for areas.
 - **Buttons**:
   - Pill-shaped (`rounded-full`) or Soft Rectangle (`rounded-xl`).

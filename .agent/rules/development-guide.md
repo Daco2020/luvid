@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # Development Guide
 
 This document outlines the development standards and architectural guidelines for the **Luvid** project.
@@ -54,6 +58,11 @@ src/features/auth/
 ├── utils/         # Helper functions specific to this feature
 └── __tests__/     # Tests for model, utils, and actions
 ```
+
+### Design System & Assets (`/src/shared/styles`)
+
+- **Source of Truth**: `src/app/globals.css` (Tailwind @theme configuration).
+- **Icons**: Use `lucide-react` (standard).
 
 ### Shared Module Structure (`/src/shared`)
 
