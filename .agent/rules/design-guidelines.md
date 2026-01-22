@@ -6,99 +6,147 @@ description: This must be referenced for any UI implementation or design change 
 # Luvid Design Guidelines
 
 This document defines the visual language and user interface standards for **Luvid**.
-Inspired by modern dashboard aesthetics, the design prioritizes clarity, softness, and vibrant identity.
+Designed for **dating beginners (20-30s)** who need warm guidance and reassurance.
 
 ## 1. Design Philosophy
 
-- **Keyword**: `Vivid` + `Soft` + `Organized`
-- **Concept**: A "Love Identity" dashboard that feels personal yet professional.
-- **Visual Style**: Glassmorphism touches, soft shadows, rounded aesthetics, and clean typography.
+- **Keyword**: `Warm` + `Friendly` + `Reassuring`
+- **Concept**: A supportive companion that guides you through your dating journey with empathy.
+- **Target Emotion**: "I'm not alone. Someone understands me and will help me."
+- **Visual Style**: Soft, rounded, playful yet sincere. Like a caring friend, not a clinical tool.
 
-## 2. Layout Structure (Dashboard)
+### Minimalism & Apple Design Principles
 
-- **Sidebar**: Fixed left navigation.
-  - Dark or Light themed (user preference, default to soft dark purple/blue for contrast or clean white).
-  - Rounded active states for menu items.
-- **Main Area**: Grid/Masonry layout.
-  - Extensive use of **Cards** implies modular information architecture.
-  - Background: Off-white / Light Grey (`#F5F6FA`) to let cards pop.
-- **Header**: Minimalist search, user profile, and notifications.
+> "Simplicity is the ultimate sophistication." - Steve Jobs
 
-## 3. Component Styling
+- **Less is More**: 한 화면에 하나의 핵심 메시지만. 불필요한 요소는 과감히 제거.
+- **Clarity Over Cleverness**: 영리한 디자인보다 명확한 디자인. 사용자가 고민하지 않게.
+- **Whitespace as Design**: 여백은 비어있는 공간이 아니라 집중을 위한 디자인 요소.
+- **Purposeful Every Pixel**: 모든 요소는 명확한 목적이 있어야 함. 장식을 위한 장식은 없음.
+- **Progressive Disclosure**: 필요한 정보만 단계적으로 보여주기. 한 번에 모든 걸 보여주지 않음.
+- **Invisible UI**: 최고의 UI는 눈에 띄지 않는 UI. 콘텐츠가 주인공.
+
+**구현 원칙**:
+
+- 한 화면 = 하나의 질문 또는 하나의 액션
+- 버튼은 최대 2개 (Primary 1개 + Secondary 1개)
+- 텍스트는 짧고 명확하게 (한 문장 = 한 생각)
+- 불필요한 아이콘, 그래픽 제거
+- 컬러는 의미 전달에만 사용 (장식 X)
+
+## 2. Tone & Manner
+
+### Voice
+
+- **Encouraging**: "괜찮아요, 천천히 알아가요" not "데이터를 분석하세요"
+- **Empathetic**: Acknowledge fears ("거절이 무서운 건 당연해요")
+- **Conversational**: Use casual language, avoid jargon
+- **Positive**: Focus on growth, not failure
+
+### Terminology
+
+- ❌ "Relationship Architecture", "Data-driven", "Metrics"
+- ✅ "연애 여정", "마음 이해하기", "함께 알아가기"
+
+## 3. Layout Structure
+
+- **Mobile First**: Primary experience on mobile (where dating anxiety happens)
+- **Single Column Flow**: Simple, linear progression (no overwhelming dashboards)
+- **Progress Indicators**: Show journey progress with encouraging milestones
+- **Breathing Room**: Generous whitespace to reduce cognitive load
+
+## 4. Component Styling
 
 ### Cards & Surfaces
 
-- **Shape**: Highly rounded corners (`rounded-2xl` or `rounded-3xl`).
-- **Surface**: White (`#FFFFFF`) with subtle shadows.
-- **Effect**: Soft drop shadows (`shadow-sm`, `shadow-md`) rather than heavy borders.
+- **Shape**: Very rounded corners (`rounded-3xl`) for softness
+- **Surface**: White with warm shadows (not cold gray)
+- **Effect**: Gentle, glowing shadows that feel inviting
 
 ### Color Palette (Luvid Theme)
 
-- **Concept**: _Vivid Pastel_ - Soft, approachable, yet lively colors. Reduced intensity for a gentler feel.
+- **Concept**: _Warm Pastel_ - Comforting, safe, optimistic
 - **Brand Colors**:
-  - **Primary (Love)**: `Pastel Rose` (`#FF8096`) - Soft but distinct pinkish-red.
-  - **Secondary (Mystery)**: `Pastel Violet` (`#A78BFA`) - Dreamy purple.
-  - **Accent**: `Pastel Amber` (`#FDE68A`) - Warm highlight.
+  - **Primary (Heart)**: `Coral Pink` (`#FF8096`) - Warm, approachable love
+  - **Secondary (Support)**: `Soft Lavender` (`#B8A4E8`) - Calming, trustworthy
+  - **Accent (Joy)**: `Peach` (`#FFB88C`) - Encouraging, cheerful
+  - **Success**: `Mint Green` (`#A8E6CF`) - Growth, progress
 - **Surfaces**:
-  - **Background**: `Cool Gray` (`#F4F7FE`) - Modern, clean, professional.
-  - **Sidebar**: `White` (`#FFFFFF`) - Cleanest canvas for navigation.
-  - **Card**: `White` (`#FFFFFF`) - Pure white for content clarity.
+  - **Background**: `Cream` (`#FFFBF5`) - Warm, not clinical white
+  - **Card**: `White` (`#FFFFFF`) with warm glow
 - **Text**:
-  - **Headings**: `Charcoal` (`#1F2937`) - Soft black.
-  - **Body**: `Slate` (`#64748B`) - Readable gray.
+  - **Headings**: `Soft Black` (`#2D2D2D`) - Readable but not harsh
+  - **Body**: `Warm Gray` (`#6B6B6B`) - Friendly, not cold
 
 ### Typography
 
 - **Font Family**:
-  - **Headings/Logo**: `Nunito` (Rounded, Friendly).
-  - **Body**: `Geist Sans` (Clean, Legible).
-- **Scale (Compact Dashboard)**: Optimized for information density.
-  - **Page Titles**: `text-2xl` (Bold, Tight tracking).
-  - **Section/Card Titles**: `text-sm` (Bold).
-  - **Body Text**: `text-xs` (Regular/Medium).
-  - **Metadata/Labels**: `text-[10px]` or `text-xs` (Subtle).
-- **Hierarchy**:
-  - **Primary**: `text-heading` (Charcoal).
-  - **Secondary**: `text-foreground/80` (Soft Gray).
-  - **Tertiary**: `text-muted-foreground` (Light Gray).
+  - **Headings**: `Nunito` (Rounded, Friendly, Approachable)
+  - **Body**: `Geist Sans` (Clean, Easy to read)
+- **Scale**: Comfortable reading, not cramped
+  - **Hero Titles**: `text-3xl` or `text-4xl` (Bold, Welcoming)
+  - **Section Titles**: `text-lg` (Medium weight)
+  - **Body Text**: `text-base` (Regular, 16px minimum)
+  - **Helper Text**: `text-sm` (Gentle guidance)
+- **Line Height**: Generous (`leading-relaxed`) for easy reading
 
-### Logo & Iconography
+### Micro-interactions & Feedback
 
-- **Logo**: Text-based `Luvid` using _Nunito ExtraBold_.
-- **Icons**:
-  - Style: Rounded, Stroke-based (e.g., standard Lucide/Feather).
-  - Color: Inherit text color or Primary Violet active state.
-- **Charts**: Curved lines (Spline), Gradient fills for areas.
-- **Buttons**:
-  - Pill-shaped (`rounded-full`) or Soft Rectangle (`rounded-xl`).
-  - Primary: Gradient background or Solid Vibrant Color with colored shadow.
+- **Animations**: Gentle, bouncy (not robotic)
+- **Success States**: Celebrate with confetti/sparkles
+- **Loading**: Friendly messages ("잠시만 기다려주세요 💭")
+- **Errors**: Empathetic, not blaming ("앗, 다시 한번 확인해주세요")
 
-## 4. Implementation Rules (Tailwind CSS)
+### Iconography & Illustrations
 
-- **Border Radius**: Use `rounded-2xl` or `rounded-3xl` for main containers.
-- **Spacing**: Generous padding (`p-6`, `p-8`) inside cards.
-- **Shadows**: Custom soft shadows (e.g., `box-shadow: 0px 20px 40px rgba(112, 144, 176, 0.12)`).
+- **Icons**: Rounded, friendly (Lucide with rounded variant)
+- **Illustrations**: Hand-drawn feel, warm characters
+- **Emojis**: Use liberally for warmth (💕, 🌟, 💭, 🎉)
+- **Empty States**: Encouraging illustrations, not just text
 
-## 5. UI Implementation Precautions
+### Buttons & CTAs
 
-### 5.1 Responsiveness
+- **Shape**: Pill-shaped (`rounded-full`) for friendliness
+- **Size**: Large, easy to tap (`h-12` minimum)
+- **Primary**: Gradient or solid with soft shadow
+- **Copy**: Action-oriented and encouraging
+  - ❌ "Submit", "Next"
+  - ✅ "시작하기", "알아보기", "함께 해볼까요?"
 
-- **Mobile First**: The Sidebar must collapse into a bottom navigation bar or a hamburger menu on small screens (`< 768px`).
-- **Grid Adaptation**: The 3-column dashboard grid must gracefully degrade to 1 column on mobile.
-- **Touch Targets**: All interactive elements (buttons, inputs) must be at least `44px` height for touch accessibility.
+## 5. Implementation Rules (Tailwind CSS)
 
-### 5.2 Accessibility & Usability
+- **Border Radius**: `rounded-3xl` for cards, `rounded-full` for buttons
+- **Spacing**: Generous padding (`p-6` minimum, `p-8` preferred)
+- **Shadows**: Warm, soft glows (not harsh drop shadows)
+- **Transitions**: Smooth, bouncy (`ease-out`, `duration-300`)
 
-- **Contrast**: Soft colors are nice, but text contrast must pass WCAG AA standards. Use darker shades for text on pastel backgrounds.
-- **Semantic HTML**: Use proper tags (`<nav>`, `<main>`, `<article>`, `<header>`) instead of generic `<div>` soup.
-- **Focus States**: Never remove `outline-none` without providing an alternative focus style (e.g., `ring-2 ring-primary`).
+## 6. UI Implementation Precautions
 
-### 5.3 Performance & UX
+### 6.1 Emotional Design
 
-- **CLS (Cumulative Layout Shift)**: Define aspect ratios or fixed heights for charts/images to prevent layout jumping during loading.
-- **Loading States**: Use **Skeletons** (shimmer effect) matching the rounded card shapes instead of generic spinners for better perceived performance.
-- **Empty States**: Every dashboard list (tasks, notifications) must have a graphically pleasing "Empty State" placeholder.
+- **Reduce Anxiety**: Use progress bars, clear next steps
+- **Build Confidence**: Celebrate small wins with micro-animations
+- **Provide Safety**: Always show "뒤로가기" option, auto-save progress
+
+### 6.2 Responsiveness
+
+- **Mobile First**: Design for phone (where anxiety is highest)
+- **Touch Targets**: Minimum `48px` for anxious tapping
+- **Thumb Zone**: Important actions in easy-to-reach areas
+
+### 6.3 Accessibility & Usability
+
+- **Contrast**: WCAG AA minimum (readable when anxious)
+- **Focus States**: Clear, friendly focus rings
+- **Error Prevention**: Validate gently, guide proactively
+
+### 6.4 Content Strategy
+
+- **Chunking**: Break complex tasks into tiny steps
+- **Encouragement**: Add supportive messages throughout
+- **Examples**: Show real examples, not abstract concepts
+- **Privacy**: Reassure that data is safe and private
 
 ---
 
-**Reference**: Based on "Modern Dashboard" UI concepts (Chaart, Success, Medical Dashboard examples).
+**Reference**: Inspired by Headspace (mental health), Duolingo (gamification), and Notion (friendly productivity).
