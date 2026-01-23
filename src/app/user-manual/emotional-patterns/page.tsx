@@ -1,5 +1,5 @@
-import { Section1Wizard } from "@/features/user-manual/components/Section1Wizard";
+import { Wizard } from "@/features/user-manual/components/Wizard";
 
 export default function Section1Page() {
-  return <Section1Wizard />;
+  return <Wizard />;
 }

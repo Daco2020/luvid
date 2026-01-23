@@ -19,7 +19,7 @@ export default function Home() {
           </div>
           
           <h1 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4 leading-tight">
-            나에게 맞는 연애를<br className="md:hidden" /> 시작하고 싶나요?
+            나에게 꼭 맞는<br className="sm:hidden" /> 연애를 하고 싶나요?
           </h1>
           <p className="text-slate-500 text-base font-normal leading-relaxed">
             지금까지는 나를 잘 몰랐던 것인지도 몰라요.<br className="hidden md:block"/>
@@ -32,7 +32,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row gap-8 items-start md:items-center justify-between">
             
             <div className="space-y-5 flex-1">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-secondary text-primary text-xs font-semibold">
+              <div className="flex items-center text-primary text-xs font-semibold">
                 STEP 1
               </div>
               

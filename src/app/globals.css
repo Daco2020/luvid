@@ -1,46 +1,37 @@
 @import "tailwindcss";
 
 @theme {
-  /* Cool & Calm Palette (채도 낮은 시원한 느낌) */
-  --color-primary: #546E7A; /* light Blue 600 - 차분하고 신뢰감 있는 메인 컬러 */
-  --color-secondary: #ECEFF1; /* light Blue 50 - 아주 밝고 시원한 배경색 */
-  --color-accent: #78909C; /* light Blue 400 - 포인트 */
+  /* User Provided Palette */
+  --color-primary: #547AB3; /* Strong Steel Blue */
+  --color-secondary: #ECEFF1; /* Soft Periwinkle */
+  --color-accent: #B1D6DE; /* Light Teal/Blue */
+  --color-highlight: #CDDBF5; /* Pale Blue */
+  --color-background: #EEF0FC; /* Very Light Lavender Blue Background */
   
-  --color-success: #80CBC4; /* Teal 200 - 시원한 민트 */
-  --color-error: #EF9A9A; /* Red 200 - 부드러운 경고 */
+  --color-success: #B1D6DE; 
+  --color-error: #EF9A9A;
   
-  --color-background: #F5F7FA; /* Cool Light Gray Background */
-  --color-foreground: #37474F; /* Blue Grey 800 - 가독성 좋은 짙은 회색 */
-  
-  --color-muted: #90A4AE; /* Blue Grey 300 */
-  --color-border: #CFD8DC; /* Blue Grey 100 */
+  --color-foreground: #334155; /* Slate 700 */
+  --color-muted: #94A3B8; /* Slate 400 */
+  --color-border: #CDDBF5; /* Matching highlight for borders */
   
   /* Fonts */
   --font-sans: var(--font-geist-sans), "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
   --font-display: var(--font-nunito), "Pretendard", -apple-system, BlinkMacSystemFont, sans-serif;
   
-  /* Spacing */
-  --spacing-xs: 0.5rem;
-  --spacing-sm: 1rem;
-  --spacing-md: 1.5rem;
-  --spacing-lg: 2rem;
-  --spacing-xl: 3rem;
-  
-  /* Radii - 덜 둥글게 조정 */
+  /* Radii - Clean & Modern */
   --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;   /* 8px - 기본 */
-  --radius-lg: 0.75rem;  /* 12px - 카드 */
-  --radius-xl: 1rem;     /* 16px - 큰 컨테이너 */
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
 }
 
 /* Custom Utilities */
 @layer utilities {
   .glass-card {
-    @apply bg-white border border-border shadow-sm;
-  }
-  
-  .subtle-shadow {
-    box-shadow: 0 2px 10px rgba(55, 71, 79, 0.05);
+    background-color: white;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 6px -1px rgba(84, 122, 179, 0.05), 0 2px 4px -1px rgba(84, 122, 179, 0.05);
   }
 }
 

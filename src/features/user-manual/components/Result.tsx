@@ -1,15 +1,17 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { CheckCircle2, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Section1Result as ResultType } from "@/features/user-manual/model/section1-schema";
 
-interface Section1ResultProps {
-  result: ResultType;
+interface ResultProps {
+  data: ResultType;
 }
 
-export function Section1Result({ result }: Section1ResultProps) {
+export function Result({ data }: ResultProps) {
   return (
-    <div className="w-full max-w-2xl mx-auto pb-20">
+    <div className="w-full max-w-xl mx-auto pb-20">
       
       {/* Header */}
       <motion.div 
@@ -31,7 +33,7 @@ export function Section1Result({ result }: Section1ResultProps) {
 
       {/* Insights Cards */}
       <div className="space-y-6">
-        {result.insights.map((insight, index) => (
+        {data.insights.map((insight, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0, y: 20 }}
