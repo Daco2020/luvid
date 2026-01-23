@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
 
 import { QuestionCard } from "@/features/user-manual/components/QuestionCard";
@@ -20,16 +20,15 @@ export function Wizard() {
   // 상태 관리
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<UserAnswer[]>([]);
-  const [isExiting, setIsExiting] = useState(false);
   const [result, setResult] = useState<Section1Result | null>(null);
+  const [direction, setDirection] = useState(0); // 1: Next, -1: Prev
 
   const currentQuestion = section1Questions[currentStep];
   const totalSteps = section1Questions.length;
 
   // 답변 선택 핸들러
   const handleAnswer = async (choice: AnswerChoice) => {
-    if (isExiting) return;
-    setIsExiting(true);
+    setDirection(1); // 앞으로 이동
 
     const newAnswer: UserAnswer = {
       questionId: currentQuestion.id,
@@ -40,23 +39,32 @@ export function Wizard() {
     const updatedAnswers = [...answers, newAnswer];
     setAnswers(updatedAnswers);
 
+    // 애니메이션을 위해 아주 짧은 딜레이 후 상태 변경 (즉각 반응성 개선)
     setTimeout(() => {
       if (currentStep < totalSteps - 1) {
         setCurrentStep((prev) => prev + 1);
-        setIsExiting(false);
       } else {
         finishWizard(updatedAnswers);
       }
-    }, 400); 
+    }, 200); 
+  };
+  
+  // 뒤로 가기 핸들러 (UI에는 없지만 브라우저 뒤로가기 대응 등을 위해 준비)
+  const handleBack = () => {
+     if (currentStep > 0) {
+       setDirection(-1);
+       setCurrentStep(prev => prev - 1);
+       setAnswers(prev => prev.slice(0, -1));
+     } else {
+       router.back();
+     }
   };
 
   // 완료 처리
   const finishWizard = (finalAnswers: UserAnswer[]) => {
-    // 1. 분석 실행
     const finalResult = analyzeSection1(finalAnswers);
     setResult(finalResult);
     
-    // 2. 로컬스토리지 저장
     const currentStorage = loadUserManual() || {
       version: "1.0",
       userId: crypto.randomUUID(),
@@ -69,7 +77,8 @@ export function Wizard() {
     });
   };
 
-  // 결과 화면 렌더링
+
+
   if (result) {
     return (
       <div className="min-h-screen bg-background py-10 px-4 sm:px-6 relative overflow-y-auto w-full">
@@ -88,7 +97,7 @@ export function Wizard() {
         {/* Header */}
         <div className="flex items-center justify-between mb-10 w-full">
           <button 
-            onClick={() => router.back()}
+            onClick={handleBack}
             className="p-2 -ml-2 text-slate-400 hover:text-slate-600 transition-colors"
           >
             <ChevronLeft size={24} />
@@ -103,15 +112,13 @@ export function Wizard() {
         <ProgressBar current={currentStep + 1} total={totalSteps} />
 
         {/* Question Card Area */}
-        <div className="flex-1 flex flex-col justify-center w-full min-h-[400px]">
-          <AnimatePresence mode="wait">
-            <QuestionCard 
-              key={currentQuestion.id}
-              question={currentQuestion}
-              onAnswer={handleAnswer}
-              isExiting={isExiting}
-            />
-          </AnimatePresence>
+        <div className="flex-1 flex flex-col justify-center w-full min-h-[400px] overflow-hidden">
+          <QuestionCard 
+            key={currentQuestion.id}
+            question={currentQuestion}
+            onAnswer={handleAnswer}
+            isExiting={false}
+          />
         </div>
       </div>
     </div>

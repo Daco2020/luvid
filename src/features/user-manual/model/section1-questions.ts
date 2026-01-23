@@ -71,7 +71,7 @@ export const section1Questions: Question[] = [
   },
   {
     id: 3,
-    scenario: "어제 데이트 후 \"오늘 재밌었어!\"라고 문자 보냈는데\n6시간째 답장이 없습니다. (읽음 표시 없음)",
+    scenario: "어제 데이트 후 \"오늘 재밌었어!\"라고 문자 보냈는데\n하루가 지나도 답장이 없습니다. (읽음 표시 없음)",
     question: "당신의 마음 상태는?",
     choices: [
       {
@@ -103,8 +103,8 @@ export const section1Questions: Question[] = [
   },
   {
     id: 4,
-    scenario: "어젯밤 사소한 일로 다퉜어요.\n서로 \"잘 자\"도 없이 그냥 잤습니다.\n다음 날 아침, 당신은?",
-    question: "당신은?",
+    scenario: "어젯밤 사소한 일로 다퉜어요.\n서로 \"잘 자\"도 없이 그냥 잤습니다.",
+    question: "다음 날 아침, 당신은?",
     choices: [
       {
         id: "A",
