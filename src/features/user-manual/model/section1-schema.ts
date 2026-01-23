@@ -32,11 +32,26 @@ export type UserAnswer = z.infer<typeof userAnswerSchema>;
 
 // 감정 패턴 분석 결과
 export const emotionalPatternSchema = z.object({
-  stress_response: z.enum(["acceptance", "anxiety", "independence", "avoidance"]),
+  stress_response: z.enum([
+    "acceptance",
+    "anxiety",
+    "independence",
+    "avoidance",
+  ]),
   uncertainty_tolerance: z.enum(["high", "medium", "low"]),
-  conflict_resolution: z.enum(["quick_fix", "time_needed", "avoidance", "strategic"]),
+  conflict_resolution: z.enum([
+    "quick_fix",
+    "time_needed",
+    "avoidance",
+    "strategic",
+  ]),
   recharge_method: z.enum(["solitude", "close_friends", "social", "activity"]),
-  comfort_language: z.enum(["physical_touch", "listening", "distraction", "space"]),
+  comfort_language: z.enum([
+    "physical_touch",
+    "listening",
+    "distraction",
+    "space",
+  ]),
 });
 
 export type EmotionalPattern = z.infer<typeof emotionalPatternSchema>;
@@ -56,7 +71,7 @@ export const section1ResultSchema = z.object({
   completedAt: z.string().optional(), // ISO 8601 timestamp
   answers: z.array(userAnswerSchema),
   patterns: emotionalPatternSchema,
-  insights: z.array(insightSchema).length(3), // 정확히 3개의 인사이트
+  insights: z.array(insightSchema), // 배열에 순차적으로 담김
 });
 
 export type Section1Result = z.infer<typeof section1ResultSchema>;

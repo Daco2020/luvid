@@ -1,109 +1,54 @@
 @import "tailwindcss";
 
-:root {
-  /* Minimalist Color Palette - Apple Inspired */
-  /* Primary: Only one accent color for focus */
-  --color-primary: #FF8096; /* Coral Pink - Warm, approachable */
-  --color-secondary: #B8A4E8; /* Soft Lavender - Calm support */
-  --color-success: #A8E6CF; /* Mint - Positive feedback */
+@theme {
+  /* Cool & Calm Palette (채도 낮은 시원한 느낌) */
+  --color-primary: #546E7A; /* light Blue 600 - 차분하고 신뢰감 있는 메인 컬러 */
+  --color-secondary: #ECEFF1; /* light Blue 50 - 아주 밝고 시원한 배경색 */
+  --color-accent: #78909C; /* light Blue 400 - 포인트 */
   
-  /* Neutrals: Clean, simple grayscale */
-  --background: #FAFAFA; /* Almost white, not harsh */
-  --foreground: #1A1A1A; /* Almost black, readable */
-  --muted: #737373; /* Mid gray for secondary text */
-  --border: #E5E5E5; /* Subtle borders */
+  --color-success: #80CBC4; /* Teal 200 - 시원한 민트 */
+  --color-error: #EF9A9A; /* Red 200 - 부드러운 경고 */
   
-  /* Surface */
-  --card: #FFFFFF;
-  --card-foreground: #1A1A1A;
+  --color-background: #F5F7FA; /* Cool Light Gray Background */
+  --color-foreground: #37474F; /* Blue Grey 800 - 가독성 좋은 짙은 회색 */
+  
+  --color-muted: #90A4AE; /* Blue Grey 300 */
+  --color-border: #CFD8DC; /* Blue Grey 100 */
+  
+  /* Fonts */
+  --font-sans: var(--font-geist-sans), "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+  --font-display: var(--font-nunito), "Pretendard", -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  
+  /* Radii - 덜 둥글게 조정 */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;   /* 8px - 기본 */
+  --radius-lg: 0.75rem;  /* 12px - 카드 */
+  --radius-xl: 1rem;     /* 16px - 큰 컨테이너 */
 }
 
-@theme inline {
-  /* Colors */
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-muted: var(--muted);
-  --color-border: var(--border);
+/* Custom Utilities */
+@layer utilities {
+  .glass-card {
+    @apply bg-white border border-border shadow-sm;
+  }
   
-  --color-primary: var(--color-primary);
-  --color-secondary: var(--color-secondary);
-  --color-success: var(--color-success);
-  
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-
-  /* Typography - San Francisco inspired */
-  --font-sans: var(--font-geist-sans);
-  --font-display: var(--font-nunito);
-  
-  /* Minimalist Spacing Scale */
-  --spacing-xs: 0.5rem;   /* 8px */
-  --spacing-sm: 1rem;     /* 16px */
-  --spacing-md: 1.5rem;   /* 24px */
-  --spacing-lg: 2rem;     /* 32px */
-  --spacing-xl: 3rem;     /* 48px */
-  --spacing-2xl: 4rem;    /* 64px */
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #000000; /* Pure black like iPhone */
-    --foreground: #FAFAFA;
-    --muted: #A3A3A3;
-    --border: #262626;
-    --card: #0A0A0A;
-    --card-foreground: #FAFAFA;
+  .subtle-shadow {
+    box-shadow: 0 2px 10px rgba(55, 71, 79, 0.05);
   }
 }
 
-/* Base Styles - Minimalist */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* Base Resets */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  @apply bg-background text-foreground font-sans text-sm antialiased;
 }
 
-/* Typography Hierarchy - Clear & Simple */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-nunito), -apple-system, BlinkMacSystemFont, sans-serif;
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.02em; /* Tighter for display */
-}
-
-h1 { font-size: 2.5rem; } /* 40px */
-h2 { font-size: 2rem; }   /* 32px */
-h3 { font-size: 1.5rem; } /* 24px */
-
-p {
-  line-height: 1.6;
-  margin-bottom: 1rem;
-}
-
-/* Focus States - Accessible & Clean */
-:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-
-/* Remove default button styles */
-button {
-  font-family: inherit;
-  cursor: pointer;
-}
-
-/* Smooth Transitions - Apple-like */
-* {
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  @apply font-display font-bold text-slate-800 tracking-tight;
 }
