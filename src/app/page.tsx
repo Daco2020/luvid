@@ -13,8 +13,8 @@ export default function Home() {
       <main className="w-full max-w-2xl z-10">
         
         {/* Text-Only Logo */}
-        <header className="mb-12 text-center">
-          <div className="mb-8">
+        <header className="mb-8 text-center">
+          <div className="mb-4">
             <span className="text-2xl font-display font-bold tracking-tight text-primary">Luvid</span>
           </div>
           
@@ -23,7 +23,7 @@ export default function Home() {
           </h1>
           <p className="text-slate-500 text-base font-normal leading-relaxed">
             지금까지는 나를 잘 몰랐던 것인지도 몰라요.<br className="hidden md:block"/>
-            다음 연애는 좀 더 선명해질 수 있도록, Luvid가 도와드릴게요.
+            다음 연애는 좀 더 선명해질 수 있도록 Luvid가 도와드릴게요.
           </p>
         </header>
 
@@ -67,7 +67,7 @@ export default function Home() {
         </div>
 
         {/* Footer Text */}
-        <div className="mt-16 text-center">
+        <div className="mt-8 text-center">
           <p className="text-xs text-slate-400 font-medium">
             "가장 중요한 관계는 바로<br className="md:hidden"/> 나 자신과의 관계입니다."
           </p>
