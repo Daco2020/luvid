@@ -24,7 +24,7 @@ export function Result({ data }: ResultProps) {
       >
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-bold mb-6">
           <Sparkles size={16} />
-          <span>Step 1 분석 완료</span>
+          <span>섹션 1. 감정 패턴 분석 완료</span>
         </div>
         
         <h2 className="text-2xl md:text-3xl font-bold text-slate-800 mb-4 leading-tight">
@@ -34,7 +34,7 @@ export function Result({ data }: ResultProps) {
         
         <p className="text-slate-500 leading-relaxed">
           답변을 분석해보니,<br/>
-          당신은 <strong className="text-slate-800 underline decoration-primary/30 decoration-4 underline-offset-2">"{hintKeyword}"</strong><br/>
+          <strong className="text-slate-800 underline decoration-primary/30 decoration-4 underline-offset-2">"{hintKeyword}"</strong><br/>
           경향이 조금 보이는데요? 👀
         </p>
       </motion.div>
@@ -70,7 +70,7 @@ export function Result({ data }: ResultProps) {
         </div>
       </motion.div>
 
-      {/* Next Step Hooking */}
+      {/* Next Section Hooking */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -78,9 +78,9 @@ export function Result({ data }: ResultProps) {
         className="bg-primary/5 rounded-2xl p-6 border border-primary/10"
       >
         <div className="mb-6">
-          <div className="text-xs font-bold text-primary mb-2 uppercase tracking-wide">Next Step</div>
+          <div className="text-xs font-bold text-primary mb-2 uppercase tracking-wide">Next</div>
           <h3 className="text-xl font-bold text-slate-800 mb-2">
-            Step 2. 갈등 스타일 분석
+            섹션 2. 갈등 스타일 분석
           </h3>
           <p className="text-slate-600 text-sm leading-relaxed">
             행복한 연애의 핵심은 '어떻게 싸우느냐'에 있습니다.<br/>

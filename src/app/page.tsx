@@ -23,7 +23,7 @@ export default function Home() {
           </h1>
           <p className="text-slate-500 text-base font-normal leading-relaxed">
             지금까지는 나를 잘 몰랐던 것인지도 몰라요.<br className="hidden md:block"/>
-            다음 연애는 좀 더 선명해질 수 있도록 Luvid가 도와드릴게요.
+            다음 연애는 더 행복해질 수 있도록 Luvid가 도와드릴게요.
           </p>
         </header>
 

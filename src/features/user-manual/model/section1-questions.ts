@@ -39,7 +39,7 @@ export const section1Questions: Question[] = [
   },
   {
     id: 2,
-    scenario: "데이트 중 상대방이 갑자기 말이 없어지고 표정이 굳었어요.\n\"무슨 일 있어?\"라고 물었더니 \"아니, 아무것도 아니야\"라고 합니다.",
+    scenario: "데이트 중 상대방이 갑자기 말이 없어지고 표정이 굳었어요.\n\"무슨 일 있어?\"라고 물었더니 \"아니, 아무것도 아니야\"라고 합니다.\n ",
     question: "당신은?",
     choices: [
       {
@@ -71,7 +71,7 @@ export const section1Questions: Question[] = [
   },
   {
     id: 3,
-    scenario: "어제 데이트 후 \"오늘 재밌었어!\"라고 문자 보냈는데\n하루가 지나도 답장이 없습니다. (읽음 표시 없음)",
+    scenario: "어제 데이트 후 \"오늘 재밌었어!\"라고 문자 보냈는데\n하루가 지나도 답장이 없습니다. (읽음 표시 없음)\n ",
     question: "당신의 마음 상태는?",
     choices: [
       {
@@ -103,7 +103,7 @@ export const section1Questions: Question[] = [
   },
   {
     id: 4,
-    scenario: "어젯밤 사소한 일로 다퉜어요.\n서로 \"잘 자\"도 없이 그냥 잤습니다.",
+    scenario: "어젯밤 사소한 일로 다퉜어요.\n서로 \"잘 자\"도 없이 그냥 잤습니다.\n ",
     question: "다음 날 아침, 당신은?",
     choices: [
       {
@@ -167,7 +167,7 @@ export const section1Questions: Question[] = [
   },
   {
     id: 6,
-    scenario: "당신에게 갑자기 주말 이틀이 완전히 비었습니다.\n연인은 친구 결혼식 때문에 지방에 갔어요.",
+    scenario: "당신에게 갑자기 주말 이틀이 완전히 비었습니다.\n연인은 친구 결혼식 때문에 지방에 갔어요.\n ",
     question: "당신은 이 시간을?",
     choices: [
       {
@@ -199,7 +199,7 @@ export const section1Questions: Question[] = [
   },
   {
     id: 7,
-    scenario: "당신이 기분이 안 좋을 때,\n연인이 어떻게 해주면 가장 좋을까요?",
+    scenario: "당신이 기분이 안 좋을 때,\n연인이 어떻게 해주면 가장 좋을까요?\n ",
     question: "당신이 원하는 건?",
     choices: [
       {
@@ -231,13 +231,13 @@ export const section1Questions: Question[] = [
   },
   {
     id: 8,
-    scenario: "일주일 내내 사람들 만나고 회의하고 정신없었어요.\n주말에 당신은?",
-    question: "당신은?",
+    scenario: "일주일 내내 사람들 만나고 회의하느라 정신없었어요.\n금요일 밤, 자기 전 침대에 누워있습니다.\n ",
+    question: "주말에 당신은?",
     choices: [
       {
         id: "A",
         text: "집에서 혼자 조용히 쉼",
-        description: "아무도 안 만나고 배터리 충전",
+        description: "아무도 안 만나고 침대 속으로",
         pattern: "solitude",
       },
       {
@@ -255,7 +255,7 @@ export const section1Questions: Question[] = [
       {
         id: "D",
         text: "운동/등산/활동적인 것",
-        description: "몸 움직여야 스트레스 풀림",
+        description: "몸을 움직여야 스트레스 풀림",
         pattern: "activity",
       },
     ],

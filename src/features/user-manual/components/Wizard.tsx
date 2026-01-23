@@ -20,14 +20,22 @@ export function Wizard() {
   // 상태 관리
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<UserAnswer[]>([]);
+  const [isExiting, setIsExiting] = useState(false);
   const [result, setResult] = useState<Section1Result | null>(null);
   const [direction, setDirection] = useState(0); // 1: Next, -1: Prev
 
   const currentQuestion = section1Questions[currentStep];
   const totalSteps = section1Questions.length;
 
+  // 현재 문항에 대한 기존 답변 확인
+  const currentAnswer = answers.find(a => a.questionId === currentQuestion.id);
+
   // 답변 선택 핸들러
   const handleAnswer = async (choice: AnswerChoice) => {
+    // 중복 클릭 방지
+    if (isExiting) return;
+    setIsExiting(true);
+    
     setDirection(1); // 앞으로 이동
 
     const newAnswer: UserAnswer = {
@@ -36,25 +44,34 @@ export function Wizard() {
       pattern: choice.pattern,
     };
 
-    const updatedAnswers = [...answers, newAnswer];
+    // 기존 답변이 있으면 교체, 없으면 추가 (순서는 유지)
+    // 뒤로 가기 했다가 다시 선택하는 경우를 위해 filter 대신 map이나 splice 로직 필요하지만
+    // 단순하게는 현재 스텝 이후의 답변을 날리고 새로 추가하는 방식이 안전함 (선형 진행)
+    const prevAnswers = answers.filter(a => a.questionId !== currentQuestion.id);
+    const updatedAnswers = [...prevAnswers, newAnswer];
+    
     setAnswers(updatedAnswers);
 
-    // 애니메이션을 위해 아주 짧은 딜레이 후 상태 변경 (즉각 반응성 개선)
+    // 애니메이션을 위해 아주 짧은 딜레이 후 상태 변경
     setTimeout(() => {
       if (currentStep < totalSteps - 1) {
         setCurrentStep((prev) => prev + 1);
+        setIsExiting(false); // 다음 스텝으로 넘어가면 입력 잠금 해제
       } else {
+        // 마지막 스텝에서는 잠금 유지 (결과 페이지 로딩 등)
         finishWizard(updatedAnswers);
       }
     }, 200); 
   };
   
-  // 뒤로 가기 핸들러 (UI에는 없지만 브라우저 뒤로가기 대응 등을 위해 준비)
+  // 뒤로 가기 핸들러
   const handleBack = () => {
+    if (isExiting) return; // 애니메이션 중 뒤로가기 방지
+
      if (currentStep > 0) {
        setDirection(-1);
        setCurrentStep(prev => prev - 1);
-       setAnswers(prev => prev.slice(0, -1));
+       // answers는 유지하여 이전 선택 상태를 보여줌 (삭제하지 않음)
      } else {
        router.back();
      }
@@ -117,7 +134,8 @@ export function Wizard() {
             key={currentQuestion.id}
             question={currentQuestion}
             onAnswer={handleAnswer}
-            isExiting={false}
+            isExiting={isExiting}
+            selectedChoiceId={currentAnswer?.selectedChoiceId}
           />
         </div>
       </div>
