@@ -6,8 +6,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
 
 import { QuestionCard } from "./QuestionCard";
-import { ProgressBar } from "@/features/user-manual/components/ProgressBar";
-import { ResultSection1 } from "@/features/user-manual/components/ResultSection1";
+import { ProgressBar } from "./ProgressBar";
+import { ResultSection1 } from "./ResultSection1";
 import { Modal } from "@/shared/components/Modal";
 import { SectionIntro } from "@/shared/components/SectionIntro";
 
@@ -154,8 +154,7 @@ export function Wizard() {
 
 
   const handleNextSection = () => {
-    alert("섹션 2는 곧 업데이트 예정입니다!");
-    // 추후 섹션 2 위저드로 이동하는 로직 추가
+    router.push("/user-manual/conflict-styles");
   };
 
   if (result) {

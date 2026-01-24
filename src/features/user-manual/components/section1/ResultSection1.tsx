@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Lock, ArrowRight, Sparkles } from "lucide-react";
-import { Section1Result } from "../model/section1-schema";
+import { Section1Result } from "@/features/user-manual/model/section1-schema";
 
 interface ResultSection1Props {
   data: Section1Result;
