@@ -180,7 +180,7 @@ export function Wizard() {
             <ChevronLeft size={24} />
           </button>
           <span className="text-sm font-bold text-slate-400 tracking-widest uppercase">
-            섹션1. 정서적 안정성
+            정서적 안정성
           </span>
           <div className="w-8" />
         </div>
