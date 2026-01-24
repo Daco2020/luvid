@@ -2,7 +2,7 @@
 
 This document outlines the step-by-step implementation plan for the Luvid MVP (Minimum Viable Product), based on the [Service Plan](SERVICE_PLAN.md), [Design Guidelines](.agent/rules/design-guidelines.md), and [Development Guide](.agent/rules/development-guide.md).
 
-**Goal**: Successfully implement the "Personal User Manual" (Core Feature 1) and "Love ID Card" with a "Ready-to-Date" focus.
+**Goal**: Successfully implement the "Personal User Manual (Level 1)" and "Love ID Card" with a "Ready-to-Date" focus.
 
 ---
 
@@ -10,11 +10,11 @@ This document outlines the step-by-step implementation plan for the Luvid MVP (M
 
 ### 1.1 Project Initialization
 
-- [ ] **Initialize Next.js Project**
+- [x] **Initialize Next.js Project**
   - Verify App Router is enabled.
   - Configure `src/` directory structure.
   - Setup `birome` or preferred linting/formatting tools.
-- [ ] **Directory Structure Enforcement (Feature-Sliced)**
+- [x] **Directory Structure Enforcement (Feature-Sliced)**
   - Create `/src/features`, `/src/shared`, `/src/app`.
   - Define strict module boundaries.
 - [ ] **Test Environment Setup (TDD)**
@@ -26,7 +26,7 @@ This document outlines the step-by-step implementation plan for the Luvid MVP (M
 
 _Ref: [Design Guidelines](.agent/rules/design-guidelines.md)_
 
-- [ ] **Tailwind Configuration**
+- [x] **Tailwind Configuration**
   - Define Color Palette: `Pastel Rose` (Primary), `Pastel Violet` (Secondary), `Pastel Amber` (Accent).
   - Configure Fonts: `Nunito` (Headings), `Geist Sans` (Body).
   - Define Border Radius (`rounded-2xl`, `rounded-3xl`) and Shadows.
@@ -41,7 +41,7 @@ _Ref: [Design Guidelines](.agent/rules/design-guidelines.md)_
 
 ---
 
-## Phase 2: Feature - Personal User Manual (Core)
+## Phase 2: Feature - Personal User Manual (Level 1)
 
 _Ref: [Service Plan - Section 3](SERVICE_PLAN.md#3-핵심-기능-i-나-사용-설명서-personal-user-manual)_
 _Dev Strategy: TDD for Logic -> UI Implementation_
@@ -49,7 +49,7 @@ _Dev Strategy: TDD for Logic -> UI Implementation_
 ### 2.1 Domain Modeling & Logic (TDD)
 
 - [ ] **Define Data Models (`src/features/user-manual/model`)**
-  - Types for: `MaintenanceGuide`, `ConflictStyle`, `LoveMap`, `UserValues`.
+  - Types for: `EmotionalPattern`, `ConflictStyle`, `UserValues`.
   - Zod schemas for validation.
 - [ ] **Implement Logic & Persistence (`src/features/user-manual/actions`)**
   - **Test**: Create `saveManualSection.spec.ts` (Red).
@@ -59,9 +59,9 @@ _Dev Strategy: TDD for Logic -> UI Implementation_
 ### 2.2 UI Implementation
 
 - [ ] **Manual Creation Flow (Wizard)**
-  - **Step 1: Maintenance Guide**: Inputs for Baseline, Warning Signs, Recovery Protocol.
-  - **Step 2: Communication**: Inputs for Conflict Style, Apology Language.
-  - **Step 3: Love Map**: Inputs for Non-Negotiables, Joy Triggers.
+  - **Section 1: Emotional Patterns**: Inputs for Stress Response, Recharge Method. (7 questions)
+  - **Section 2: Conflict Style**: Inputs for Conflict Style, Apology Language. (10 questions)
+  - **Section 3: Key Values**: Inputs for Non-Negotiables, Relationships. (7 questions)
 - [ ] **Manual Viewer (Dashboard)**
   - Read-only view of the completed manual using `Card` components.
   - "Edit" mode toggle.
@@ -121,5 +121,8 @@ _Ref: [Service Plan - Section 7 / Appendix](SERVICE_PLAN.md#1-차-mvp-구현-계
 - [ ] **Setup**: Project & TDD Env
 - [ ] **Design**: Theme & Primitives
 - [ ] **Feat 1**: User Manual (Model -> Logic -> UI)
+  - [ ] Section 1 (Complete)
+  - [ ] Section 2 (Pending)
+  - [ ] Section 3 (Pending)
 - [ ] **Feat 2**: Love ID (Logic -> UI)
 - [ ] **Feat 3**: Compatibility (Algo -> UI)

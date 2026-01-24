@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
@@ -8,6 +8,7 @@ import { ChevronLeft } from "lucide-react";
 import { QuestionCard } from "@/features/user-manual/components/QuestionCard";
 import { ProgressBar } from "@/features/user-manual/components/ProgressBar";
 import { Result } from "@/features/user-manual/components/Result";
+import { Modal } from "@/shared/components/Modal";
 
 import { section1Questions } from "@/features/user-manual/model/section1-questions";
 import { UserAnswer, AnswerChoice, Section1Result } from "@/features/user-manual/model/section1-schema";
@@ -22,7 +23,9 @@ export function Wizard() {
   const [answers, setAnswers] = useState<UserAnswer[]>([]);
   const [isExiting, setIsExiting] = useState(false);
   const [result, setResult] = useState<Section1Result | null>(null);
+
   const [direction, setDirection] = useState(0); // 1: Next, -1: Prev
+  const [showExitModal, setShowExitModal] = useState(false);
 
   const currentQuestion = section1Questions[currentStep];
   const totalSteps = section1Questions.length;
@@ -73,9 +76,32 @@ export function Wizard() {
        setCurrentStep(prev => prev - 1);
        // answers는 유지하여 이전 선택 상태를 보여줌 (삭제하지 않음)
      } else {
-       router.back();
+       // 첫 단계에서 뒤로가기 시 확인
+       setShowExitModal(true);
      }
   };
+
+  // 브라우저 뒤로가기 방지 (Popstate)
+  useEffect(() => {
+    const handlePopState = (e: PopStateEvent) => {
+      // 브라우저 뒤로가기를 막고 확인창 띄우기
+      // Next.js에서는 완벽한 가로채기가 어렵지만, pushState로 이력을 남겨두고
+      // 뒤로가기 시도 시 다시 현재 페이지를 push하여 머물게 하는 꼼수(hack)보다는
+      // 페이지 이탈 감지 경고를 주는 것이 일반적임.
+      // 여기서는 심플하게 컨펌만 띄우고, 이미 이동해버린 경우 어쩔 수 없음(SPA 특성).
+      // 대신 beforeunload를 사용하여 새로고침/닫기 방지
+    };
+
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = ""; // Chrome requires returnValue to be set
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   // 완료 처리
   const finishWizard = (finalAnswers: UserAnswer[]) => {
@@ -120,7 +146,7 @@ export function Wizard() {
             <ChevronLeft size={24} />
           </button>
           <span className="text-sm font-bold text-slate-400 tracking-widest uppercase">
-            Emotional Patterns
+            섹션1. 정서적 안정성
           </span>
           <div className="w-8" />
         </div>
@@ -139,6 +165,20 @@ export function Wizard() {
           />
         </div>
       </div>
+
+      <Modal
+        isOpen={showExitModal}
+        onClose={() => setShowExitModal(false)}
+        title="작성을 중단하시겠어요?"
+        description={`지금 나가시면 작성 중인 내용이 모두 사라져요.\n정말 나가시겠어요?`}
+        confirmLabel="나가기"
+        cancelLabel="계속 작성하기"
+        onConfirm={() => {
+          setShowExitModal(false);
+          router.back();
+        }}
+        variant="danger" // 내용 삭제는 위험한 동작이므로 danger variant 사용
+      />
     </div>
   );
 }

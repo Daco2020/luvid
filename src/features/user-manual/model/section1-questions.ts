@@ -1,264 +1,331 @@
 import { Question } from "./section1-schema";
 
-/**
- * 섹션 1: 감정 패턴 발견하기
- * 8개의 시나리오 기반 질문
- */
 export const section1Questions: Question[] = [
+  // Part 1: 기준점 및 에너지 (Operating Environment)
   {
     id: 1,
-    scenario: "오늘 처음 만나는 사람과 카페 데이트 약속이 있어요.\n30분 전, 상대방이 문자를 보냅니다.\n\"갑자기 일이 생겨서 1시간 늦을 것 같아요. 괜찮을까요?\"",
-    question: "당신의 첫 반응은?",
+    scenario: "당신이 가장 '나다운' 상태로 충전되는 순간은 언제인가요?\n ",
+    question: "나의 에너지가 차오르는 순간은?",
     choices: [
       {
         id: "A",
-        text: "\"괜찮아요! 천천히 오세요 😊\"",
-        description: "즉시 답장하고 근처 서점 구경하러 감",
-        pattern: "acceptance", // 수용형
-      },
-      {
-        id: "B",
-        text: "\"아... 그래요? 몇 시쯤 가능할까요?\"",
-        description: "답장하고 불안해하며 카톡 확인 반복",
-        pattern: "anxiety", // 불안형
-      },
-      {
-        id: "C",
-        text: "\"네, 알겠습니다\"",
-        description: "답장하고 핸드폰 끄고 산책 나감",
-        pattern: "independence", // 독립형
-      },
-      {
-        id: "D",
-        text: "답장 안 하고 일단 시간 둠",
-        description: "\"뭐라고 답해야 하지?\" 고민하다가 10분 후 답장",
-        pattern: "avoidance", // 회피형
-      },
-    ],
-    measureTarget: "initial_response_pattern",
-  },
-  {
-    id: 2,
-    scenario: "데이트 중 상대방이 갑자기 말이 없어지고 표정이 굳었어요.\n\"무슨 일 있어?\"라고 물었더니 \"아니, 아무것도 아니야\"라고 합니다.\n ",
-    question: "당신은?",
-    choices: [
-      {
-        id: "A",
-        text: "\"그래? 그럼 다행이다!\"",
-        description: "그냥 넘어가고 다른 이야기 시작",
-        pattern: "avoidance",
-      },
-      {
-        id: "B",
-        text: "\"진짜 괜찮아? 내가 뭐 잘못했어?\"",
-        description: "계속 물어보며 불안해함",
-        pattern: "anxiety",
-      },
-      {
-        id: "C",
-        text: "\"말하기 싫으면 나중에 말해줘\"",
-        description: "더 이상 묻지 않고 조용히 기다림",
-        pattern: "independence",
-      },
-      {
-        id: "D",
-        text: "\"아... 그렇구나\"",
-        description: "어색해서 핸드폰 보기 시작",
-        pattern: "withdrawal", // 철수형
-      },
-    ],
-    measureTarget: "emotional_response",
-  },
-  {
-    id: 3,
-    scenario: "어제 데이트 후 \"오늘 재밌었어!\"라고 문자 보냈는데\n하루가 지나도 답장이 없습니다. (읽음 표시 없음)\n ",
-    question: "당신의 마음 상태는?",
-    choices: [
-      {
-        id: "A",
-        text: "\"바쁘겠지 뭐\"",
-        description: "별로 신경 안 쓰고 내 할 일 함",
-        pattern: "independence",
-      },
-      {
-        id: "B",
-        text: "\"뭐 잘못했나? 재미없었나?\"",
-        description: "계속 핸드폰 확인하며 불안함",
-        pattern: "anxiety",
-      },
-      {
-        id: "C",
-        text: "\"답장 안 하는 사람이면 관심 없는 거지\"",
-        description: "실망하고 기대 접음",
-        pattern: "defensive", // 방어형
-      },
-      {
-        id: "D",
-        text: "\"나도 답장 천천히 해야지\"",
-        description: "전략적으로 대응 계획 세움",
-        pattern: "strategic", // 전략형
-      },
-    ],
-    measureTarget: "uncertainty_tolerance",
-  },
-  {
-    id: 4,
-    scenario: "어젯밤 사소한 일로 다퉜어요.\n서로 \"잘 자\"도 없이 그냥 잤습니다.\n ",
-    question: "다음 날 아침, 당신은?",
-    choices: [
-      {
-        id: "A",
-        text: "먼저 \"어제는 미안해\"라고 문자 보냄",
-        description: "빨리 풀고 싶음",
-        pattern: "quick_fix", // 빠른 해결
-      },
-      {
-        id: "B",
-        text: "상대방이 먼저 연락할 때까지 기다림",
-        description: "\"내가 왜 먼저 연락해?\"",
-        pattern: "standoff", // 대치
-      },
-      {
-        id: "C",
-        text: "\"어제 밥 먹었어?\"라고 가볍게 문자",
-        description: "직접적인 사과는 어색함",
-        pattern: "indirect", // 간접적
-      },
-      {
-        id: "D",
-        text: "아무 연락도 안 함",
-        description: "\"시간이 지나면 자연스럽게 풀리겠지\"",
-        pattern: "time_needed", // 시간 필요
-      },
-    ],
-    measureTarget: "conflict_resolution",
-  },
-  {
-    id: 5,
-    scenario: "오늘 하루가 최악이었어요.\n상사한테 혼나고, 프로젝트는 꼬이고, 지하철도 놓쳤습니다.\n집에 도착한 당신, 연인이 \"오늘 어땠어?\"라고 물어봅니다.",
-    question: "당신은?",
-    choices: [
-      {
-        id: "A",
-        text: "하루 종일 있었던 일을 쏟아내며 하소연",
-        description: "\"들어줘서 고마워\" 기분이 풀림",
-        pattern: "sharing", // 공유형
-      },
-      {
-        id: "B",
-        text: "\"그냥 좀 힘들었어...\" 짧게 말하고 침묵",
-        description: "말하기 싫고 혼자 있고 싶음",
-        pattern: "withdrawal",
-      },
-      {
-        id: "C",
-        text: "\"괜찮아, 별일 아니야\"",
-        description: "걱정 끼치기 싫어서 숨김",
-        pattern: "concealing", // 은폐형
-      },
-      {
-        id: "D",
-        text: "\"오늘 진짜 최악이었어. 근데 지금은 말하기 싫어\"",
-        description: "솔직하게 경계 표현",
-        pattern: "boundary_setting", // 경계 설정
-      },
-    ],
-    measureTarget: "vulnerability_sharing",
-  },
-  {
-    id: 6,
-    scenario: "당신에게 갑자기 주말 이틀이 완전히 비었습니다.\n연인은 친구 결혼식 때문에 지방에 갔어요.\n ",
-    question: "당신은 이 시간을?",
-    choices: [
-      {
-        id: "A",
-        text: "\"외롭다...\"",
-        description: "친구 붙잡고 약속 잡음",
-        pattern: "social_seeking", // 사회적 추구
-      },
-      {
-        id: "B",
-        text: "\"드디어 혼자다!\"",
-        description: "집에서 넷플릭스 정주행",
-        pattern: "solitude", // 고독 선호
-      },
-      {
-        id: "C",
-        text: "\"뭐 하지?\"",
-        description: "계획 없이 어영부영 시간 보냄",
-        pattern: "passive", // 수동적
-      },
-      {
-        id: "D",
-        text: "\"이 기회에 밀린 일 해야지\"",
-        description: "생산적으로 시간 활용",
-        pattern: "productive", // 생산적
-      },
-    ],
-    measureTarget: "recharge_method",
-  },
-  {
-    id: 7,
-    scenario: "당신이 기분이 안 좋을 때,\n연인이 어떻게 해주면 가장 좋을까요?\n ",
-    question: "당신이 원하는 건?",
-    choices: [
-      {
-        id: "A",
-        text: "말없이 안아주기",
-        description: "스킨십으로 위로받고 싶음",
-        pattern: "physical_touch",
-      },
-      {
-        id: "B",
-        text: "\"무슨 일이야? 이야기해봐\"",
-        description: "경청하고 공감해주기",
-        pattern: "listening",
-      },
-      {
-        id: "C",
-        text: "\"맛있는 거 먹으러 가자!\"",
-        description: "기분 전환시켜주기",
-        pattern: "distraction",
-      },
-      {
-        id: "D",
-        text: "그냥 혼자 내버려두기",
-        description: "간섭하지 않는 게 최고",
-        pattern: "space",
-      },
-    ],
-    measureTarget: "comfort_language",
-  },
-  {
-    id: 8,
-    scenario: "일주일 내내 사람들 만나고 회의하느라 정신없었어요.\n금요일 밤, 자기 전 침대에 누워있습니다.\n ",
-    question: "주말에 당신은?",
-    choices: [
-      {
-        id: "A",
-        text: "집에서 혼자 조용히 쉼",
-        description: "아무도 안 만나고 침대 속으로",
+        text: "혼자 조용한 공간에서 쉴 때",
+        description: "아무 방해 없이 혼자만의 시간이 필요해요",
         pattern: "solitude",
       },
       {
         id: "B",
-        text: "친한 친구 1-2명이랑 조용한 카페",
-        description: "편한 사람과 수다",
-        pattern: "close_friends",
+        text: "친한 친구 1-2명과 깊은 대화를 할 때",
+        description: "소수의 편안한 사람과 있을 때 힘이 나요",
+        pattern: "intimacy",
       },
       {
         id: "C",
-        text: "동호회/모임 나가서 새로운 사람 만남",
-        description: "사람 만나야 에너지 충전됨",
+        text: "밖에서 사람들과 어울리고 활동할 때",
+        description: "새로운 사람과 활기찬 분위기가 좋아요",
         pattern: "social",
       },
       {
         id: "D",
-        text: "운동/등산/활동적인 것",
-        description: "몸을 움직여야 스트레스 풀림",
+        text: "좋아하는 취미나 몰입할 거리가 있을 때",
+        description: "무언가에 푹 빠져서 성취감을 느낄 때",
         pattern: "activity",
       },
     ],
-    measureTarget: "energy_recharge",
+    measureTarget: "energy_source",
+  },
+  {
+    id: 2,
+    scenario: "중요한 대화를 하기에 가장 좋은, 당신의 '골든 타임'은?\n ",
+    question: "가장 마음이 여유로운 시간대는?",
+    choices: [
+      {
+        id: "A",
+        text: "머리가 맑은 '오전 시간'",
+        description: "일어나서 하루를 시작할 때가 가장 좋아요",
+        pattern: "morning",
+      },
+      {
+        id: "B",
+        text: "일과를 마친 '저녁 시간'",
+        description: "모든 일을 끝내고 긴장이 풀렸을 때",
+        pattern: "evening",
+      },
+      {
+        id: "C",
+        text: "배부르고 여유로운 '식사 후'",
+        description: "맛있는 걸 먹고 기분이 좋아졌을 때",
+        pattern: "after_meal",
+      },
+      {
+        id: "D",
+        text: "주말이나 휴일 같은 '쉬는 날'",
+        description: "시간에 쫓기지 않을 때 비로소 여유가 생겨요",
+        pattern: "weekend",
+      },
+    ],
+    measureTarget: "optimal_time",
+  },
+
+  // Part 2: 경고 신호 및 트리거 (Triggers & Warning Signs)
+  {
+    id: 3,
+    scenario: "데이트 중, 당신의 기분을 순식간에 망치는 것은?\n ",
+    question: "나를 가장 예민하게 만드는 것은?",
+    choices: [
+      {
+        id: "A",
+        text: "시끄러운 소음이나 복잡한 인파",
+        description: "너무 시끄럽거나 정신없는 곳은 딱 질색이에요",
+        pattern: "sensory_overload",
+      },
+      {
+        id: "B",
+        text: "배고픔이나 더위/추위",
+        description: "몸이 힘들면 기분도 급격히 나빠져요",
+        pattern: "physical_discomfort",
+      },
+      {
+        id: "C",
+        text: "계획이 틀어지거나 갑자기 변동될 때",
+        description: "예상치 못한 상황이 닥치면 당황스러워요",
+        pattern: "loss_of_control",
+      },
+      {
+        id: "D",
+        text: "상대방이 핸드폰만 볼 때",
+        description: "내 말에 집중하지 않는 태도는 못 참아요",
+        pattern: "feeling_neglected",
+      },
+    ],
+    measureTarget: "external_trigger",
+  },
+  {
+    id: 4,
+    scenario: "스트레스를 받기 시작하면, 겉으로 드러나는 당신의 첫 반응은?\n ",
+    question: "기분이 안 좋을 때 나의 모습은?",
+    choices: [
+      {
+        id: "A",
+        text: "말이 없어지고 표정이 굳는다",
+        description: "일단 입을 닫고 생각할 시간이 필요해요",
+        pattern: "shutdown",
+      },
+      {
+        id: "B",
+        text: "목소리가 커지거나 말이 빨라진다",
+        description: "나도 모르게 흥분해서 말이 많아져요",
+        pattern: "mobilization",
+      },
+      {
+        id: "C",
+        text: "한숨을 쉬거나 안절부절못한다",
+        description: "불안한 마음이 행동으로 드러나요",
+        pattern: "anxiety",
+      },
+      {
+        id: "D",
+        text: "냉소적이거나 비꼬는 말투가 나온다",
+        description: "상처받지 않으려고 가시 돋친 말을 해요",
+        pattern: "defensiveness",
+      },
+    ],
+    measureTarget: "warning_sign",
+  },
+
+  // Part 3: 반응 패턴 (Fight, Flight, Freeze)
+  {
+    id: 5,
+    scenario: "어제 데이트 후 \"즐거웠어\"라고 보냈는데, \n하루가 지나도 답장이 없습니다.",
+    question: "이때 당신의 솔직한 심정은?",
+    choices: [
+      {
+        id: "A",
+        text: "\"바쁘겠지\" 하고 내 할 일 한다",
+        description: "별일 없을 거라고 믿고 신경 끄는 편이에요",
+        pattern: "secure",
+      },
+      {
+        id: "B",
+        text: "\"내가 뭐 실수했나?\" 계속 확인한다",
+        description: "혹시 나 때문에 기분이 상한 건 아닌지 걱정돼요",
+        pattern: "anxious",
+      },
+      {
+        id: "C",
+        text: "\"답장 안 하면 나도 안 해\" 하고 지운다",
+        description: "자존심 상해서 더 이상 연락하고 싶지 않아요",
+        pattern: "avoidant",
+      },
+      {
+        id: "D",
+        text: "\"왜 답장이 없어?\"라고 바로 물어본다",
+        description: "답답한 건 못 참아서 이유를 들어야 해요",
+        pattern: "protest",
+      },
+    ],
+    measureTarget: "uncertainty_response",
+  },
+  {
+    id: 6,
+    scenario: "연인과 말다툼 중, 감정이 주체할 수 없이 격해졌습니다. \n이때 당신의 충동은?",
+    question: "너무 화가 났을 때 하고 싶은 행동은?",
+    choices: [
+      {
+        id: "A",
+        text: "상대방을 이기기 위해 논리적으로 따진다",
+        description: "누가 옳고 그른지 끝까지 따져야 해요",
+        pattern: "fight",
+      },
+      {
+        id: "B",
+        text: "화를 참지 못하고 소리를 지르고 싶다",
+        description: "감정을 쏟아내야 속이 시원할 것 같아요",
+        pattern: "explosion",
+      },
+      {
+        id: "C",
+        text: "\"그만해!\"라고 외치고 나가고 싶다",
+        description: "이 상황에서 빨리 벗어나고 싶어요",
+        pattern: "flight",
+      },
+      {
+        id: "D",
+        text: "눈물이 터져서 아무 말도 못 한다",
+        description: "너무 억울하고 슬퍼서 말문이 막혀요",
+        pattern: "flood",
+      },
+    ],
+    measureTarget: "hyperarousal_response",
+  },
+  {
+    id: 7,
+    scenario: "너무 지치고 힘들어서 에너지가 바닥났을 때, \n당신의 모습은?",
+    question: "완전히 지쳤을 때 나는?",
+    choices: [
+      {
+        id: "A",
+        text: "아무것도 안 하고 하루 종일 누워만 있는다",
+        description: "손가락 하나 까딱할 힘도 없어요",
+        pattern: "freeze",
+      },
+      {
+        id: "B",
+        text: "누가 말 거는 것조차 귀찮다",
+        description: "그냥 아무도 없는 곳에 숨고 싶어요",
+        pattern: "withdrawal",
+      },
+      {
+        id: "C",
+        text: "멍하니 있거나 현실감이 없어진다",
+        description: "머릿속이 하얘지고 멍해져요",
+        pattern: "dissociation",
+      },
+      {
+        id: "D",
+        text: "무조건적인 지지와 응원만 받고 싶다",
+        description: "어린아이처럼 징징대고 싶을 때가 있어요",
+        pattern: "regression",
+      },
+    ],
+    measureTarget: "hypoarousal_response",
+  },
+
+  // Part 4: 회복 매뉴얼 (Regulation & Recovery)
+  {
+    id: 8,
+    scenario: "격해진 감정을 스스로 진정시키는 가장 효과적인 방법은?\n ",
+    question: "스스로 마음을 다스리는 방법은?",
+    choices: [
+      {
+        id: "A",
+        text: "혼자만의 시간을 가지며 동굴로 들어간다",
+        description: "잠시 떨어져서 감정을 가라앉힐 시간이 필요해요",
+        pattern: "space",
+      },
+      {
+        id: "B",
+        text: "심호흡을 하거나 찬물로 세수한다",
+        description: "몸을 움직여서 분위기를 환기해요",
+        pattern: "physiological",
+      },
+      {
+        id: "C",
+        text: "맛있는 걸 먹거나 좋아하는 영상을 본다",
+        description: "다른 즐거운 일로 관심을 돌려요",
+        pattern: "sensory",
+      },
+      {
+        id: "D",
+        text: "감정을 글로 쓰거나 친구에게 털어놓는다",
+        description: "누군가에게 털어놓아야 마음이 풀려요",
+        pattern: "expression",
+      },
+    ],
+    measureTarget: "self_regulation",
+  },
+  {
+    id: 9,
+    scenario: "당신이 힘들 때, 연인이 해주길 바라는 '최고의 위로'는?\n ",
+    question: "연인에게 바라는 위로 방식은?",
+    choices: [
+      {
+        id: "A",
+        text: "\"무슨 일이야?\" 하고 끝까지 들어주기",
+        description: "해결책보다는 내 편이 되어 들어주길 바라요",
+        pattern: "listening",
+      },
+      {
+        id: "B",
+        text: "아무 말 없이 꽉 안아주기",
+        description: "따뜻한 스킨십이 말보다 큰 위로가 돼요",
+        pattern: "physical_touch",
+      },
+      {
+        id: "C",
+        text: "\"내가 해결해줄게\" 하고 문제 처리해주기",
+        description: "실질적으로 도움을 줄 때 사랑을 느껴요",
+        pattern: "act_of_service",
+      },
+      {
+        id: "D",
+        text: "\"잠시 혼자 쉴래?\" 하고 배려해주기",
+        description: "혼자 정리할 시간을 주는 게 가장 고마워요",
+        pattern: "respecting_space",
+      },
+    ],
+    measureTarget: "co_regulation",
+  },
+  {
+    id: 10,
+    scenario: "당신이 기분이 안 좋을 때, 연인이 안했으면 하는 것은?\n ",
+    question: "이것만은 제발 하지 말아줘!",
+    choices: [
+      {
+        id: "A",
+        text: "\"왜 그래?\" 하고 계속 이유 캐묻기",
+        description: "말하고 싶지 않은데 억지로 물어보면 더 화나요",
+        pattern: "intrusion",
+      },
+      {
+        id: "B",
+        text: "\"별거 아니네\" 하고 내 감정 축소하기",
+        description: "내 힘든 마음을 별거 아닌 일로 취급하지 마세요",
+        pattern: "dismissal",
+      },
+      {
+        id: "C",
+        text: "\"나랑 놀래?\" 하고 분위기 띄우려 하기",
+        description: "지금 당장 기분을 억지로 바꿀 순 없어요",
+        pattern: "invalidation",
+      },
+      {
+        id: "D",
+        text: "논리적으로 따지거나 조언하기",
+        description: "지금은 옳고 그름을 따지기보다 공감이 필요해요",
+        pattern: "lecturing",
+      },
+    ],
+    measureTarget: "do_not_disturb",
   },
 ];
