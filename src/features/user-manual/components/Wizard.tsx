@@ -5,10 +5,11 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
 
-import { QuestionCard } from "@/features/user-manual/components/QuestionCard";
+import { QuestionCard } from "./QuestionCard";
 import { ProgressBar } from "@/features/user-manual/components/ProgressBar";
-import { Result } from "@/features/user-manual/components/Result";
+import { ResultSection1 } from "@/features/user-manual/components/ResultSection1";
 import { Modal } from "@/shared/components/Modal";
+import { SectionIntro } from "@/shared/components/SectionIntro";
 
 import { section1Questions } from "@/features/user-manual/model/section1-questions";
 import { UserAnswer, AnswerChoice, Section1Result } from "@/features/user-manual/model/section1-schema";
@@ -19,6 +20,7 @@ export function Wizard() {
   const router = useRouter();
   
   // 상태 관리
+  const [showIntro, setShowIntro] = useState(true);
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<UserAnswer[]>([]);
   const [isExiting, setIsExiting] = useState(false);
@@ -30,6 +32,7 @@ export function Wizard() {
   // Event Handler에서 최신 State를 참조하기 위한 Ref
   const stateRef = useRef({ currentStep, isExiting });
   const isProgrammaticBackRef = useRef(false);
+  const isOurNavigationRef = useRef(false); // 우리가 go(1)을 호출했는지 추적
 
   useEffect(() => {
     stateRef.current = { currentStep, isExiting };
@@ -56,8 +59,6 @@ export function Wizard() {
     };
 
     // 기존 답변이 있으면 교체, 없으면 추가 (순서는 유지)
-    // 뒤로 가기 했다가 다시 선택하는 경우를 위해 filter 대신 map이나 splice 로직 필요하지만
-    // 단순하게는 현재 스텝 이후의 답변을 날리고 새로 추가하는 방식이 안전함 (선형 진행)
     const prevAnswers = answers.filter(a => a.questionId !== currentQuestion.id);
     const updatedAnswers = [...prevAnswers, newAnswer];
     
@@ -91,18 +92,28 @@ export function Wizard() {
 
   // 브라우저 뒤로가기 방지 (Popstate)
   useEffect(() => {
-    // Mount 시 히스토리 스택 추가하여 "Trap" 생성
-    history.pushState(null, "", location.href);
+    // Mount 시 히스토리 스택 추가하여 "Trap" 생성 (Double Trap)
+    history.pushState({ wizard: true, trap: 1 }, "", location.href);
+    history.pushState({ wizard: true, trap: 2 }, "", location.href);
 
     const handlePopState = (e: PopStateEvent) => {
+      const { currentStep, isExiting } = stateRef.current;
+
+      // 우리가 go(1)을 호출해서 발생한 popstate는 무시
+      if (isOurNavigationRef.current) {
+        isOurNavigationRef.current = false;
+        return;
+      }
+
       // 프로그램적 뒤로가기인 경우 무시 (Modal에서 confirm 시)
       if (isProgrammaticBackRef.current) return;
 
-      // 브라우저 뒤로가기를 막고, 다시 현재 페이지 상태를 push하여 유지
-      history.pushState(null, "", location.href);
-
-      const { currentStep, isExiting } = stateRef.current;
+      // 애니메이션 중이면 무시
       if (isExiting) return;
+
+      // 뒤로가기를 막고 go(1)로 복구
+      isOurNavigationRef.current = true;
+      history.go(1);
 
       if (currentStep > 0) {
         // 내부 스텝 뒤로가기
@@ -116,26 +127,12 @@ export function Wizard() {
 
     window.addEventListener("popstate", handlePopState);
     
-    // Unmount 시 Trap 제거용으로 뒤로가기 한번 실행?
-    // SPA에서는 Unmount가 페이지 이동을 의미하므로 자동으로 처리되거나
-    // 혹은 Trap이 남을 수 있지만, 일반적인 패턴에서는 Listenre만 제거함.
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
   }, []);
 
-  // 새로고침/닫기 방지
-  useEffect(() => {
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      e.preventDefault();
-      e.returnValue = ""; // Chrome requires returnValue to be set
-    };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
 
   // 완료 처리
   const finishWizard = (finalAnswers: UserAnswer[]) => {
@@ -156,11 +153,28 @@ export function Wizard() {
 
 
 
+  const handleNextSection = () => {
+    alert("섹션 2는 곧 업데이트 예정입니다!");
+    // 추후 섹션 2 위저드로 이동하는 로직 추가
+  };
+
   if (result) {
     return (
-      <div className="min-h-screen bg-background py-10 px-4 sm:px-6 relative overflow-y-auto w-full">
-        <Result data={result} />
+      <div className="min-h-screen bg-background py-10 px-4 sm:px-6 relative overflow-y-auto w-full flex items-center justify-center">
+        <ResultSection1 data={result} onNext={handleNextSection} />
       </div>
+    );
+  }
+
+  if (showIntro) {
+    return (
+      <AnimatePresence>
+        <SectionIntro
+          sectionNumber={1}
+          title="정서적 안정성"
+          onComplete={() => setShowIntro(false)}
+        />
+      </AnimatePresence>
     );
   }
 
@@ -208,11 +222,11 @@ export function Wizard() {
         confirmLabel="나가기"
         cancelLabel="계속 작성하기"
         onConfirm={() => {
-          // Trap이 설정되어 있으므로 history.go(-2)를 해야 이 페이지를 벗어남
-          // (Trap State 1개 + 진입 시 State 1개 = 총 2단계를 돌아가야 이전 페이지)
+          // Trap이 설정되어 있으므로 history.go(-3)으로 진짜 이전 페이지로 이동
+          // (Trap2 + Trap1 + Wizard진입 = 총 3단계를 돌아가야 함)
           isProgrammaticBackRef.current = true;
           setShowExitModal(false);
-          history.go(-2);
+          history.go(-3);
         }}
         variant="danger" // 내용 삭제는 위험한 동작이므로 danger variant 사용
       />
