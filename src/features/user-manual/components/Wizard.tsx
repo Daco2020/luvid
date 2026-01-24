@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
@@ -26,6 +26,14 @@ export function Wizard() {
 
   const [direction, setDirection] = useState(0); // 1: Next, -1: Prev
   const [showExitModal, setShowExitModal] = useState(false);
+
+  // Event Handler에서 최신 State를 참조하기 위한 Ref
+  const stateRef = useRef({ currentStep, isExiting });
+  const isProgrammaticBackRef = useRef(false);
+
+  useEffect(() => {
+    stateRef.current = { currentStep, isExiting };
+  }, [currentStep, isExiting]);
 
   const currentQuestion = section1Questions[currentStep];
   const totalSteps = section1Questions.length;
@@ -83,15 +91,41 @@ export function Wizard() {
 
   // 브라우저 뒤로가기 방지 (Popstate)
   useEffect(() => {
+    // Mount 시 히스토리 스택 추가하여 "Trap" 생성
+    history.pushState(null, "", location.href);
+
     const handlePopState = (e: PopStateEvent) => {
-      // 브라우저 뒤로가기를 막고 확인창 띄우기
-      // Next.js에서는 완벽한 가로채기가 어렵지만, pushState로 이력을 남겨두고
-      // 뒤로가기 시도 시 다시 현재 페이지를 push하여 머물게 하는 꼼수(hack)보다는
-      // 페이지 이탈 감지 경고를 주는 것이 일반적임.
-      // 여기서는 심플하게 컨펌만 띄우고, 이미 이동해버린 경우 어쩔 수 없음(SPA 특성).
-      // 대신 beforeunload를 사용하여 새로고침/닫기 방지
+      // 프로그램적 뒤로가기인 경우 무시 (Modal에서 confirm 시)
+      if (isProgrammaticBackRef.current) return;
+
+      // 브라우저 뒤로가기를 막고, 다시 현재 페이지 상태를 push하여 유지
+      history.pushState(null, "", location.href);
+
+      const { currentStep, isExiting } = stateRef.current;
+      if (isExiting) return;
+
+      if (currentStep > 0) {
+        // 내부 스텝 뒤로가기
+        setDirection(-1);
+        setCurrentStep(prev => prev - 1);
+      } else {
+        // 이탈 시도 -> 모달 표시
+        setShowExitModal(true);
+      }
     };
 
+    window.addEventListener("popstate", handlePopState);
+    
+    // Unmount 시 Trap 제거용으로 뒤로가기 한번 실행?
+    // SPA에서는 Unmount가 페이지 이동을 의미하므로 자동으로 처리되거나
+    // 혹은 Trap이 남을 수 있지만, 일반적인 패턴에서는 Listenre만 제거함.
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
+  // 새로고침/닫기 방지
+  useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       e.preventDefault();
       e.returnValue = ""; // Chrome requires returnValue to be set
@@ -174,8 +208,11 @@ export function Wizard() {
         confirmLabel="나가기"
         cancelLabel="계속 작성하기"
         onConfirm={() => {
+          // Trap이 설정되어 있으므로 history.go(-2)를 해야 이 페이지를 벗어남
+          // (Trap State 1개 + 진입 시 State 1개 = 총 2단계를 돌아가야 이전 페이지)
+          isProgrammaticBackRef.current = true;
           setShowExitModal(false);
-          router.back();
+          history.go(-2);
         }}
         variant="danger" // 내용 삭제는 위험한 동작이므로 danger variant 사용
       />
