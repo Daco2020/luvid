@@ -2,182 +2,239 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
 
-import { QuestionCard } from "./QuestionCard";
-import { ProgressBar } from "./ProgressBar";
 import { Modal } from "@/shared/components/Modal";
 import { SectionIntro } from "@/shared/components/SectionIntro";
 
-import { section2Questions } from "@/features/user-manual/model/section2-questions";
-import { UserAnswer, AnswerChoice, Section2Result } from "@/features/user-manual/model/section2-schema";
-import { analyzeSection2 } from "@/features/user-manual/utils/section2-analyzer";
-import { ResultSection2 } from "./ResultSection2";
+import { section2Scenarios } from "@/features/user-manual/model/section2-scenarios";
+import type { Scenario, UserChoice, Section2Result, Branch, Choice } from "@/features/user-manual/model/section2-schema";
+import { analyzeSection2 } from "@/features/user-manual/model/section2-analyzer";
+import { ResultSection2 } from "@/features/user-manual/components/section2/ResultSection2";
+import { ScenarioSelection } from "@/features/user-manual/components/section2/ScenarioSelection";
+import { ChatMessage } from "./ChatMessage";
+import { ChoicePanel } from "./ChoicePanel";
+
+interface Message {
+  id: string;
+  type: "system" | "partner" | "user";
+  text: string;
+  branchId?: number;
+  choiceId?: string;
+}
 
 export function Wizard() {
   const router = useRouter();
-  
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
   // 상태 관리
   const [showIntro, setShowIntro] = useState(true);
-  const [currentStep, setCurrentStep] = useState(0);
-  const [answers, setAnswers] = useState<UserAnswer[]>([]);
-  const [isExiting, setIsExiting] = useState(false);
+  const [selectedScenario, setSelectedScenario] = useState<Scenario | null>(null);
+  const [currentBranchIndex, setCurrentBranchIndex] = useState(0);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [choices, setChoices] = useState<UserChoice[]>([]);
   const [result, setResult] = useState<Section2Result | null>(null);
-
-  const [direction, setDirection] = useState(0); // 1: Next, -1: Prev
   const [showExitModal, setShowExitModal] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  // Event Handler에서 최신 State를 참조하기 위한 Ref
-  const stateRef = useRef({ currentStep, isExiting });
   const isProgrammaticBackRef = useRef(false);
-  const isOurNavigationRef = useRef(false);
+
+  const currentBranch = selectedScenario?.branches[currentBranchIndex];
+  const totalBranches = selectedScenario?.branches.length || 0;
+
+  // 자동 스크롤
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
-    stateRef.current = { currentStep, isExiting };
-  }, [currentStep, isExiting]);
+    scrollToBottom();
+  }, [messages]);
 
-  const currentQuestion = section2Questions[currentStep];
-  const totalSteps = section2Questions.length;
+  // 시나리오 선택 핸들러
+  const handleScenarioSelect = (scenario: Scenario) => {
+    setSelectedScenario(scenario);
+    // 첫 번째 분기의 상황 메시지 추가
+    const firstBranch = scenario.branches[0];
+    setMessages([
+      {
+        id: "situation-0",
+        type: "system",
+        text: firstBranch.situation,
+        branchId: firstBranch.id,
+      },
+    ]);
+  };
 
-  // 현재 문항에 대한 기존 답변 확인
-  const currentAnswer = answers.find(a => a.questionId === currentQuestion.id);
+  // 선택지 선택 핸들러
+  const handleChoiceSelect = async (choice: Choice) => {
+    if (isProcessing || !currentBranch) return;
+    setIsProcessing(true);
 
-  // 답변 선택 핸들러
-  const handleAnswer = async (choice: AnswerChoice) => {
-    if (isExiting) return;
-    setIsExiting(true);
-    
-    setDirection(1);
-
-    const newAnswer: UserAnswer = {
-      questionId: currentQuestion.id,
-      selectedChoiceId: choice.id,
-      pattern: choice.pattern,
+    // 1. 선택한 답변을 메시지로 추가
+    const userMessage: Message = {
+      id: `user-${currentBranch.id}-${choice.id}`,
+      type: "user",
+      text: choice.text,
+      branchId: currentBranch.id,
+      choiceId: choice.id,
     };
 
-    const prevAnswers = answers.filter(a => a.questionId !== currentQuestion.id);
-    const updatedAnswers = [...prevAnswers, newAnswer];
-    
-    setAnswers(updatedAnswers);
+    setMessages((prev) => [...prev, userMessage]);
 
+    // 2. UserChoice 저장
+    const newChoice: UserChoice = {
+      branchId: currentBranch.id,
+      choiceId: choice.id,
+      patterns: choice.patterns,
+    };
+
+    const prevChoices = choices.filter((c) => c.branchId !== currentBranch.id);
+    const updatedChoices = [...prevChoices, newChoice];
+    setChoices(updatedChoices);
+
+    // 3. 다음 분기로 이동 또는 완료
     setTimeout(() => {
-      if (currentStep < totalSteps - 1) {
-        setCurrentStep((prev) => prev + 1);
-        setIsExiting(false);
+      if (currentBranchIndex < totalBranches - 1) {
+        const nextBranch = selectedScenario!.branches[currentBranchIndex + 1];
+        
+        // 다음 상황 메시지 추가
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `situation-${nextBranch.id}`,
+            type: "system",
+            text: nextBranch.situation,
+            branchId: nextBranch.id,
+          },
+        ]);
+
+        setCurrentBranchIndex((prev) => prev + 1);
+        setIsProcessing(false);
       } else {
-        finishWizard(updatedAnswers);
+        // 완료
+        finishWizard(updatedChoices);
       }
-    }, 200); 
+    }, 300);
   };
-  
+
   // 뒤로 가기 핸들러
   const handleBack = () => {
-    if (isExiting) return;
+    if (isProcessing) return;
 
-     if (currentStep > 0) {
-       setDirection(-1);
-       setCurrentStep(prev => prev - 1);
-     } else {
-       setShowExitModal(true);
-     }
+    if (currentBranchIndex > 0) {
+      // 이전 분기로 돌아가기
+      // 마지막 2개 메시지 제거 (유저 답변 + 현재 상황)
+      setMessages((prev) => prev.slice(0, -2));
+      setCurrentBranchIndex((prev) => prev - 1);
+    } else if (selectedScenario) {
+      // 시나리오 선택 화면으로
+      setSelectedScenario(null);
+      setMessages([]);
+      setChoices([]);
+      setCurrentBranchIndex(0);
+    } else {
+      setShowExitModal(true);
+    }
   };
 
-  // 브라우저 뒤로가기 방지 (Popstate)
+  // 브라우저 뒤로가기 방지
   useEffect(() => {
-    history.pushState({ wizard: true, trap: 1 }, "", location.href);
-    history.pushState({ wizard: true, trap: 2 }, "", location.href);
+    if (!selectedScenario) return;
+
+    history.pushState({ wizard: true }, "", location.href);
 
     const handlePopState = () => {
-      const { currentStep, isExiting } = stateRef.current;
-
-      if (isOurNavigationRef.current) {
-        isOurNavigationRef.current = false;
-        return;
-      }
-
       if (isProgrammaticBackRef.current) return;
-      if (isExiting) return;
-
-      isOurNavigationRef.current = true;
       history.go(1);
-
-      if (currentStep > 0) {
-        setDirection(-1);
-        setCurrentStep(prev => prev - 1);
-      } else {
-        setShowExitModal(true);
-      }
+      handleBack();
     };
 
     window.addEventListener("popstate", handlePopState);
-    
+
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
-  }, []);
+  }, [selectedScenario, currentBranchIndex, isProcessing]);
 
-  // 위저드 완료 핸들러
-  const finishWizard = (finalAnswers: UserAnswer[]) => {
-    const analysisResult = analyzeSection2(finalAnswers);
+  // 위저드 완료
+  const finishWizard = (finalChoices: UserChoice[]) => {
+    if (!selectedScenario) return;
+    const analysisResult = analyzeSection2(selectedScenario.id, finalChoices);
     setResult(analysisResult);
   };
 
-  // 결과 페이지 표시 중
+  // 결과 페이지
   if (result) {
     return <ResultSection2 result={result} />;
   }
 
   // 인트로 화면
   if (showIntro) {
+    return <SectionIntro sectionNumber={2} title="소통 및 갈등" onComplete={() => setShowIntro(false)} />;
+  }
+
+  // 시나리오 선택 화면
+  if (!selectedScenario) {
     return (
-      <SectionIntro
-        sectionNumber={2}
-        title="소통 및 갈등"
-        onComplete={() => setShowIntro(false)}
-      />
+      <div className="min-h-screen bg-gradient-to-br from-highlight via-white to-accent/30 flex items-center justify-center p-4">
+        <div className="w-full max-w-4xl">
+          <ScenarioSelection scenarios={section2Scenarios} onSelect={handleScenarioSelect} onBack={() => setShowExitModal(true)} />
+        </div>
+
+        <Modal
+          isOpen={showExitModal}
+          onClose={() => setShowExitModal(false)}
+          title="정말 나가시겠어요?"
+          description="지금 나가시면 작성 중인 내용이 모두 사라져요. 정말 나가시겠어요?"
+          variant="danger"
+          confirmLabel="나가기"
+          cancelLabel="계속하기"
+          onConfirm={() => {
+            isProgrammaticBackRef.current = true;
+            router.back();
+          }}
+        />
+      </div>
     );
   }
 
+  // 대화형 UI
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-red-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl">
-        {/* 헤더: 진행률 */}
-        <div className="mb-8">
-          <ProgressBar current={currentStep + 1} total={totalSteps} />
-        </div>
-
-        {/* 뒤로가기 버튼 */}
-        <button
-          onClick={handleBack}
-          disabled={isExiting}
-          className="mb-6 flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors disabled:opacity-50"
-        >
-          <ChevronLeft className="w-4 h-4" />
-          이전
+    <div className="h-screen flex flex-col bg-gray-50">
+      {/* 헤더 */}
+      <div className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+        <button onClick={handleBack} disabled={isProcessing} className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors disabled:opacity-50">
+          <ChevronLeft className="w-5 h-5" />
+          <span className="text-sm font-medium">이전</span>
         </button>
 
-        {/* 질문 카드 */}
-        <AnimatePresence mode="wait" custom={direction}>
-          <motion.div
-            key={currentStep}
-            custom={direction}
-            initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: direction > 0 ? -100 : 100 }}
-            transition={{ duration: 0.3 }}
-          >
-            <QuestionCard
-              question={currentQuestion}
-              onAnswer={handleAnswer}
-              selectedChoiceId={currentAnswer?.selectedChoiceId}
-              disabled={isExiting}
-            />
-          </motion.div>
-        </AnimatePresence>
+        <div className="text-center">
+          <h3 className="text-sm font-semibold text-gray-900">{selectedScenario.title}</h3>
+          <p className="text-xs text-gray-500">
+            {currentBranchIndex + 1} / {totalBranches}
+          </p>
+        </div>
+
+        <div className="w-16"></div> {/* 균형 맞추기 */}
       </div>
 
-      {/* 나가기 확인 모달 */}
+      {/* 대화 영역 - 가운데 정렬 */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="max-w-2xl mx-auto px-4 py-6 space-y-4">
+          {messages.map((message) => (
+            <ChatMessage key={message.id} message={message} />
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
+      </div>
+
+      {/* 선택지 패널 */}
+      {currentBranch && !isProcessing && (
+        <ChoicePanel choices={currentBranch.choices} onSelect={handleChoiceSelect} />
+      )}
+
+      {/* 나가기 모달 */}
       <Modal
         isOpen={showExitModal}
         onClose={() => setShowExitModal(false)}
