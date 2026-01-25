@@ -1,6 +1,6 @@
 /**
- * Section 2: 소통 및 갈등 (Conflict)
- * TKI 갈등 모드와 사과 언어를 진단합니다.
+ * Section 2: 소통 및 갈등 (Conflict) - 분기 스토리
+ * TKI 갈등 스타일, 사과 언어, 고트맨 패턴을 진단합니다.
  */
 
 // TKI 갈등 스타일 5가지
@@ -19,32 +19,80 @@ export type ApologyLanguage =
   | "genuinely_repenting"    // 진심 어린 뉘우침: 행동의 변화를 약속
   | "requesting_forgiveness"; // 용서 구하기: 관계의 회복을 상대에게 정중히 요청
 
-// 질문 타입
-export interface Question {
-  id: number;
-  scenario: string;      // 상황 설명
-  question: string;      // 질문
-  choices: AnswerChoice[];
+// 고트맨의 4가지 파멸의 기사
+export type GottmanPattern =
+  | "criticism"      // 비난: 상대의 성격이나 인격을 공격
+  | "defensiveness"  // 방어: 자신을 정당화하고 상대를 역공격
+  | "contempt"       // 경멸: 상대를 무시하거나 조롱
+  | "stonewalling";  // 담쌓기: 대화를 거부하고 회피
+
+// 측정 타입
+export type MeasurementType = "tki" | "apology" | "gottman";
+
+// 패턴 점수
+export interface PatternScore {
+  primary: {
+    type: ConflictStyle | ApologyLanguage | GottmanPattern;
+    score: number; // 주 패턴: 3점
+  };
+  secondary?: {
+    type: ConflictStyle | ApologyLanguage | GottmanPattern;
+    score: number; // 부 패턴: 1점
+  };
 }
 
-export interface AnswerChoice {
+// 선택지
+export interface Choice {
   id: string;
   text: string;
-  description?: string;
-  pattern: string; // conflict_style 또는 apology_language에 매핑
+  patterns: PatternScore;
+  isHealthy?: boolean; // 고트맨 패턴에서 건강한 반응인 경우
 }
 
-// 사용자 답변
-export interface UserAnswer {
-  questionId: number;
-  selectedChoiceId: string;
-  pattern: string;
+// 분기
+export interface Branch {
+  id: number;
+  measurementType: MeasurementType;
+  situation: string;
+  choices: Choice[];
 }
 
-// 분석 결과 패턴
-export interface ConflictPattern {
-  conflict_style: ConflictStyle;
-  apology_language: ApologyLanguage;
+// 시나리오
+export interface Scenario {
+  id: string;
+  title: string;
+  description: string;
+  ageGroup: "early20s" | "late20s" | "early30s" | "late30s"; // 내부용
+  branches: Branch[];
+}
+
+// 사용자 선택 기록
+export interface UserChoice {
+  branchId: number;
+  choiceId: string;
+  patterns: PatternScore;
+}
+
+// 분석 결과 - TKI
+export interface TKIAnalysis {
+  scores: Record<ConflictStyle, number>;
+  primaryStyle: ConflictStyle;
+  secondaryStyle?: ConflictStyle;
+}
+
+// 분석 결과 - 사과 언어
+export interface ApologyAnalysis {
+  scores: Record<ApologyLanguage, number>;
+  primaryLanguage: ApologyLanguage;
+  secondaryLanguage?: ApologyLanguage;
+}
+
+// 분석 결과 - 고트맨
+export interface GottmanAnalysis {
+  scores: Record<GottmanPattern, number>;
+  totalScore: number;
+  riskLevel: "healthy" | "caution" | "danger"; // 0-2점, 3-5점, 6점 이상
+  dominantPattern?: GottmanPattern;
 }
 
 // 인사이트
@@ -58,7 +106,16 @@ export interface Insight {
 export interface Section2Result {
   completed: boolean;
   completedAt: string;
-  answers: UserAnswer[];
-  patterns: ConflictPattern;
-  insights: Insight[]; // 갈등 스타일 + 사과 언어 인사이트 2개
+  scenarioId: string;
+  choices: UserChoice[];
+  analysis: {
+    tki: TKIAnalysis;
+    apology: ApologyAnalysis;
+    gottman: GottmanAnalysis;
+  };
+  insights: {
+    conflict: Insight;
+    apology: Insight;
+    gottman?: Insight; // 위험 수준에 따라 선택적
+  };
 }
