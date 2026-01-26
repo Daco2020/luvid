@@ -2,6 +2,7 @@ interface Message {
   id: string;
   type: "system" | "partner" | "user";
   text: string;
+  caption?: string; // 상황 설명 (partner 타입에서 사용)
   branchId?: number;
   choiceId?: string;
 }
@@ -33,9 +34,14 @@ export function ChatMessage({ message }: ChatMessageProps) {
     );
   }
 
-  // partner 타입 (연인 메시지 - 왼쪽, 회색)
+  // partner 타입 (연인 메시지 - 왼쪽, 회색 + 하단 캡션)
   return (
-    <div className="flex justify-start px-4">
+    <div className="flex flex-col items-start px-4 space-y-1">
+      {/* 상황 캡션 */}
+      {message.caption && (
+        <p className="text-xs text-gray-500 px-2">{message.caption}</p>
+      )}
+      {/* 말풍선 */}
       <div className="bg-gray-200 text-gray-800 px-4 py-3 rounded-2xl rounded-bl-sm max-w-xs md:max-w-md shadow-sm">
         <p className="text-sm leading-relaxed">{message.text}</p>
       </div>

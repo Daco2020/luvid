@@ -53,7 +53,8 @@ export interface Choice {
 export interface Branch {
   id: number;
   measurementType: MeasurementType;
-  situation: string;
+  situation: string; // 상황 설명 (회색 캡션)
+  partnerDialogue?: string; // 상대방 대화 (말풍선) - 선택적
   choices: Choice[];
 }
 

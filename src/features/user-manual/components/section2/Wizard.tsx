@@ -19,6 +19,7 @@ interface Message {
   id: string;
   type: "system" | "partner" | "user";
   text: string;
+  caption?: string; // 상황 설명 (partner 타입에서 사용)
   branchId?: number;
   choiceId?: string;
 }
@@ -54,16 +55,30 @@ export function Wizard() {
   // 시나리오 선택 핸들러
   const handleScenarioSelect = (scenario: Scenario) => {
     setSelectedScenario(scenario);
-    // 첫 번째 분기의 상황 메시지 추가
+    // 첫 번째 분기의 메시지 추가
     const firstBranch = scenario.branches[0];
-    setMessages([
-      {
+    const initialMessages: Message[] = [];
+
+    if (firstBranch.partnerDialogue) {
+      // 상대방 대화가 있으면 말풍선 + 캡션
+      initialMessages.push({
+        id: "partner-0",
+        type: "partner",
+        text: firstBranch.partnerDialogue,
+        caption: firstBranch.situation,
+        branchId: firstBranch.id,
+      });
+    } else {
+      // 상대방 대화가 없으면 상황 설명만
+      initialMessages.push({
         id: "situation-0",
         type: "system",
         text: firstBranch.situation,
         branchId: firstBranch.id,
-      },
-    ]);
+      });
+    }
+
+    setMessages(initialMessages);
   };
 
   // 선택지 선택 핸들러
@@ -98,16 +113,31 @@ export function Wizard() {
       if (currentBranchIndex < totalBranches - 1) {
         const nextBranch = selectedScenario!.branches[currentBranchIndex + 1];
         
-        // 다음 상황 메시지 추가
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: `situation-${nextBranch.id}`,
-            type: "system",
-            text: nextBranch.situation,
-            branchId: nextBranch.id,
-          },
-        ]);
+        // 다음 메시지 추가
+        setMessages((prev) => {
+          const newMessages = [...prev];
+          
+          if (nextBranch.partnerDialogue) {
+            // 상대방 대화가 있으면 말풍선 + 캡션
+            newMessages.push({
+              id: `partner-${nextBranch.id}`,
+              type: "partner",
+              text: nextBranch.partnerDialogue,
+              caption: nextBranch.situation,
+              branchId: nextBranch.id,
+            });
+          } else {
+            // 상대방 대화가 없으면 상황 설명만
+            newMessages.push({
+              id: `situation-${nextBranch.id}`,
+              type: "system",
+              text: nextBranch.situation,
+              branchId: nextBranch.id,
+            });
+          }
+          
+          return newMessages;
+        });
 
         setCurrentBranchIndex((prev) => prev + 1);
         setIsProcessing(false);
