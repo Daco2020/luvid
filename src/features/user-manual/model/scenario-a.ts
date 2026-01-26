@@ -64,7 +64,7 @@ export const scenarioA: Scenario = {
       id: 2,
       measurementType: "tki",
       partnerDialogue: "미안, 바빴어",
-      situation: "이틀째 되는 날, 연인에게서 짧은 답장이 왔어요.",
+      situation: "이틀이 지난 후, 연인에게서 짧은 답장이 왔어요.",
       choices: [
         {
           id: "a2_1",
