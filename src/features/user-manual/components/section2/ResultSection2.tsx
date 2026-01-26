@@ -1,16 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Lock, ArrowRight, MessageCircle, ChevronLeft } from "lucide-react";
+import { Lock, ArrowRight, MessageCircle } from "lucide-react";
 import { Section2Result } from "../../model/section2-schema";
-import { useRouter } from "next/navigation";
 
 interface ResultSection2Props {
   result: Section2Result;
 }
 
 export function ResultSection2({ result }: ResultSection2Props) {
-  const router = useRouter();
   const { insights } = result;
 
   // insights가 제대로 생성되지 않은 경우 처리
@@ -25,20 +23,8 @@ export function ResultSection2({ result }: ResultSection2Props) {
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="flex flex-col items-center justify-center text-center px-4 gap-8 w-full max-w-md mx-auto">
+    <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4 gap-8 w-full max-w-md mx-auto">
         
-        {/* 뒤로가기 버튼 */}
-        <div className="w-full flex justify-start">
-          <button 
-            onClick={() => router.push("/user-manual/conflict-styles")}
-            className="flex items-center gap-1 text-gray-600 hover:text-gray-900 transition-colors"
-          >
-            <ChevronLeft className="w-5 h-5" />
-            <span className="text-sm font-medium">다시 선택하기</span>
-          </button>
-        </div>
-
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -115,6 +101,5 @@ export function ResultSection2({ result }: ResultSection2Props) {
         </motion.div>
 
       </div>
-    </div>
   );
 }

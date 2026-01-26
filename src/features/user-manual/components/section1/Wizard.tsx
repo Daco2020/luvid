@@ -159,7 +159,7 @@ export function Wizard() {
 
   if (result) {
     return (
-      <div className="min-h-screen bg-background py-10 px-4 sm:px-6 relative overflow-y-auto w-full flex items-center justify-center">
+      <div className="min-h-screen bg-background mt-10 py-10 px-4 sm:px-6 relative overflow-y-auto w-full flex items-start justify-center">
         <ResultSection1 data={result} onNext={handleNextSection} />
       </div>
     );

@@ -194,7 +194,11 @@ export function Wizard() {
 
   // 결과 페이지
   if (result) {
-    return <ResultSection2 result={result} />;
+    return (
+      <div className="min-h-screen bg-background mt-10 py-10 px-4 sm:px-6 relative overflow-y-auto w-full flex items-start justify-center">
+        <ResultSection2 result={result} />
+      </div>
+    );
   }
 
   // 인트로 화면
