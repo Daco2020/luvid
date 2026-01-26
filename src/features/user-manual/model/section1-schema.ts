@@ -61,6 +61,7 @@ export const insightSchema = z.object({
   title: z.string(), // "당신은 혼자만의 시간이 필요한 사람이에요"
   description: z.string(), // 상세 설명
   tip: z.string().optional(), // 실용적인 팁
+  teaserHint: z.string(), // 결과 페이지용 재치있는 한 줄 힌트
 });
 
 export type Insight = z.infer<typeof insightSchema>;

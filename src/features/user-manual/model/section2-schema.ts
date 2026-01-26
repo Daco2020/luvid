@@ -101,6 +101,7 @@ export interface Insight {
   title: string;
   description: string;
   tip: string;
+  teaserHint: string; // 결과 페이지용 재치있는 한 줄 힌트
 }
 
 // 섹션 2 최종 결과

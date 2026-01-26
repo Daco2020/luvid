@@ -12,9 +12,6 @@ interface ResultSection1Props {
 export function ResultSection1({ data, onNext }: ResultSection1Props) {
   // 데이터에서 첫 번째 인사이트(재충전 방식)를 메인 티저로 활용
   const mainInsight = data.insights[0];
-
-  // 은유적 표현 생성 (예시)
-  // 실제로는 더 정교한 매핑이 필요할 수 있지만, MVP 단계에서는 인사이트 제목을 활용
   
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4 gap-8 w-full max-w-md mx-auto">
@@ -46,12 +43,12 @@ export function ResultSection1({ data, onNext }: ResultSection1Props) {
           </div>
           
           <div className="space-y-2">
-            <p className="text-sm text-slate-500 font-medium">당신의 에너지 패턴은...</p>
-            <h3 className="text-xl font-bold text-slate-800 break-keep leading-relaxed">
-              "{mainInsight.title}"
+            <p className="text-sm text-slate-500 font-medium">당신의 에너지 충전 방식은...</p>
+            <h3 className="text-lg font-bold text-slate-800 break-keep leading-relaxed">
+              앗!!!? 👀
             </h3>
-            <p className="text-sm text-slate-600 px-2 break-keep pt-2 leading-relaxed">
-              {mainInsight.description}
+            <p className="text-sm text-slate-600 px-2 break-keep leading-relaxed">
+              {mainInsight.teaserHint}
             </p>
           </div>
         </div>
@@ -67,8 +64,11 @@ export function ResultSection1({ data, onNext }: ResultSection1Props) {
         <div className="p-2 bg-slate-200 rounded-full text-slate-500">
           <Lock size={16} />
         </div>
-        <p className="text-xs text-slate-500 font-medium">
-          불확실성 내성과 갈등 해결 방식은<br/>모든 테스트 완료 후 공개됩니다
+        <p className="text-xs text-slate-500 font-medium leading-relaxed">
+          당신이 불확실한 상황에서 어떻게 반응하는지,<br/>
+          갈등을 어떻게 풀어가는지...<br/>
+          흠흠.. 궁금하시죠? 😏<br/>
+          <span className="text-primary font-semibold">모든 테스트 완료 후</span> 공개할게요!
         </p>
       </motion.div>
 
@@ -80,7 +80,7 @@ export function ResultSection1({ data, onNext }: ResultSection1Props) {
         className="w-full space-y-4"
       >
         <div className="text-slate-600 text-sm font-medium animate-pulse">
-          "갈등의 순간, 당신의 본능은 무엇을 선택할까요?"
+          "갈등의 순간, 당신은 어떤 선택을 할까요?"
         </div>
         
         <button
