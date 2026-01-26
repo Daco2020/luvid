@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MessageCircle, X, Check } from "lucide-react";
+import { MessageCircle, X, Check, Loader2 } from "lucide-react";
 import type { Choice } from "@/features/user-manual/model/section2-schema";
 
 interface ChoicePanelProps {
@@ -63,7 +63,7 @@ export function ChoicePanel({ choices, onSelect, isComplete = false, isDisabled 
                     >
                       <div className="flex items-start gap-3">
                         {/* 선택지 레이블 */}
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-600">
+                        <div className="shrink-0 w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-600">
                           {letter}
                         </div>
 
@@ -91,12 +91,14 @@ export function ChoicePanel({ choices, onSelect, isComplete = false, isDisabled 
             : isExpanded
             ? "bg-gray-600 hover:bg-gray-700"
             : isComplete
-            ? "bg-green-600 hover:bg-green-600/90"
+            ? "bg-teal-600 hover:bg-teal-700/90"
             : "bg-primary hover:bg-primary/90"
         }`}
         title={isComplete ? "결과 보기" : "선택하기"}
       >
-        {isExpanded ? (
+        {isDisabled ? (
+          <Loader2 className="w-6 h-6 text-white animate-spin" />
+        ) : isExpanded ? (
           <X className="w-6 h-6 text-white" />
         ) : isComplete ? (
           <Check className="w-6 h-6 text-white" />

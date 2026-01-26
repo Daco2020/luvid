@@ -37,12 +37,12 @@ export function ChatMessage({ message }: ChatMessageProps) {
   // partner 타입 (연인 메시지 - 왼쪽, 회색 + 하단 캡션)
   return (
     <div className="flex flex-col items-start px-4 space-y-1.5 animate-in slide-in-from-left-2 duration-300">
-      {/* 상황 캡션 */}
+      {/* 상황 캡션 가운데 정렬*/}
       {message.caption && (
-        <p className="text-xs text-gray-400 px-2">{message.caption}</p>
+        <p className="text-xs text-gray-400 px-2 w-full text-center mt-8 mb-8">{message.caption}</p>
       )}
       {/* 말풍선 */}
-      <div className="bg-gray-200 text-gray-800 px-4 py-2.5 rounded-2xl rounded-bl-md max-w-[75%] shadow-sm">
+      <div className="bg-white/80 text-gray-800 px-4 py-2.5 rounded-2xl rounded-bl-md max-w-[75%] shadow-sm">
         <p className="text-sm leading-relaxed">{message.text}</p>
       </div>
     </div>

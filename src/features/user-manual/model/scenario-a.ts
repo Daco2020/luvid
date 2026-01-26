@@ -211,7 +211,7 @@ export const scenarioA: Scenario = {
       id: 5,
       measurementType: "gottman",
       partnerDialogue: "너도 이해해줘야지. 나도 힘들었어",
-      situation: "만나서 이야기하는 중이에요.",
+      situation: "식당에 도착한 후, 상대가 먼저 말을 꺼내요.",
       choices: [
         {
           id: "a5_1",

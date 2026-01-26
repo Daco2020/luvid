@@ -147,7 +147,7 @@ export function Wizard() {
         setIsAllComplete(true);
         setIsProcessing(false);
       }
-    }, 300);
+    }, 1500); // 1.5초 딜레이
   };
 
   // 뒤로 가기 핸들러 - 모달 표시
