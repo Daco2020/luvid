@@ -232,26 +232,28 @@ export function Wizard() {
   // 대화형 UI
   return (
     <div className="h-screen flex flex-col bg-background">
-      {/* 헤더 */}
-      <div className="bg-background border-b border-gray-200 px-4 py-3 flex items-center justify-between">
-        <button onClick={handleBack} disabled={isProcessing} className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors disabled:opacity-50">
-          <ChevronLeft className="w-5 h-5" />
-          <span className="text-sm font-medium">이전</span>
-        </button>
+      {/* 헤더 - 모바일 친화적 */}
+      <div className="bg-white border-b border-border px-4 py-3 shadow-sm">
+        <div className="max-w-xl mx-auto flex items-center justify-between">
+          <button onClick={handleBack} disabled={isProcessing} className="flex items-center gap-1 text-gray-600 hover:text-gray-900 transition-colors disabled:opacity-50">
+            <ChevronLeft className="w-5 h-5" />
+            <span className="text-sm font-medium">나가기</span>
+          </button>
 
-        <div className="text-center">
-          <h3 className="text-sm font-semibold text-gray-900">{selectedScenario.title}</h3>
-          <p className="text-xs text-gray-500">
-            {currentBranchIndex + 1} / {totalBranches}
-          </p>
+          <div className="text-center flex-1">
+            <h3 className="text-sm font-semibold text-gray-900">{selectedScenario.title}</h3>
+            <p className="text-xs text-gray-500">
+              {currentBranchIndex + 1} / {totalBranches}
+            </p>
+          </div>
+
+          <div className="w-16"></div> {/* 균형 맞추기 */}
         </div>
-
-        <div className="w-16"></div> {/* 균형 맞추기 */}
       </div>
 
-      {/* 대화 영역 - 가운데 정렬 */}
-      <div className="flex-1 overflow-y-auto bg-gray-100">
-        <div className="max-w-xl mx-auto px-4 py-6 space-y-4">
+      {/* 대화 영역 - 전체 높이 */}
+      <div className="flex-1 overflow-y-auto bg-background">
+        <div className="max-w-xl mx-auto px-4 py-6 space-y-4 pb-32">
           {messages.map((message) => (
             <ChatMessage key={message.id} message={message} />
           ))}
@@ -259,10 +261,10 @@ export function Wizard() {
         </div>
       </div>
 
-      {/* 선택지 패널 - 항상 렌더링하되 투명도로 제어 */}
+      {/* 플로팅 선택지 버튼 - 반응형 위치 */}
       {currentBranch && (
         <div
-          className={`transition-opacity duration-300 ${
+          className={`fixed bottom-6 right-4 md:right-6 transition-opacity duration-300 z-50 ${
             isProcessing ? "opacity-0 pointer-events-none" : "opacity-100"
           }`}
         >
@@ -280,8 +282,7 @@ export function Wizard() {
         confirmLabel="나가기"
         cancelLabel="계속하기"
         onConfirm={() => {
-          isProgrammaticBackRef.current = true;
-          router.back();
+          router.push("/user-manual/emotional-patterns/result");
         }}
       />
     </div>

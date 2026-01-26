@@ -15,8 +15,8 @@ export function ChatMessage({ message }: ChatMessageProps) {
   if (message.type === "system") {
     // 시스템 메시지 (상황 설명) - 가운데, 배경색 없이 글자만
     return (
-      <div className="flex justify-center px-4">
-        <p className="text-sm text-gray-600 text-center max-w-md leading-relaxed">
+      <div className="flex justify-center px-4 py-2">
+        <p className="text-xs text-gray-500 text-center max-w-md leading-relaxed">
           {message.text}
         </p>
       </div>
@@ -26,8 +26,8 @@ export function ChatMessage({ message }: ChatMessageProps) {
   if (message.type === "user") {
     // 내 답변 (오른쪽, primary 색상)
     return (
-      <div className="flex justify-end px-4">
-        <div className="bg-primary text-white px-4 py-3 rounded-2xl rounded-br-sm max-w-sm shadow-sm">
+      <div className="flex justify-end px-4 animate-in slide-in-from-right-2 duration-300">
+        <div className="bg-primary text-white px-4 py-2.5 rounded-2xl rounded-br-md max-w-[75%] shadow-sm">
           <p className="text-sm leading-relaxed">{message.text}</p>
         </div>
       </div>
@@ -36,13 +36,13 @@ export function ChatMessage({ message }: ChatMessageProps) {
 
   // partner 타입 (연인 메시지 - 왼쪽, 회색 + 하단 캡션)
   return (
-    <div className="flex flex-col items-start px-4 space-y-1">
+    <div className="flex flex-col items-start px-4 space-y-1.5 animate-in slide-in-from-left-2 duration-300">
       {/* 상황 캡션 */}
       {message.caption && (
-        <p className="text-xs text-gray-500 px-2">{message.caption}</p>
+        <p className="text-xs text-gray-400 px-2">{message.caption}</p>
       )}
       {/* 말풍선 */}
-      <div className="bg-gray-200 text-gray-800 px-4 py-3 rounded-2xl rounded-bl-sm max-w-sm shadow-sm">
+      <div className="bg-gray-200 text-gray-800 px-4 py-2.5 rounded-2xl rounded-bl-md max-w-[75%] shadow-sm">
         <p className="text-sm leading-relaxed">{message.text}</p>
       </div>
     </div>
