@@ -1,15 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { MessageCircle, X } from "lucide-react";
+import { MessageCircle, X, Check } from "lucide-react";
 import type { Choice } from "@/features/user-manual/model/section2-schema";
 
 interface ChoicePanelProps {
-  choices: Choice[];
-  onSelect: (choice: Choice) => void;
+  choices?: Choice[]; // 완료 상태에서는 선택지 없음
+  onSelect: (choice?: Choice) => void;
+  isComplete?: boolean; // 마지막 분기인지 여부
+  isDisabled?: boolean; // 처리 중 비활성화
 }
 
-export function ChoicePanel({ choices, onSelect }: ChoicePanelProps) {
+export function ChoicePanel({ choices, onSelect, isComplete = false, isDisabled = false }: ChoicePanelProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleSelect = (choice: Choice) => {
@@ -17,10 +19,18 @@ export function ChoicePanel({ choices, onSelect }: ChoicePanelProps) {
     setIsExpanded(false);
   };
 
+  const handleCompleteClick = () => {
+    if (isComplete) {
+      onSelect(); // 완료 버튼 클릭 시 선택지 없이 호출
+    } else {
+      setIsExpanded(!isExpanded);
+    }
+  };
+
   return (
     <div className="relative">
-      {/* 확장된 선택지 메뉴 */}
-      {isExpanded && (
+      {/* 확장된 선택지 메뉴 - 완료 상태가 아닐 때만 */}
+      {isExpanded && !isComplete && choices && (
         <>
           {/* 배경 오버레이 */}
           <div
@@ -28,8 +38,8 @@ export function ChoicePanel({ choices, onSelect }: ChoicePanelProps) {
             onClick={() => setIsExpanded(false)}
           />
 
-          {/* 선택지 패널 */}
-          <div className="fixed bottom-20 right-4 md:right-6 w-[calc(100vw-2rem)] md:w-80 max-w-md bg-white rounded-2xl shadow-2xl border border-gray-200 z-50 max-h-[60vh] overflow-y-auto">
+          {/* 선택지 패널 - 플로팅 버튼 왼쪽에 배치 */}
+          <div className="absolute bottom-0 right-16 md:right-20 w-80 max-w-[calc(100vw-6rem)] bg-white rounded-2xl shadow-2xl border border-gray-200 z-50 max-h-[60vh] overflow-y-auto">
             <div className="p-4">
               <div className="flex items-center justify-between mb-3">
                 <p className="text-sm font-semibold text-gray-700">당신의 선택은?</p>
@@ -73,15 +83,23 @@ export function ChoicePanel({ choices, onSelect }: ChoicePanelProps) {
 
       {/* 플로팅 버튼 */}
       <button
-        onClick={() => setIsExpanded(!isExpanded)}
+        onClick={handleCompleteClick}
+        disabled={isDisabled}
         className={`w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 ${
-          isExpanded
+          isDisabled
+            ? "bg-gray-400 cursor-not-allowed"
+            : isExpanded
             ? "bg-gray-600 hover:bg-gray-700"
+            : isComplete
+            ? "bg-green-600 hover:bg-green-600/90"
             : "bg-primary hover:bg-primary/90"
         }`}
+        title={isComplete ? "결과 보기" : "선택하기"}
       >
         {isExpanded ? (
           <X className="w-6 h-6 text-white" />
+        ) : isComplete ? (
+          <Check className="w-6 h-6 text-white" />
         ) : (
           <MessageCircle className="w-6 h-6 text-white" />
         )}

@@ -1,14 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Lock, ArrowRight, Shield } from "lucide-react";
+import { Lock, ArrowRight, Shield, ChevronLeft } from "lucide-react";
 import { Section2Result } from "../../model/section2-schema";
+import { useRouter } from "next/navigation";
 
 interface ResultSection2Props {
   result: Section2Result;
 }
 
 export function ResultSection2({ result }: ResultSection2Props) {
+  const router = useRouter();
   const { insights } = result;
 
   // insights가 제대로 생성되지 않은 경우 처리
@@ -30,6 +32,17 @@ export function ResultSection2({ result }: ResultSection2Props) {
         transition={{ duration: 0.6 }}
         className="w-full max-w-3xl space-y-8"
       >
+        {/* 뒤로가기 버튼 */}
+        <div className="flex justify-start">
+          <button 
+            onClick={() => router.push("/user-manual/conflict-styles")}
+            className="flex items-center gap-1 text-gray-600 hover:text-gray-900 transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5" />
+            <span className="text-sm font-medium">다시 선택하기</span>
+          </button>
+        </div>
+
         {/* 헤더 */}
         <div className="text-center space-y-2">
           <motion.div

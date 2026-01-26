@@ -37,6 +37,7 @@ export function Wizard() {
   const [result, setResult] = useState<Section2Result | null>(null);
   const [showExitModal, setShowExitModal] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isAllComplete, setIsAllComplete] = useState(false); // 6분기 모두 완료 여부
 
   const isProgrammaticBackRef = useRef(false);
 
@@ -142,42 +143,39 @@ export function Wizard() {
         setCurrentBranchIndex((prev) => prev + 1);
         setIsProcessing(false);
       } else {
-        // 완료
-        finishWizard(updatedChoices);
+        // 6분기 모두 완료 - 버튼만 변경, 자동 이동 안 함
+        setIsAllComplete(true);
+        setIsProcessing(false);
       }
     }, 300);
   };
 
-  // 뒤로 가기 핸들러
+  // 뒤로 가기 핸들러 - 모달 표시
   const handleBack = () => {
     if (isProcessing) return;
-
-    if (currentBranchIndex > 0) {
-      // 이전 분기로 돌아가기
-      // 마지막 2개 메시지 제거 (유저 답변 + 현재 상황)
-      setMessages((prev) => prev.slice(0, -2));
-      setCurrentBranchIndex((prev) => prev - 1);
-    } else if (selectedScenario) {
-      // 시나리오 선택 화면으로
-      setSelectedScenario(null);
-      setMessages([]);
-      setChoices([]);
-      setCurrentBranchIndex(0);
-    } else {
-      setShowExitModal(true);
-    }
+    setShowExitModal(true);
   };
 
   // 브라우저 뒤로가기 방지
   useEffect(() => {
     if (!selectedScenario) return;
 
-    history.pushState({ wizard: true }, "", location.href);
+    // Mount 시 히스토리 스택 추가
+    history.pushState({ wizard: true, trap: 1 }, "", location.href);
+    history.pushState({ wizard: true, trap: 2 }, "", location.href);
 
     const handlePopState = () => {
-      if (isProgrammaticBackRef.current) return;
+      // 프로그램적 뒤로가기인 경우 무시
+      if (isProgrammaticBackRef.current) {
+        isProgrammaticBackRef.current = false;
+        return;
+      }
+      
+      // 뒤로가기를 막고 go(1)로 복구
       history.go(1);
-      handleBack();
+      
+      // 모달 표시
+      setShowExitModal(true);
     };
 
     window.addEventListener("popstate", handlePopState);
@@ -185,7 +183,7 @@ export function Wizard() {
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
-  }, [selectedScenario, currentBranchIndex, isProcessing]);
+  }, [selectedScenario]);
 
   // 위저드 완료
   const finishWizard = (finalChoices: UserChoice[]) => {
@@ -251,9 +249,9 @@ export function Wizard() {
         </div>
       </div>
 
-      {/* 대화 영역 - 전체 높이 */}
-      <div className="flex-1 overflow-y-auto bg-background">
-        <div className="max-w-xl mx-auto px-4 py-6 space-y-4 pb-32">
+      {/* 대화 영역 - 스크롤 가능, 표시선까지만 */}
+      <div className="flex-1 overflow-y-auto bg-background" style={{ maxHeight: '80vh' }}>
+        <div className="max-w-xl mx-auto px-4 py-6 space-y-4">
           {messages.map((message) => (
             <ChatMessage key={message.id} message={message} />
           ))}
@@ -261,16 +259,42 @@ export function Wizard() {
         </div>
       </div>
 
-      {/* 플로팅 선택지 버튼 - 반응형 위치 */}
-      {currentBranch && (
-        <div
-          className={`fixed bottom-6 right-4 md:right-6 transition-opacity duration-300 z-50 ${
-            isProcessing ? "opacity-0 pointer-events-none" : "opacity-100"
-          }`}
-        >
-          <ChoicePanel choices={currentBranch.choices} onSelect={handleChoiceSelect} />
+      {/* 고정 영역 - 표시선 + 플로팅 버튼 (15vh) */}
+      <div className="relative bg-background" style={{ height: '20vh', minHeight: '120px' }}>
+        <div className="max-w-xl mx-auto h-full relative px-4">
+          {/* 대화 끝 표시선 - 상단 고정 */}
+          <div className="absolute top-0 left-4 right-4">
+            <div className="w-full h-px bg-gray-300"></div>
+          </div>
+          
+          {/* 플로팅 버튼 - 우측 하단 (진행 중) */}
+          {currentBranch && !isAllComplete && (
+            <div className="absolute top-6 right-4 md:right-6 z-50">
+              <ChoicePanel 
+                choices={currentBranch.choices} 
+                onSelect={(choice) => choice && handleChoiceSelect(choice)}
+                isComplete={false}
+                isDisabled={isProcessing}
+              />
+            </div>
+          )}
+
+          {/* 플로팅 버튼 - 우측 하단 (완료) */}
+          {isAllComplete && (
+            <div className="absolute top-6 right-4 md:right-6 z-50">
+              <ChoicePanel 
+                onSelect={() => {
+                  if (selectedScenario) {
+                    const analysisResult = analyzeSection2(selectedScenario.id, choices);
+                    setResult(analysisResult);
+                  }
+                }}
+                isComplete={true}
+              />
+            </div>
+          )}
         </div>
-      )}
+      </div>
 
       {/* 나가기 모달 */}
       <Modal
@@ -282,7 +306,14 @@ export function Wizard() {
         confirmLabel="나가기"
         cancelLabel="계속하기"
         onConfirm={() => {
-          router.push("/user-manual/emotional-patterns/result");
+          // 시나리오 선택 화면으로 리셋
+          isProgrammaticBackRef.current = true;
+          setShowExitModal(false);
+          setSelectedScenario(null);
+          setChoices([]);
+          setCurrentBranchIndex(0);
+          setMessages([]);
+          setIsAllComplete(false);
         }}
       />
     </div>
