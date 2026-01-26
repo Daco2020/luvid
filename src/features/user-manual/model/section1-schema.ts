@@ -42,8 +42,8 @@ export const emotionalPatternSchema = z.object({
   conflict_resolution: z.enum([
     "quick_fix",
     "time_needed",
-    "avoidance",
-    "strategic",
+    "indirect",
+    "standoff",
   ]),
   recharge_method: z.enum(["solitude", "close_friends", "social", "activity"]),
   comfort_language: z.enum([
