@@ -1,31 +1,20 @@
 import type { Scenario } from "@/features/user-manual/model/section2-schema";
-import { ChevronLeft } from "lucide-react";
 
 interface ScenarioSelectionProps {
   scenarios: Scenario[];
   onSelect: (scenario: Scenario) => void;
-  onBack: () => void;
 }
 
-export function ScenarioSelection({ scenarios, onSelect, onBack }: ScenarioSelectionProps) {
+export function ScenarioSelection({ scenarios, onSelect }: ScenarioSelectionProps) {
   return (
     <div>
-      {/* 뒤로가기 버튼 */}
-      <button
-        onClick={onBack}
-        className="mb-6 flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
-      >
-        <ChevronLeft className="w-4 h-4" />
-        나가기
-      </button>
-
       {/* 제목 */}
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">
+        <h2 className="md:text-2xl text-xl font-bold text-gray-900 mb-4">
           어떤 상황에서 당신의 갈등 스타일을 확인하고 싶으신가요?
         </h2>
         <p className="text-gray-600">
-          공감되는 상황을 선택해주세요. 나이는 상관없습니다.
+          가장 관심이 가는 상황을 선택해주세요.
         </p>
       </div>
 
@@ -49,10 +38,10 @@ export function ScenarioSelection({ scenarios, onSelect, onBack }: ScenarioSelec
             </h3>
 
             {/* 설명 */}
-            <p className="text-gray-600 text-sm mb-4">{scenario.description}</p>
+            <p className="text-gray-600 text-xs mb-4">{scenario.description}</p>
 
             {/* 분기 수 표시 */}
-            <div className="flex items-center gap-2 text-sm text-gray-500">
+            <div className="flex items-center gap-2 text-xs text-gray-500">
               <span className="inline-block w-2 h-2 bg-primary rounded-full"></span>
               {scenario.branches.length}개 분기
             </div>

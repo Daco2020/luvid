@@ -55,18 +55,29 @@ export function Wizard() {
   }, [messages]);
 
   // 시나리오 선택 후 튜토리얼 모달 표시
+  const [tempScenario, setTempScenario] = useState<Scenario | null>(null);
+  
   const handleScenarioSelect = (scenario: Scenario) => {
-    setSelectedScenario(scenario);
+    setTempScenario(scenario);
     setShowTutorialModal(true);
+  };
+
+  // 튜토리얼 모달 취소 (시나리오 선택 화면으로 돌아가기)
+  const handleTutorialCancel = () => {
+    setShowTutorialModal(false);
+    setTempScenario(null);
   };
 
   // 튜토리얼 모달 닫기 후 위저드 시작
   const handleTutorialClose = () => {
     setShowTutorialModal(false);
-    // 첫 번째 분기의 메시지 추가
-    if (!selectedScenario) return;
     
-    const firstBranch = selectedScenario.branches[0];
+    // tempScenario를 selectedScenario로 설정하여 대화 화면으로 전환
+    if (!tempScenario) return;
+    setSelectedScenario(tempScenario);
+    
+    // 첫 번째 분기의 메시지 추가
+    const firstBranch = tempScenario.branches[0];
     const initialMessages: Message[] = [];
 
     if (firstBranch.partnerDialogue) {
@@ -210,13 +221,23 @@ export function Wizard() {
     );
   }
 
-  // 튜토리얼 모달
-  if (showTutorialModal) {
+  // 인트로 화면
+  if (showIntro) {
+    return <SectionIntro sectionNumber={2} title="소통 및 갈등" onComplete={() => setShowIntro(false)} />;
+  }
+
+  // 시나리오 선택 화면
+  if (!selectedScenario) {
     return (
-      <div className="min-h-screen bg-background flex flex-col py-10 px-4 sm:px-6 relative overflow-hidden w-full">
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <div className="w-full max-w-xl mx-auto">
+          <ScenarioSelection scenarios={section2Scenarios} onSelect={handleScenarioSelect} />
+        </div>
+
+        {/* 튜토리얼 모달 */}
         <Modal
-          isOpen={true}
-          onClose={handleTutorialClose}
+          isOpen={showTutorialModal}
+          onClose={handleTutorialCancel}
           title="대화 방법 안내"
           description=""
           variant="info"
@@ -242,36 +263,6 @@ export function Wizard() {
             </p>
           </div>
         </Modal>
-      </div>
-    );
-  }
-
-  // 인트로 화면
-  if (showIntro) {
-    return <SectionIntro sectionNumber={2} title="소통 및 갈등" onComplete={() => setShowIntro(false)} />;
-  }
-
-  // 시나리오 선택 화면
-  if (!selectedScenario) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <div className="w-full max-w-xl mx-auto">
-          <ScenarioSelection scenarios={section2Scenarios} onSelect={handleScenarioSelect} onBack={() => setShowExitModal(true)} />
-        </div>
-
-        <Modal
-          isOpen={showExitModal}
-          onClose={() => setShowExitModal(false)}
-          title="정말 나가시겠어요?"
-          description="지금 나가시면 작성 중인 내용이 모두 사라져요. 정말 나가시겠어요?"
-          variant="danger"
-          confirmLabel="나가기"
-          cancelLabel="계속하기"
-          onConfirm={() => {
-            isProgrammaticBackRef.current = true;
-            router.back();
-          }}
-        />
       </div>
     );
   }
