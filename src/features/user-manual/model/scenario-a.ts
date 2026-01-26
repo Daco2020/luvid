@@ -15,7 +15,7 @@ export const scenarioA: Scenario = {
     {
       id: 1,
       measurementType: "tki",
-      situation: '어제 데이트 후 "즐거웠어"라고 보냈는데, 하루가 지나도 답장이 없어요. (읽음 표시 없음)',
+      situation: '어제 데이트 후 "즐거웠어"라고 보냈는데, 하루가 지나도 읽음 표시가 사라지지 않고 있어요. 당신은 어떻게 반응하시겠습니까?\n\n아래 말풍선 버튼을 눌러 답변을 선택해주세요.',
       choices: [
         {
           id: "a1_1",
@@ -27,7 +27,7 @@ export const scenarioA: Scenario = {
         },
         {
           id: "a1_2",
-          text: '내가 뭐 실수했나? (계속 대화창을 확인한다)',
+          text: '신경 쓰이지만... (일부러 생각 안 하려고 한다)',
           patterns: {
             primary: { type: "avoiding", score: 3 },
             secondary: { type: "accommodating", score: 1 },
@@ -43,10 +43,10 @@ export const scenarioA: Scenario = {
         },
         {
           id: "a1_4",
-          text: '왜 답장이 없어? (문자나 전화를 바로 한다)',
+          text: '무슨 일 있어? 이야기 좀 하자 (전화나 만남을 제안한다)',
           patterns: {
-            primary: { type: "competing", score: 3 },
-            secondary: { type: "collaborating", score: 1 },
+            primary: { type: "collaborating", score: 3 },
+            secondary: { type: "compromising", score: 1 },
           },
         },
         {
@@ -54,7 +54,7 @@ export const scenarioA: Scenario = {
           text: '괜찮아? 바쁜가봐 (적당한 시간 후 연락한다)',
           patterns: {
             primary: { type: "compromising", score: 3 },
-            secondary: { type: "collaborating", score: 1 },
+            secondary: { type: "accommodating", score: 1 },
           },
         },
       ],
@@ -211,7 +211,7 @@ export const scenarioA: Scenario = {
       id: 5,
       measurementType: "gottman",
       partnerDialogue: "너도 이해해줘야지. 나도 힘들었어",
-      situation: "식당에 도착한 후, 상대가 먼저 말을 꺼내요.",
+      situation: "저녁 식사 도중, 상대가 먼저 말을 꺼내요.",
       choices: [
         {
           id: "a5_1",

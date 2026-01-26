@@ -16,7 +16,7 @@ export const scenarioB: Scenario = {
       id: 1,
       measurementType: "tki",
       situation:
-        "상대방이 '오래된 친구'라는 이유로 이성 친구와 늦게까지 술자리를 갖거나 연락을 이어가는데, 내가 불편해하는 것을 알면서도 나에게 양보를 강요할 때.",
+        "상대방이 이성 친구와 늦게까지 술자리를 갖거나 연락을 이어가고 있습니다. 상대는 내가 불편해하는 것을 알면서도 양보해달라고 요구합니다. 당신은 어떻게 반응하시겠습니까?\n\n아래 말풍선 버튼을 눌러 답변을 선택해주세요.",
       choices: [
         {
           id: "b1_1",
@@ -114,7 +114,7 @@ export const scenarioB: Scenario = {
       id: 3,
       measurementType: "apology",
       partnerDialogue: "미안해. 네 기분을 생각 못 했어",
-      situation: "얼마 후, 연인이 사과해요.",
+      situation: "몇 시간이 지난 후, 연인이 사과해요.",
       choices: [
         {
           id: "b3_1",

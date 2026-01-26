@@ -16,7 +16,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
     // 시스템 메시지 (상황 설명) - 가운데, 배경색 없이 글자만
     return (
       <div className="flex justify-center px-4 py-2">
-        <p className="text-xs text-gray-500 text-center max-w-md leading-relaxed">
+        <p className="text-xs text-gray-500 text-center max-w-md leading-relaxed whitespace-pre-line">
           {message.text}
         </p>
       </div>
@@ -39,11 +39,11 @@ export function ChatMessage({ message }: ChatMessageProps) {
     <div className="flex flex-col items-start px-4 space-y-1.5 animate-in slide-in-from-left-2 duration-300">
       {/* 상황 캡션 가운데 정렬*/}
       {message.caption && (
-        <p className="text-xs text-gray-400 px-2 w-full text-center mt-8 mb-8">{message.caption}</p>
+        <p className="text-xs text-gray-400 px-2 w-full text-center mt-8 mb-8 whitespace-pre-line">{message.caption}</p>
       )}
       {/* 말풍선 */}
       <div className="bg-white/80 text-gray-800 px-4 py-2.5 rounded-2xl rounded-bl-md max-w-[75%] shadow-sm">
-        <p className="text-sm leading-relaxed">{message.text}</p>
+        <p className="text-sm leading-relaxed whitespace-pre-line">{message.text}</p>
       </div>
     </div>
   );

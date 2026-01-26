@@ -68,7 +68,7 @@ export function ChoicePanel({ choices, onSelect, isComplete = false, isDisabled 
                         </div>
 
                         {/* 선택지 텍스트 */}
-                        <p className="flex-1 text-sm text-gray-700 pt-0.5 leading-relaxed">
+                        <p className="flex-1 text-xs text-gray-700 pt-0.5 leading-relaxed">
                           {choice.text}
                         </p>
                       </div>
