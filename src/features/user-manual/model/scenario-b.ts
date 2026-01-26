@@ -7,7 +7,7 @@ import type { Scenario } from "./section2-schema";
 
 export const scenarioB: Scenario = {
   id: "scenario_b",
-  title: "이성 친구 문제",
+  title: "여사친 or 남사친 문제",
   description: "경계선과 신뢰 문제에 대한 갈등 대처",
   ageGroup: "late20s",
   branches: [

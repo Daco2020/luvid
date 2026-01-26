@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, MessageCircle } from "lucide-react";
 
 import { Modal } from "@/shared/components/Modal";
 import { SectionIntro } from "@/shared/components/SectionIntro";
@@ -36,6 +36,7 @@ export function Wizard() {
   const [choices, setChoices] = useState<UserChoice[]>([]);
   const [result, setResult] = useState<Section2Result | null>(null);
   const [showExitModal, setShowExitModal] = useState(false);
+  const [showTutorialModal, setShowTutorialModal] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAllComplete, setIsAllComplete] = useState(false); // 6분기 모두 완료 여부
 
@@ -53,11 +54,19 @@ export function Wizard() {
     scrollToBottom();
   }, [messages]);
 
-  // 시나리오 선택 핸들러
+  // 시나리오 선택 후 튜토리얼 모달 표시
   const handleScenarioSelect = (scenario: Scenario) => {
     setSelectedScenario(scenario);
+    setShowTutorialModal(true);
+  };
+
+  // 튜토리얼 모달 닫기 후 위저드 시작
+  const handleTutorialClose = () => {
+    setShowTutorialModal(false);
     // 첫 번째 분기의 메시지 추가
-    const firstBranch = scenario.branches[0];
+    if (!selectedScenario) return;
+    
+    const firstBranch = selectedScenario.branches[0];
     const initialMessages: Message[] = [];
 
     if (firstBranch.partnerDialogue) {
@@ -197,6 +206,42 @@ export function Wizard() {
     return (
       <div className="min-h-screen bg-background mt-10 py-10 px-4 sm:px-6 relative overflow-y-auto w-full flex items-start justify-center">
         <ResultSection2 result={result} />
+      </div>
+    );
+  }
+
+  // 튜토리얼 모달
+  if (showTutorialModal) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col py-10 px-4 sm:px-6 relative overflow-hidden w-full">
+        <Modal
+          isOpen={true}
+          onClose={handleTutorialClose}
+          title="대화 방법 안내"
+          description=""
+          variant="info"
+          confirmLabel="시작하기"
+          onConfirm={handleTutorialClose}
+        >
+          <div className="space-y-4 text-left">
+            <p className="text-xs text-gray-700 leading-relaxed">
+              대화를 시작하면 <strong>화면 하단</strong>에 말풍선 버튼이 나타납니다.
+            </p>
+            
+            <div className="flex items-center justify-center gap-3 bg-blue-50 p-4 rounded-lg">
+              <div className="shrink-0 w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg">
+                <MessageCircle className="w-6 h-6 text-white" />
+              </div>
+              <p className="text-xs text-gray-700">
+                ← 이 버튼이 말풍선 버튼이에요!
+              </p>
+            </div>
+
+            <p className="text-xs text-gray-600">
+              버튼을 누르면 <strong>선택지</strong>가 나타나고 원하는 답변을 선택할 수 있어요.
+            </p>
+          </div>
+        </Modal>
       </div>
     );
   }

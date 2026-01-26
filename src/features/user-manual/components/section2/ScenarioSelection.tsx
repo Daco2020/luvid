@@ -39,8 +39,8 @@ export function ScenarioSelection({ scenarios, onSelect, onBack }: ScenarioSelec
           >
             {/* 아이콘 */}
             <div className="text-4xl mb-4">
-              {scenario.id === "scenario_a" && "📱"}
-              {scenario.id === "scenario_b" && "💑"}
+              {scenario.id === "scenario_a" && "🤿"}
+              {scenario.id === "scenario_b" && "🍺"}
             </div>
 
             {/* 제목 */}
