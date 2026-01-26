@@ -27,7 +27,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
     // 내 답변 (오른쪽, primary 색상)
     return (
       <div className="flex justify-end px-4">
-        <div className="bg-primary text-white px-4 py-3 rounded-2xl rounded-br-sm max-w-xs md:max-w-md shadow-sm">
+        <div className="bg-primary text-white px-4 py-3 rounded-2xl rounded-br-sm max-w-sm shadow-sm">
           <p className="text-sm leading-relaxed">{message.text}</p>
         </div>
       </div>
@@ -42,7 +42,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
         <p className="text-xs text-gray-500 px-2">{message.caption}</p>
       )}
       {/* 말풍선 */}
-      <div className="bg-gray-200 text-gray-800 px-4 py-3 rounded-2xl rounded-bl-sm max-w-xs md:max-w-md shadow-sm">
+      <div className="bg-gray-200 text-gray-800 px-4 py-3 rounded-2xl rounded-bl-sm max-w-sm shadow-sm">
         <p className="text-sm leading-relaxed">{message.text}</p>
       </div>
     </div>

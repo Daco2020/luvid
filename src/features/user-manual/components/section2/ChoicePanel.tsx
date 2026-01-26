@@ -7,8 +7,8 @@ interface ChoicePanelProps {
 
 export function ChoicePanel({ choices, onSelect }: ChoicePanelProps) {
   return (
-    <div className="bg-white border-t border-gray-200 px-4 py-4">
-      <div className="max-w-2xl mx-auto">
+    <div className="bg-background border-t border-border px-4 py-4">
+      <div className="max-w-xl mx-auto">
         <p className="text-xs text-gray-500 mb-3">당신의 선택은?</p>
         <div className="space-y-2">
           {choices.map((choice, index) => {

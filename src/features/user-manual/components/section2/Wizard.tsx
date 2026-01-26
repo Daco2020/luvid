@@ -207,8 +207,8 @@ export function Wizard() {
   // 시나리오 선택 화면
   if (!selectedScenario) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-highlight via-white to-accent/30 flex items-center justify-center p-4">
-        <div className="w-full max-w-4xl">
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <div className="w-full max-w-xl mx-auto">
           <ScenarioSelection scenarios={section2Scenarios} onSelect={handleScenarioSelect} onBack={() => setShowExitModal(true)} />
         </div>
 
@@ -231,9 +231,9 @@ export function Wizard() {
 
   // 대화형 UI
   return (
-    <div className="h-screen flex flex-col bg-gray-50">
+    <div className="h-screen flex flex-col bg-background">
       {/* 헤더 */}
-      <div className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+      <div className="bg-background border-b border-gray-200 px-4 py-3 flex items-center justify-between">
         <button onClick={handleBack} disabled={isProcessing} className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors disabled:opacity-50">
           <ChevronLeft className="w-5 h-5" />
           <span className="text-sm font-medium">이전</span>
@@ -250,8 +250,8 @@ export function Wizard() {
       </div>
 
       {/* 대화 영역 - 가운데 정렬 */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="max-w-2xl mx-auto px-4 py-6 space-y-4">
+      <div className="flex-1 overflow-y-auto bg-gray-100">
+        <div className="max-w-xl mx-auto px-4 py-6 space-y-4">
           {messages.map((message) => (
             <ChatMessage key={message.id} message={message} />
           ))}

@@ -14,7 +14,7 @@ export function ResultSection2({ result }: ResultSection2Props) {
   // insights가 제대로 생성되지 않은 경우 처리
   if (!insights || !insights.conflict || !insights.apology) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-highlight via-white to-accent/30 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="text-center">
           <p className="text-gray-600">분석 결과를 생성하는 중...</p>
         </div>
@@ -23,7 +23,7 @@ export function ResultSection2({ result }: ResultSection2Props) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-highlight via-white to-accent/30 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
