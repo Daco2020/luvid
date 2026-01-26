@@ -14,7 +14,7 @@ export function SectionIntro({
   sectionNumber,
   title,
   onComplete,
-  duration = 2000,
+  duration = 1000,
 }: SectionIntroProps) {
   const [displayedText, setDisplayedText] = useState("");
   const fullText = `섹션 ${sectionNumber}\n${title}`;

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Lock, ArrowRight, Shield } from "lucide-react";
-import { Section2Result } from "../model/section2-schema";
+import { Section2Result } from "../../model/section2-schema";
 
 interface ResultSection2Props {
   result: Section2Result;
@@ -11,8 +11,19 @@ interface ResultSection2Props {
 export function ResultSection2({ result }: ResultSection2Props) {
   const { insights } = result;
 
+  // insights가 제대로 생성되지 않은 경우 처리
+  if (!insights || !insights.conflict || !insights.apology) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-highlight via-white to-accent/30 flex items-center justify-center p-4">
+        <div className="text-center">
+          <p className="text-gray-600">분석 결과를 생성하는 중...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-red-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-highlight via-white to-accent/30 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -25,7 +36,7 @@ export function ResultSection2({ result }: ResultSection2Props) {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: "spring" }}
-            className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-rose-400 to-red-500 mb-4"
+            className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent mb-4"
           >
             <Shield className="w-8 h-8 text-white" />
           </motion.div>
@@ -47,24 +58,24 @@ export function ResultSection2({ result }: ResultSection2Props) {
           {/* 갈등 스타일 */}
           <div className="space-y-3">
             <h2 className="text-2xl font-bold text-gray-900">
-              {insights[0].title}
+              {insights.conflict.title}
             </h2>
             <p className="text-gray-700 leading-relaxed">
-              {insights[0].description.split('.')[0]}.
+              {insights.conflict.description.split('.')[0]}.
             </p>
             <div className="pt-2">
-              <span className="inline-block px-3 py-1 bg-rose-100 text-rose-700 rounded-full text-sm font-medium">
-                💡 {insights[0].tip.split('.')[0]}
+              <span className="inline-block px-3 py-1 bg-highlight text-primary rounded-full text-sm font-medium">
+                💡 {insights.conflict.tip.split('.')[0]}
               </span>
             </div>
           </div>
 
           <div className="border-t border-gray-200 pt-6 space-y-3">
             <h2 className="text-2xl font-bold text-gray-900">
-              {insights[1].title}
+              {insights.apology.title}
             </h2>
             <p className="text-gray-700 leading-relaxed">
-              {insights[1].description.split('.')[0]}.
+              {insights.apology.description.split('.')[0]}.
             </p>
           </div>
         </motion.div>

@@ -259,9 +259,15 @@ export function Wizard() {
         </div>
       </div>
 
-      {/* 선택지 패널 */}
-      {currentBranch && !isProcessing && (
-        <ChoicePanel choices={currentBranch.choices} onSelect={handleChoiceSelect} />
+      {/* 선택지 패널 - 항상 렌더링하되 투명도로 제어 */}
+      {currentBranch && (
+        <div
+          className={`transition-opacity duration-300 ${
+            isProcessing ? "opacity-0 pointer-events-none" : "opacity-100"
+          }`}
+        >
+          <ChoicePanel choices={currentBranch.choices} onSelect={handleChoiceSelect} />
+        </div>
       )}
 
       {/* 나가기 모달 */}

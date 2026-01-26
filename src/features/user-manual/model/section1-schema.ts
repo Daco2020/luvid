@@ -82,7 +82,8 @@ export const userManualStorageSchema = z.object({
   userId: z.string(), // anonymous UUID
   startedAt: z.string(), // ISO 8601 timestamp
   section1: section1ResultSchema.optional(),
-  // section2, section3는 나중에 추가
+  section2: z.any().optional(), // Section2Result - 임시로 any 사용
+  // section3는 나중에 추가
 });
 
 export type UserManualStorage = z.infer<typeof userManualStorageSchema>;
