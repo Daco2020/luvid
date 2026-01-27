@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Lock, ArrowRight, MessageCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Section2Result } from "../../model/section2-schema";
 
 interface ResultSection2Props {
@@ -9,6 +10,7 @@ interface ResultSection2Props {
 }
 
 export function ResultSection2({ result }: ResultSection2Props) {
+  const router = useRouter();
   const { insights } = result;
 
   // insights가 제대로 생성되지 않은 경우 처리
@@ -92,7 +94,7 @@ export function ResultSection2({ result }: ResultSection2Props) {
           </div>
           
           <button
-            onClick={() => {/* TODO: 섹션 3 이동 */}}
+            onClick={() => router.push("/user-manual/value-tournament")}
             className="w-full py-4 bg-primary hover:bg-primary/90 text-white rounded-xl font-bold text-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2 group"
           >
             <span>섹션 3 시작하기</span>

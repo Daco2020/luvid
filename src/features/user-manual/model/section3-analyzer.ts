@@ -1,0 +1,130 @@
+/**
+ * Section 3: 가치관 토너먼트 분석 로직
+ */
+
+import {
+  Section3Selections,
+  Section3Result,
+  ValueAspect,
+} from "./section3-schema";
+import { getCoreValueById, getValueAspectById } from "./section3-values";
+
+/**
+ * Section 3 분석 함수
+ * 사용자의 토너먼트 선택을 분석하여 결과 생성
+ */
+export function analyzeSection3(selections: Section3Selections): Section3Result {
+  const { selectedCoreValues, positiveTournament, negativeTournament } = selections;
+
+  // 최고 가치 (긍정)
+  const topPositiveData = getValueAspectById(positiveTournament.winnerId);
+  if (!topPositiveData) {
+    throw new Error(`Positive winner aspect not found: ${positiveTournament.winnerId}`);
+  }
+
+  // 최대 딜브레이커 (부정)
+  const topNegativeData = getValueAspectById(negativeTournament.winnerId);
+  if (!topNegativeData) {
+    throw new Error(`Negative winner aspect not found: ${negativeTournament.winnerId}`);
+  }
+
+  // 인사이트 생성
+  const insight = generateInsight(
+    selectedCoreValues,
+    topPositiveData.coreValue.name,
+    topPositiveData.aspect,
+    topNegativeData.coreValue.name,
+    topNegativeData.aspect
+  );
+
+  // 티저 힌트 생성
+  const teaserHint = generateTeaserHint();
+
+  return {
+    completed: true,
+    completedAt: new Date().toISOString(),
+    selectedCoreValues,
+    topPositiveValue: {
+      coreValueId: topPositiveData.coreValue.id,
+      aspect: topPositiveData.aspect,
+    },
+    topNegativeValue: {
+      coreValueId: topNegativeData.coreValue.id,
+      aspect: topNegativeData.aspect,
+    },
+    insight,
+    teaserHint,
+  };
+}
+
+/**
+ * 인사이트 메시지 생성
+ */
+function generateInsight(
+  selectedCoreValues: string[],
+  topPositiveCoreName: string,
+  topPositiveAspect: ValueAspect,
+  topNegativeCoreName: string,
+  topNegativeAspect: ValueAspect
+): string {
+  const insights = [
+    `당신이 선택한 8가지 가치 중에서도 "${topPositiveAspect.label}"을(를) 가장 중요하게 생각하시는군요. ${topPositiveCoreName}은(는) 당신에게 관계의 핵심입니다. 반면, "${topNegativeAspect.label}"은(는) 절대 받아들일 수 없는 부분이에요. 이런 명확한 기준이 있다는 것은 자신을 잘 이해하고 있다는 뜻입니다.`,
+    
+    `"${topPositiveAspect.label}"이(가) 당신의 최우선 가치네요. 이는 ${topPositiveCoreName}을(를) 얼마나 중시하는지 보여줍니다. 동시에 "${topNegativeAspect.label}"은(는) 당신의 레드라인이에요. 이 두 가지를 명확히 아는 것만으로도 더 건강한 관계를 만들 수 있습니다.`,
+    
+    `당신에게 가장 중요한 것은 "${topPositiveAspect.label}"이고, 가장 피하고 싶은 것은 "${topNegativeAspect.label}"이군요. ${topPositiveCoreName}을(를) 중시하면서도 ${topNegativeCoreName}에서의 경계가 분명한 당신은 자신의 가치관이 확고한 사람입니다.`,
+  ];
+
+  return insights[Math.floor(Math.random() * insights.length)];
+}
+
+/**
+ * 티저 힌트 생성
+ */
+function generateTeaserHint(): string {
+  const hints = [
+    "다음 섹션에서는 당신의 연애 스타일과 이상형을 더 깊이 탐구합니다.",
+    "이제 당신이 원하는 관계의 모습을 구체적으로 그려볼 시간입니다.",
+    "당신의 가치관을 바탕으로, 어떤 관계가 당신에게 맞을지 알아봅시다.",
+  ];
+
+  return hints[Math.floor(Math.random() * hints.length)];
+}
+
+/**
+ * 토너먼트 브라켓 생성
+ * 4개 항목으로 토너먼트 생성 (준결승 2경기 → 결승 1경기)
+ */
+export function createTournamentBracket(aspects: ValueAspect[]): {
+  round: number;
+  matchNumber: number;
+  totalMatches: number;
+  aspectA: ValueAspect;
+  aspectB: ValueAspect;
+}[] {
+  if (aspects.length !== 4) {
+    throw new Error("Tournament requires exactly 4 aspects");
+  }
+
+  // 랜덤 셔플
+  const shuffled = [...aspects].sort(() => Math.random() - 0.5);
+
+  return [
+    // 준결승 1경기
+    {
+      round: 1,
+      matchNumber: 1,
+      totalMatches: 2,
+      aspectA: shuffled[0],
+      aspectB: shuffled[1],
+    },
+    // 준결승 2경기
+    {
+      round: 1,
+      matchNumber: 2,
+      totalMatches: 2,
+      aspectA: shuffled[2],
+      aspectB: shuffled[3],
+    },
+  ];
+}
