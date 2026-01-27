@@ -22,7 +22,6 @@ interface TournamentProps {
 
 export function Tournament({ type, currentMatch, onSelect }: TournamentProps) {
   const { round, matchNumber, totalMatches, aspectA, aspectB } = currentMatch;
-  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const title = type === "positive" ? "추구하는 가치 토너먼트" : "거부하는 가치 토너먼트";
   const subtitle =
@@ -32,22 +31,8 @@ export function Tournament({ type, currentMatch, onSelect }: TournamentProps) {
 
   const roundName = round === 1 ? "16강" : round === 2 ? "8강" : round === 3 ? "준결승" : "결승";
 
-  const handleSelect = (aspectId: string) => {
-    if (selectedId) return; // 이미 선택 중이면 무시
-    setSelectedId(aspectId);
-  };
-
-  // 애니메이션 완료 후 onSelect 호출
-  useEffect(() => {
-    if (selectedId) {
-      const timer = setTimeout(() => {
-        onSelect(selectedId);
-        setSelectedId(null);
-      }, 1000); // 애니메이션 시간과 동일
-
-      return () => clearTimeout(timer);
-    }
-  }, [selectedId, onSelect]);
+  // 고유 키 생성 (라운드와 매치 번호 조합)
+  const matchKey = `${type}-${round}-${matchNumber}`;
 
   return (
     <div className="min-h-screen bg-secondary flex items-center justify-center p-4 md:p-8">
@@ -67,34 +52,84 @@ export function Tournament({ type, currentMatch, onSelect }: TournamentProps) {
           </p>
         </div>
 
-        {/* Cards Container */}
-        <div className="relative grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-stretch">
-          {/* Card A */}
-          <ValueCard
-            aspect={aspectA}
-            onSelect={() => handleSelect(aspectA.id)}
-            type={type}
-            isSelected={selectedId === aspectA.id}
-            isOtherSelected={selectedId !== null && selectedId !== aspectA.id}
-          />
-
-          {/* VS Badge - Centered */}
-          <div className="flex items-center justify-center md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:z-10 my-4 md:my-0">
-            <div className="bg-primary rounded-full w-14 h-14 md:w-16 md:h-16 flex items-center justify-center shadow-lg shadow-primary/30">
-              <span className="text-lg md:text-2xl font-semibold text-white">VS</span>
-            </div>
-          </div>
-
-          {/* Card B */}
-          <ValueCard
-            aspect={aspectB}
-            onSelect={() => handleSelect(aspectB.id)}
-            type={type}
-            isSelected={selectedId === aspectB.id}
-            isOtherSelected={selectedId !== null && selectedId !== aspectB.id}
-          />
-        </div>
+        {/* 매치 영역 (key 변경 시 새로 마운트되어 상태 초기화) */}
+        <TournamentMatch
+          key={matchKey}
+          type={type}
+          aspectA={aspectA}
+          aspectB={aspectB}
+          onSelect={onSelect}
+        />
       </motion.div>
+    </div>
+  );
+}
+
+interface TournamentMatchProps {
+  type: "positive" | "negative";
+  aspectA: ValueAspect;
+  aspectB: ValueAspect;
+  onSelect: (aspectId: string) => void;
+}
+
+function TournamentMatch({ type, aspectA, aspectB, onSelect }: TournamentMatchProps) {
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  const handleSelect = (aspectId: string) => {
+    if (selectedId) return; // 이미 선택 중이면 무시
+    setSelectedId(aspectId);
+  };
+
+  // 애니메이션 완료 후 onSelect 호출
+  useEffect(() => {
+    if (selectedId) {
+      const timer = setTimeout(() => {
+        onSelect(selectedId);
+      }, 1000); // 애니메이션 시간
+
+      return () => clearTimeout(timer);
+    }
+  }, [selectedId, onSelect]);
+
+  return (
+    <div className="relative grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-stretch">
+      {/* Card A */}
+      <ValueCard
+        key={aspectA.id}
+        aspect={aspectA}
+        onSelect={() => handleSelect(aspectA.id)}
+        type={type}
+        isSelected={selectedId === aspectA.id}
+        isOtherSelected={selectedId !== null && selectedId !== aspectA.id}
+        position="left"
+      />
+
+      {/* VS Badge - Centered */}
+      <AnimatePresence>
+        {!selectedId && (
+          <div className="flex items-center justify-center md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:z-10 my-4 md:my-0 pointer-events-none">
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0, transition: { duration: 0.2 } }}
+              className="bg-primary rounded-full w-14 h-14 md:w-16 md:h-16 flex items-center justify-center shadow-lg shadow-primary/30"
+            >
+              <span className="text-lg md:text-2xl font-semibold text-white">VS</span>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Card B */}
+      <ValueCard
+        key={aspectB.id}
+        aspect={aspectB}
+        onSelect={() => handleSelect(aspectB.id)}
+        type={type}
+        isSelected={selectedId === aspectB.id}
+        isOtherSelected={selectedId !== null && selectedId !== aspectB.id}
+        position="right"
+      />
     </div>
   );
 }
@@ -106,9 +141,10 @@ interface ValueCardProps {
   type: "positive" | "negative";
   isSelected: boolean;
   isOtherSelected: boolean;
+  position: "left" | "right";
 }
 
-function ValueCard({ aspect, onSelect, type, isSelected, isOtherSelected }: ValueCardProps) {
+function ValueCard({ aspect, onSelect, type, isSelected, isOtherSelected, position }: ValueCardProps) {
   const Icon = getValueAspectIcon(aspect.id);
   const iconColor = type === "positive" ? "text-blue-500" : "text-red-500";
   const iconBgColor = type === "positive" ? "bg-blue-50" : "bg-red-50";
@@ -116,35 +152,51 @@ function ValueCard({ aspect, onSelect, type, isSelected, isOtherSelected }: Valu
   const hoverShadowColor =
     type === "positive" ? "hover:shadow-blue-200/60" : "hover:shadow-red-200/60";
   const selectedBorderColor = type === "positive" ? "border-blue-500" : "border-red-500";
-  const selectedShadow =
-    type === "positive"
-      ? "0 20px 60px rgba(59, 130, 246, 0.5)"
-      : "0 20px 60px rgba(239, 68, 68, 0.5)";
+
+  // 애니메이션 Variants 정의
+  const variants = {
+    initial: { 
+      opacity: 0, 
+      scale: 0.96, 
+      x: 0,
+    },
+    visible: { 
+      opacity: 1, 
+      scale: 1, 
+      x: 0,
+      transition: { duration: 0.4, ease: "easeOut" as const }
+    },
+    selected: {
+      x: position === "left" ? "55%" : "-55%", // 중앙으로 이동 (gap 고려하여 조정)
+      scale: 1.05,
+      opacity: 1,
+      zIndex: 20,
+      transition: { duration: 0.5, ease: "easeInOut" as const }
+    },
+    hidden: {
+      x: position === "left" ? "-50%" : "50%", // 반대편 카드 뒤로 숨거나 살짝만 이동
+      opacity: 0,
+      scale: 0.9,
+      transition: { duration: 0.4, ease: "easeInOut" as const }
+    }
+  };
+
+  // 현재 상태 결정
+  const getCurrentVariant = () => {
+    if (isSelected) return "selected";
+    if (isOtherSelected) return "hidden";
+    return "visible";
+  };
 
   return (
     <motion.button
+      initial="initial"
+      animate={getCurrentVariant()}
+      variants={variants}
       onClick={onSelect}
       disabled={isSelected || isOtherSelected}
       whileHover={!isSelected && !isOtherSelected ? { scale: 1.02, y: -4 } : {}}
       whileTap={!isSelected && !isOtherSelected ? { scale: 0.98 } : {}}
-      animate={
-        isSelected
-          ? {
-              scale: 1.1,
-              y: -20,
-              borderWidth: 4,
-              boxShadow: selectedShadow,
-            }
-          : isOtherSelected
-          ? {
-              opacity: 0,
-              scale: 0.95,
-              y: 20,
-              filter: "blur(4px)",
-            }
-          : {}
-      }
-      transition={{ duration: 1.0, ease: "easeOut" }}
       className={`
         relative bg-white rounded-2xl border-2
         ${isSelected ? selectedBorderColor : "border-gray-200"}
