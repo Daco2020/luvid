@@ -16,14 +16,14 @@ interface ValueSelectionProps {
 
 // 무거운 톤 + 투명도로 연한 파스텔 색상 팔레트
 const PASTEL_COLORS = [
-  { bg: "bg-blue-300/10", border: "border-primary/10" },
-  { bg: "bg-purple-300/10", border: "border-primary/10" },
-  { bg: "bg-pink-300/10", border: "border-primary/10" },
-  { bg: "bg-green-300/10", border: "border-primary/10" },
-  { bg: "bg-yellow-300/10", border: "border-primary/10" },
-  { bg: "bg-indigo-300/10", border: "border-primary/10" },
-  { bg: "bg-rose-300/10", border: "border-primary/10" },
-  { bg: "bg-teal-300/10", border: "border-primary/10" },
+  { bg: "bg-white", border: "border-white" },
+  { bg: "bg-white", border: "border-white" },
+  { bg: "bg-white", border: "border-white" },
+  { bg: "bg-white", border: "border-white" },
+  { bg: "bg-white", border: "border-white" },
+  { bg: "bg-white", border: "border-white" },
+  { bg: "bg-white", border: "border-white" },
+  { bg: "bg-white", border: "border-white" },
 ];
 
 export function ValueSelection({
@@ -72,7 +72,7 @@ export function ValueSelection({
           }, 500);
         }, randomDelay);
       });
-    }, 6000);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [coreValues, selectedIds]);
@@ -107,15 +107,15 @@ export function ValueSelection({
                 disabled={!selected && !canSelect}
                 className={`
                   relative px-4 py-4 rounded-2xl font-semibold text-xs md:text-sm
-                  transition-all duration-500 border-2
+                  transition-all duration-500 shadow-sm shadow-primary/20
                   ${
                     selected
-                      ? "bg-primary text-white shadow-lg shadow-primary/30 md:scale-105 scale-102 border-primary"
+                      ? "bg-primary text-white shadow-lg shadow-primary/30 md:scale-102 scale-102"
                       : canSelect
                       ? animatedColor
-                        ? `${animatedColor.bg} ${animatedColor.border} text-gray-700`
-                        : "bg-white/90 text-gray-600 hover:bg-primary/20 border-transparent"
-                      : "bg-gray-50 text-gray-400 cursor-not-allowed border-transparent"
+                        ? `${animatedColor.bg} text-gray-700`
+                        : "bg-white/40  text-gray-600 hover:bg-primary/20"
+                      : "bg-gray-50 text-gray-400 cursor-not-allowed"
                   }
                 `}
               >
