@@ -185,7 +185,6 @@ describe("Section 3 Analyzer", () => {
       expect(result.topNegativeValue.coreValueId).toBe("honesty");
       expect(result.topNegativeValue.aspect.id).toBe("honesty_neg_1");
       expect(result.insight).toBeTruthy();
-      expect(result.teaserHint).toBeTruthy();
     });
 
     it("should generate insight with correct structure", () => {
@@ -252,10 +251,6 @@ describe("Section 3 Analyzer", () => {
       // 인사이트가 문자열이고 비어있지 않은지 확인
       expect(typeof result.insight).toBe("string");
       expect(result.insight.length).toBeGreaterThan(0);
-
-      // 티저 힌트가 문자열이고 비어있지 않은지 확인
-      expect(typeof result.teaserHint).toBe("string");
-      expect(result.teaserHint.length).toBeGreaterThan(0);
     });
 
     it("should throw error if winner aspect not found", () => {

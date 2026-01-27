@@ -37,9 +37,6 @@ export function analyzeSection3(selections: Section3Selections): Section3Result 
     topNegativeData.aspect
   );
 
-  // 티저 힌트 생성
-  const teaserHint = generateTeaserHint();
-
   return {
     completed: true,
     completedAt: new Date().toISOString(),
@@ -53,7 +50,6 @@ export function analyzeSection3(selections: Section3Selections): Section3Result 
       aspect: topNegativeData.aspect,
     },
     insight,
-    teaserHint,
   };
 }
 
@@ -78,18 +74,7 @@ function generateInsight(
   return insights[Math.floor(Math.random() * insights.length)];
 }
 
-/**
- * 티저 힌트 생성
- */
-function generateTeaserHint(): string {
-  const hints = [
-    "다음 섹션에서는 당신의 연애 스타일과 이상형을 더 깊이 탐구합니다.",
-    "이제 당신이 원하는 관계의 모습을 구체적으로 그려볼 시간입니다.",
-    "당신의 가치관을 바탕으로, 어떤 관계가 당신에게 맞을지 알아봅시다.",
-  ];
 
-  return hints[Math.floor(Math.random() * hints.length)];
-}
 
 /**
  * 토너먼트 브라켓 생성

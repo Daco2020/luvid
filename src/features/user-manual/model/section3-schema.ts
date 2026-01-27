@@ -92,7 +92,6 @@ export const section3ResultSchema = z.object({
     aspect: valueAspectSchema,
   }),
   insight: z.string(), // 분석 결과 인사이트
-  teaserHint: z.string(), // 티저 힌트 (다음 섹션 유도)
 });
 
 export type Section3Result = z.infer<typeof section3ResultSchema>;

@@ -22,17 +22,19 @@ export function Wizard() {
 
   // 긍정 토너먼트 상태
   const [positiveBracket, setPositiveBracket] = useState<ValueAspect[]>([]);
-  const [positiveMatches, setPositiveMatches] = useState<
-    Array<{ aspectAId: string; aspectBId: string; winnerId: string }>
-  >([]);
   const [positiveCurrentMatchIndex, setPositiveCurrentMatchIndex] = useState(0);
+  const [positiveMatches, setPositiveMatches] = useState<
+    { aspectAId: string; aspectBId: string; winnerId: string }[]
+  >([]);
+  const [positiveFullBracket, setPositiveFullBracket] = useState<ReturnType<typeof createTournamentBracket>>([]);
 
   // 부정 토너먼트 상태
   const [negativeBracket, setNegativeBracket] = useState<ValueAspect[]>([]);
-  const [negativeMatches, setNegativeMatches] = useState<
-    Array<{ aspectAId: string; aspectBId: string; winnerId: string }>
-  >([]);
   const [negativeCurrentMatchIndex, setNegativeCurrentMatchIndex] = useState(0);
+  const [negativeMatches, setNegativeMatches] = useState<
+    { aspectAId: string; aspectBId: string; winnerId: string }[]
+  >([]);
+  const [negativeFullBracket, setNegativeFullBracket] = useState<ReturnType<typeof createTournamentBracket>>([]);
 
   // 결과
   const [result, setResult] = useState<Section3Result | null>(null);
@@ -56,13 +58,15 @@ export function Wizard() {
 
     // 16개 전체 사용 (16강 토너먼트)
     setPositiveBracket(positiveAspects);
+    // 브라켓 생성 (한 번만)
+    const bracket = createTournamentBracket(positiveAspects);
+    setPositiveFullBracket(bracket);
     setStep("positive_tournament");
   };
 
   // 긍정 토너먼트 선택 처리
   const handlePositiveTournamentSelect = (aspectId: string) => {
-    const bracket = createTournamentBracket(positiveBracket);
-    const currentMatch = bracket[positiveCurrentMatchIndex];
+    const currentMatch = positiveFullBracket[positiveCurrentMatchIndex];
 
     // 매치 결과 저장
     const newMatch = {
@@ -74,13 +78,13 @@ export function Wizard() {
     setPositiveMatches(updatedMatches);
 
     // 다음 매치로
-    if (positiveCurrentMatchIndex < bracket.length - 1) {
+    if (positiveCurrentMatchIndex < positiveFullBracket.length - 1) {
       // 현재 라운드 계속 진행
       setPositiveCurrentMatchIndex(positiveCurrentMatchIndex + 1);
     } else {
       // 현재 라운드 완료 → 다음 라운드 준비
       const roundWinners = updatedMatches
-        .slice(-bracket.length) // 현재 라운드 매치만
+        .slice(-positiveFullBracket.length) // 현재 라운드 매치만
         .map((m) => positiveBracket.find((a) => a.id === m.winnerId)!);
 
       if (roundWinners.length === 1) {
@@ -89,6 +93,8 @@ export function Wizard() {
       } else {
         // 다음 라운드 진행
         setPositiveBracket(roundWinners);
+        const newBracket = createTournamentBracket(roundWinners);
+        setPositiveFullBracket(newBracket);
         setPositiveCurrentMatchIndex(0);
       }
     }
@@ -109,13 +115,14 @@ export function Wizard() {
 
     // 16개 전체 사용 (16강 토너먼트)
     setNegativeBracket(negativeAspects);
+    const bracket = createTournamentBracket(negativeAspects);
+    setNegativeFullBracket(bracket);
     setStep("negative_tournament");
   };
 
   // 부정 토너먼트 선택 처리
   const handleNegativeTournamentSelect = (aspectId: string) => {
-    const bracket = createTournamentBracket(negativeBracket);
-    const currentMatch = bracket[negativeCurrentMatchIndex];
+    const currentMatch = negativeFullBracket[negativeCurrentMatchIndex];
 
     // 매치 결과 저장
     const newMatch = {
@@ -127,13 +134,13 @@ export function Wizard() {
     setNegativeMatches(updatedMatches);
 
     // 다음 매치로
-    if (negativeCurrentMatchIndex < bracket.length - 1) {
+    if (negativeCurrentMatchIndex < negativeFullBracket.length - 1) {
       // 현재 라운드 계속 진행
       setNegativeCurrentMatchIndex(negativeCurrentMatchIndex + 1);
     } else {
       // 현재 라운드 완료 → 다음 라운드 준비
       const roundWinners = updatedMatches
-        .slice(-bracket.length) // 현재 라운드 매치만
+        .slice(-negativeFullBracket.length) // 현재 라운드 매치만
         .map((m) => negativeBracket.find((a) => a.id === m.winnerId)!);
 
       if (roundWinners.length === 1) {
@@ -142,6 +149,8 @@ export function Wizard() {
       } else {
         // 다음 라운드 진행
         setNegativeBracket(roundWinners);
+        const newBracket = createTournamentBracket(roundWinners);
+        setNegativeFullBracket(newBracket);
         setNegativeCurrentMatchIndex(0);
       }
     }
@@ -216,8 +225,8 @@ export function Wizard() {
   }
 
   if (step === "positive_tournament") {
-    const bracket = createTournamentBracket(positiveBracket);
-    const currentMatch = bracket[positiveCurrentMatchIndex];
+    if (positiveFullBracket.length === 0) return null;
+    const currentMatch = positiveFullBracket[positiveCurrentMatchIndex];
 
     return (
       <Tournament
@@ -229,8 +238,8 @@ export function Wizard() {
   }
 
   if (step === "negative_tournament") {
-    const bracket = createTournamentBracket(negativeBracket);
-    const currentMatch = bracket[negativeCurrentMatchIndex];
+    if (negativeFullBracket.length === 0) return null;
+    const currentMatch = negativeFullBracket[negativeCurrentMatchIndex];
 
     return (
       <Tournament
