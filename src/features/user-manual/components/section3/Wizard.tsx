@@ -1,11 +1,7 @@
-/**
- * Section 3: Wizard 컴포넌트
- * 가치 선택 → 긍정 토너먼트 → 부정 토너먼트 → 결과
- */
-
 "use client";
 
 import { useState } from "react";
+import { SectionIntro } from "@/shared/components/SectionIntro";
 import { CORE_VALUES } from "../../model/section3-values";
 import { ValueAspect, Section3Result } from "../../model/section3-schema";
 import { analyzeSection3, createTournamentBracket } from "../../model/section3-analyzer";
@@ -14,13 +10,14 @@ import { Tournament } from "./Tournament";
 import { ResultSection3 } from "./ResultSection3";
 
 type WizardStep =
+  | "intro"
   | "value_selection"
   | "positive_tournament"
   | "negative_tournament"
   | "result";
 
 export function Wizard() {
-  const [step, setStep] = useState<WizardStep>("value_selection");
+  const [step, setStep] = useState<WizardStep>("intro");
   const [selectedCoreValueIds, setSelectedCoreValueIds] = useState<string[]>([]);
 
   // 긍정 토너먼트 상태
@@ -206,6 +203,16 @@ export function Wizard() {
   };
 
   // 현재 스텝 렌더링
+  if (step === "intro") {
+    return (
+      <SectionIntro
+        sectionNumber={3}
+        title="가치관 월드컵"
+        onComplete={() => setStep("value_selection")}
+      />
+    );
+  }
+
   if (step === "value_selection") {
     return (
       <ValueSelection

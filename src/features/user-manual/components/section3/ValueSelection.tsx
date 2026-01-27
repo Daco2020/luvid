@@ -1,9 +1,11 @@
 /**
  * Section 3: 가치 선택 화면
- * 20개 핵심 가치 중 8개를 선택하는 화면
  */
 
-import { CoreValue } from "@/features/user-manual/model/section3-schema";
+"use client";
+
+import { useState, useEffect } from "react";
+import { CoreValue } from "../../model/section3-schema";
 
 interface ValueSelectionProps {
   coreValues: CoreValue[];
@@ -12,6 +14,18 @@ interface ValueSelectionProps {
   onComplete: () => void;
 }
 
+// 무거운 톤 + 투명도로 연한 파스텔 색상 팔레트
+const PASTEL_COLORS = [
+  { bg: "bg-blue-300/10", border: "border-primary/10" },
+  { bg: "bg-purple-300/10", border: "border-primary/10" },
+  { bg: "bg-pink-300/10", border: "border-primary/10" },
+  { bg: "bg-green-300/10", border: "border-primary/10" },
+  { bg: "bg-yellow-300/10", border: "border-primary/10" },
+  { bg: "bg-indigo-300/10", border: "border-primary/10" },
+  { bg: "bg-rose-300/10", border: "border-primary/10" },
+  { bg: "bg-teal-300/10", border: "border-primary/10" },
+];
+
 export function ValueSelection({
   coreValues,
   selectedIds,
@@ -19,74 +33,116 @@ export function ValueSelection({
   onComplete,
 }: ValueSelectionProps) {
   const isSelected = (id: string) => selectedIds.includes(id);
-  const canProceed = selectedIds.length === 8;
+  const canSelect = selectedIds.length < 8;
+
+  // 각 칩의 현재 색상 상태 (null이면 기본 상태)
+  const [chipColors, setChipColors] = useState<Record<string, typeof PASTEL_COLORS[0] | null>>({});
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // 선택되지 않은 칩들만 필터링
+      const unselectedChips = coreValues.filter((v) => !selectedIds.includes(v.id));
+      
+      if (unselectedChips.length === 0) return;
+
+      // 랜덤하게 2~3개 선택
+      const numToAnimate = Math.floor(Math.random() * 2) + 3; // 3 or 4
+      const chipsToAnimate = [...unselectedChips]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, Math.min(numToAnimate, unselectedChips.length));
+
+      // 각 칩에 랜덤 딜레이를 주어서 순차적으로 색상 적용
+      chipsToAnimate.forEach((chip, index) => {
+        const randomDelay = (Math.random() * 800) + 200; // 200~1000ms 랜덤 딜레이
+        const randomColor = PASTEL_COLORS[Math.floor(Math.random() * PASTEL_COLORS.length)];
+        
+        setTimeout(() => {
+          setChipColors(prev => ({
+            ...prev,
+            [chip.id]: randomColor
+          }));
+
+          // 0.5초 후 해당 칩의 색상만 제거
+          setTimeout(() => {
+            setChipColors(prev => {
+              const newColors = { ...prev };
+              delete newColors[chip.id];
+              return newColors;
+            });
+          }, 500);
+        }, randomDelay);
+      });
+    }, 6000);
+
+    return () => clearInterval(interval);
+  }, [coreValues, selectedIds]);
 
   return (
-    <div className="max-w-5xl mx-auto">
-      {/* 제목 */}
-      <div className="text-center mb-8">
-        <h2 className="md:text-2xl text-xl font-bold text-gray-900 mb-4">
-          연인에게 중요한 가치 8가지를 선택해주세요
-        </h2>
-        <p className="text-gray-600 mb-2">
-          이상적인 연인에게서 발견하고 싶은 가치를 골라주세요.
-        </p>
-        <div className="text-sm text-gray-500">
-          선택된 가치: <span className="font-bold text-primary">{selectedIds.length}</span> / 8
+    <div className="flex flex-col items-center justify-center min-h-screen px-6 py-12">
+      <div className="w-full max-w-4xl space-y-8">
+        {/* Header */}
+        <div className="text-center space-y-3">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-800">
+            당신이 중요하게 생각하는 가치<br />8가지를 선택해주세요
+          </h2>
+          <p className="text-slate-600">
+            <span className="font-bold text-primary">{selectedIds.length}</span> / 8
+          </p>
         </div>
-      </div>
 
-      {/* 가치 칩 그리드 */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-        {coreValues.map((value) => {
-          const selected = isSelected(value.id);
-          return (
-            <button
-              key={value.id}
-              onClick={() => onToggle(value.id)}
-              disabled={!selected && selectedIds.length >= 8}
-              className={`
-                relative px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200
-                ${
-                  selected
-                    ? "bg-primary text-white shadow-lg scale-105"
-                    : "bg-white text-gray-700 border-2 border-gray-200 hover:border-primary hover:shadow-md"
-                }
-                ${!selected && selectedIds.length >= 8 ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}
-              `}
-            >
-              {/* 선택 표시 */}
-              {selected && (
-                <div className="absolute -top-1 -right-1 w-5 h-5 bg-accent rounded-full flex items-center justify-center">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-              )}
-              
-              <div className="text-center">
-                <div className="font-bold">{value.name}</div>
-                <div className="text-xs opacity-80 mt-0.5">{value.nameEn}</div>
-              </div>
-            </button>
-          );
-        })}
-      </div>
+        {/* Value Grid */}
+        <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-5 gap-4 md:gap-6">
+          {coreValues.map((value) => {
+            const selected = isSelected(value.id);
+            const animatedColor = chipColors[value.id];
+            
+            return (
+              <button
+                key={value.id}
+                onClick={() => {
+                  if (selected || canSelect) {
+                    onToggle(value.id);
+                  }
+                }}
+                disabled={!selected && !canSelect}
+                className={`
+                  relative px-4 py-4 rounded-2xl font-semibold text-xs md:text-sm
+                  transition-all duration-500 border-2
+                  ${
+                    selected
+                      ? "bg-primary text-white shadow-lg shadow-primary/30 md:scale-105 scale-102 border-primary"
+                      : canSelect
+                      ? animatedColor
+                        ? `${animatedColor.bg} ${animatedColor.border} text-gray-700`
+                        : "bg-white/90 text-gray-600 hover:bg-primary/20 border-transparent"
+                      : "bg-gray-50 text-gray-400 cursor-not-allowed border-transparent"
+                  }
+                `}
+              >
+                {value.name}
+              </button>
+            );
+          })}
+        </div>
 
-      {/* 다음 버튼 */}
-      <div className="flex justify-center">
-        <button
-          onClick={onComplete}
-          disabled={!canProceed}
-          className={`
-            px-8 py-3 rounded-xl font-bold text-lg transition-all duration-200
-            ${
-              canProceed
-                ? "bg-primary text-white hover:bg-primary/90 shadow-lg hover:shadow-xl"
-                : "bg-gray-200 text-gray-400 cursor-not-allowed"
-            }
-          `}
-        >
-          {canProceed ? "다음 단계로" : "8개를 선택해주세요"}
-        </button>
+        {/* Next Button */}
+        <div className="flex justify-center pt-4">
+          <button
+            onClick={onComplete}
+            disabled={selectedIds.length !== 8}
+            className={`
+              px-8 py-4 rounded-xl font-bold text-lg
+              transition-all duration-200
+              ${
+                selectedIds.length === 8
+                  ? "bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/30"
+                  : "bg-gray-200 text-gray-400 cursor-not-allowed"
+              }
+            `}
+          >
+            다음
+          </button>
+        </div>
       </div>
     </div>
   );
