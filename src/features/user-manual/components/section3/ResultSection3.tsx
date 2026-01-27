@@ -16,7 +16,7 @@ interface ResultSection3Props {
 }
 
 export function ResultSection3({ result, onNext }: ResultSection3Props) {
-  const { selectedCoreValues, topPositiveValue, topNegativeValue, insight, teaserHint } = result;
+  const { selectedCoreValues, topPositiveValue, topNegativeValue, insight } = result;
 
   // 선택한 핵심 가치들 가져오기
   const selectedValues = selectedCoreValues
@@ -116,7 +116,7 @@ export function ResultSection3({ result, onNext }: ResultSection3Props) {
       </motion.div>
 
       {/* 티저 힌트 */}
-      {teaserHint && (
+      {/* {teaserHint && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -125,7 +125,7 @@ export function ResultSection3({ result, onNext }: ResultSection3Props) {
         >
           <p className="text-sm text-gray-600 italic">{teaserHint}</p>
         </motion.div>
-      )}
+      )} */}
 
       {/* 다음 버튼 */}
       {onNext && (

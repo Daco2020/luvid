@@ -79,8 +79,8 @@ export const CORE_VALUES: CoreValue[] = [
       },
       {
         id: "consideration_pos_2",
-        label: "작은 관심",
-        description: "사소한 것도 챙겨준다",
+        label: "따뜻한 말과 행동",
+        description: "따뜻한 말을 자주 하고 작은 것도 챙겨준다",
         type: "positive",
       },
       {
@@ -106,13 +106,13 @@ export const CORE_VALUES: CoreValue[] = [
       {
         id: "consideration_neg_2",
         label: "무관심",
-        description: "내 상황에 관심이 없다",
+        description: "내 상황에 관심이 없고 소통을 피한다",
         type: "negative",
       },
       {
         id: "consideration_neg_3",
-        label: "이기적 결정",
-        description: "나를 배려하지 않고 결정한다",
+        label: "거친 태도",
+        description: "나를 배려하지 않고 말이나 행동이 거칠다",
         type: "negative",
       },
       {
@@ -183,64 +183,64 @@ export const CORE_VALUES: CoreValue[] = [
     ],
   },
 
-  // 4. 신뢰성
-  {
-    id: "reliability",
-    name: "신뢰성",
-    nameEn: "Reliability",
-    positiveAspects: [
-      {
-        id: "reliability_pos_1",
-        label: "일관된 행동",
-        description: "말과 행동이 일치한다",
-        type: "positive",
-      },
-      {
-        id: "reliability_pos_2",
-        label: "책임감",
-        description: "맡은 일을 끝까지 해낸다",
-        type: "positive",
-      },
-      {
-        id: "reliability_pos_3",
-        label: "예측 가능성",
-        description: "행동 패턴이 일정하다",
-        type: "positive",
-      },
-      {
-        id: "reliability_pos_4",
-        label: "의지할 수 있음",
-        description: "어려울 때 믿고 기댈 수 있다",
-        type: "positive",
-      },
-    ],
-    negativeAspects: [
-      {
-        id: "reliability_neg_1",
-        label: "말과 행동 불일치",
-        description: "말만 하고 행동하지 않는다",
-        type: "negative",
-      },
-      {
-        id: "reliability_neg_2",
-        label: "무책임",
-        description: "중요한 일도 대충 한다",
-        type: "negative",
-      },
-      {
-        id: "reliability_neg_3",
-        label: "변덕스러움",
-        description: "기분에 따라 태도가 달라진다",
-        type: "negative",
-      },
-      {
-        id: "reliability_neg_4",
-        label: "믿을 수 없음",
-        description: "중요한 순간에 의지할 수 없다",
-        type: "negative",
-      },
-    ],
-  },
+  // 4. 신뢰성 (제외)
+  // {
+  //   id: "reliability",
+  //   name: "신뢰성",
+  //   nameEn: "Reliability",
+  //   positiveAspects: [
+  //     {
+  //       id: "reliability_pos_1",
+  //       label: "일관된 행동",
+  //       description: "말과 행동이 일치한다",
+  //       type: "positive",
+  //     },
+  //     {
+  //       id: "reliability_pos_2",
+  //       label: "책임감",
+  //       description: "맡은 일을 끝까지 해낸다",
+  //       type: "positive",
+  //     },
+  //     {
+  //       id: "reliability_pos_3",
+  //       label: "예측 가능성",
+  //       description: "행동 패턴이 일정하다",
+  //       type: "positive",
+  //     },
+  //     {
+  //       id: "reliability_pos_4",
+  //       label: "의지할 수 있음",
+  //       description: "어려울 때 믿고 기댈 수 있다",
+  //       type: "positive",
+  //     },
+  //   ],
+  //   negativeAspects: [
+  //     {
+  //       id: "reliability_neg_1",
+  //       label: "말과 행동 불일치",
+  //       description: "말만 하고 행동하지 않는다",
+  //       type: "negative",
+  //     },
+  //     {
+  //       id: "reliability_neg_2",
+  //       label: "무책임",
+  //       description: "중요한 일도 대충 한다",
+  //       type: "negative",
+  //     },
+  //     {
+  //       id: "reliability_neg_3",
+  //       label: "변덕스러움",
+  //       description: "기분에 따라 태도가 달라진다",
+  //       type: "negative",
+  //     },
+  //     {
+  //       id: "reliability_neg_4",
+  //       label: "믿을 수 없음",
+  //       description: "중요한 순간에 의지할 수 없다",
+  //       type: "negative",
+  //     },
+  //   ],
+  // },
 
   // 5. 존중
   {
@@ -773,64 +773,64 @@ export const CORE_VALUES: CoreValue[] = [
     ],
   },
 
-  // 14. 친절함
-  {
-    id: "kindness",
-    name: "친절함",
-    nameEn: "Kindness",
-    positiveAspects: [
-      {
-        id: "kindness_pos_1",
-        label: "따뜻한 말",
-        description: "따뜻한 말을 자주 한다",
-        type: "positive",
-      },
-      {
-        id: "kindness_pos_2",
-        label: "작은 배려",
-        description: "작은 것도 챙겨준다",
-        type: "positive",
-      },
-      {
-        id: "kindness_pos_3",
-        label: "타인에게 친절",
-        description: "다른 사람들에게도 친절하다",
-        type: "positive",
-      },
-      {
-        id: "kindness_pos_4",
-        label: "부드러운 태도",
-        description: "항상 부드럽게 대한다",
-        type: "positive",
-      },
-    ],
-    negativeAspects: [
-      {
-        id: "kindness_neg_1",
-        label: "차가운 말투",
-        description: "말이 차갑고 날카롭다",
-        type: "negative",
-      },
-      {
-        id: "kindness_neg_2",
-        label: "무신경",
-        description: "작은 것을 챙기지 않는다",
-        type: "negative",
-      },
-      {
-        id: "kindness_neg_3",
-        label: "타인에게 무례",
-        description: "다른 사람들에게 무례하다",
-        type: "negative",
-      },
-      {
-        id: "kindness_neg_4",
-        label: "거친 태도",
-        description: "태도가 거칠다",
-        type: "negative",
-      },
-    ],
-  },
+  // 14. 친절함 (제외)
+  // {
+  //   id: "kindness",
+  //   name: "친절함",
+  //   nameEn: "Kindness",
+  //   positiveAspects: [
+  //     {
+  //       id: "kindness_pos_1",
+  //       label: "따뜻한 말",
+  //       description: "따뜻한 말을 자주 한다",
+  //       type: "positive",
+  //     },
+  //     {
+  //       id: "kindness_pos_2",
+  //       label: "작은 배려",
+  //       description: "작은 것도 챙겨준다",
+  //       type: "positive",
+  //     },
+  //     {
+  //       id: "kindness_pos_3",
+  //       label: "타인에게 친절",
+  //       description: "다른 사람들에게도 친절하다",
+  //       type: "positive",
+  //     },
+  //     {
+  //       id: "kindness_pos_4",
+  //       label: "부드러운 태도",
+  //       description: "항상 부드럽게 대한다",
+  //       type: "positive",
+  //     },
+  //   ],
+  //   negativeAspects: [
+  //     {
+  //       id: "kindness_neg_1",
+  //       label: "차가운 말투",
+  //       description: "말이 차갑고 날카롭다",
+  //       type: "negative",
+  //     },
+  //     {
+  //       id: "kindness_neg_2",
+  //       label: "무신경",
+  //       description: "작은 것을 챙기지 않는다",
+  //       type: "negative",
+  //     },
+  //     {
+  //       id: "kindness_neg_3",
+  //       label: "타인에게 무례",
+  //       description: "다른 사람들에게 무례하다",
+  //       type: "negative",
+  //     },
+  //     {
+  //       id: "kindness_neg_4",
+  //       label: "거친 태도",
+  //       description: "태도가 거칠다",
+  //       type: "negative",
+  //     },
+  //   ],
+  // },
 
   // 15. 지적 호기심
   {
@@ -958,52 +958,52 @@ export const CORE_VALUES: CoreValue[] = [
     positiveAspects: [
       {
         id: "stability_pos_1",
-        label: "편안한 존재",
-        description: "함께 있으면 편하다",
+        label: "일관된 태도",
+        description: "말과 행동이 일치하고 태도가 일정하다",
         type: "positive",
       },
       {
         id: "stability_pos_2",
-        label: "일관된 태도",
-        description: "태도가 일정하다",
+        label: "책임감",
+        description: "맡은 일을 끝까지 해낸다",
         type: "positive",
       },
       {
         id: "stability_pos_3",
         label: "믿음직함",
-        description: "든든하고 믿음직하다",
+        description: "어려울 때 믿고 기댈 수 있다",
         type: "positive",
       },
       {
         id: "stability_pos_4",
         label: "심리적 안정",
-        description: "불안하지 않게 만든다",
+        description: "함께 있으면 편하고 불안하지 않다",
         type: "positive",
       },
     ],
     negativeAspects: [
       {
         id: "stability_neg_1",
-        label: "불편한 존재",
-        description: "함께 있으면 긴장된다",
+        label: "말과 행동 불일치",
+        description: "말만 하고 행동하지 않는다",
         type: "negative",
       },
       {
         id: "stability_neg_2",
-        label: "변덕",
-        description: "태도가 자주 바뀐다",
+        label: "무책임",
+        description: "중요한 일도 대충 한다",
         type: "negative",
       },
       {
         id: "stability_neg_3",
-        label: "불안정",
-        description: "의지할 수 없다",
+        label: "변덕스러움",
+        description: "기분에 따라 태도가 달라진다",
         type: "negative",
       },
       {
         id: "stability_neg_4",
-        label: "심리적 불안",
-        description: "불안하게 만든다",
+        label: "의지하기 어려움",
+        description: "중요한 순간에 의지할 수 없고 불안하게 만든다",
         type: "negative",
       },
     ],

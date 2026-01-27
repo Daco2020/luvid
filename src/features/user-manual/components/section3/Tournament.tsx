@@ -50,11 +50,11 @@ export function Tournament({ type, currentMatch, onSelect }: TournamentProps) {
   }, [selectedId, onSelect]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 flex items-center justify-center p-4 md:p-8">
+    <div className="min-h-screen bg-secondary flex items-center justify-center p-4 md:p-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-6xl"
+        className="w-full max-w-sm md:max-w-4xl"
       >
         {/* Header */}
         <div className="text-center mb-8 md:mb-10">
@@ -80,8 +80,8 @@ export function Tournament({ type, currentMatch, onSelect }: TournamentProps) {
 
           {/* VS Badge - Centered */}
           <div className="flex items-center justify-center md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:z-10 my-4 md:my-0">
-            <div className="bg-white rounded-full w-14 h-14 md:w-16 md:h-16 flex items-center justify-center shadow-xl border-4 border-slate-100">
-              <span className="text-lg md:text-2xl font-bold text-red-500">VS</span>
+            <div className="bg-primary rounded-full w-14 h-14 md:w-16 md:h-16 flex items-center justify-center shadow-lg shadow-primary/30">
+              <span className="text-lg md:text-2xl font-semibold text-white">VS</span>
             </div>
           </div>
 
@@ -146,31 +146,37 @@ function ValueCard({ aspect, onSelect, type, isSelected, isOtherSelected }: Valu
       }
       transition={{ duration: 1.0, ease: "easeOut" }}
       className={`
-        relative bg-white rounded-2xl p-6 md:p-8 border-2
+        relative bg-white rounded-2xl border-2
         ${isSelected ? selectedBorderColor : "border-gray-200"}
         ${!isSelected && !isOtherSelected ? `${hoverBorderColor} ${hoverShadowColor}` : ""}
         ${!isSelected && !isOtherSelected ? "hover:shadow-xl" : ""}
         transition-all duration-300
-        w-full min-h-[400px] md:min-h-[450px] flex flex-col items-center justify-center
-        group cursor-pointer
+        w-full min-h-[400px] md:min-h-[450px] flex flex-col
+        group cursor-pointer overflow-hidden
       `}
     >
-      {/* 아이콘 */}
-      <div className="mb-5 md:mb-6">
+      {/* 상단 아이콘 영역 (2/3) */}
+      <div className="flex-5 flex items-center justify-center pt-8 md:pt-10">
         <div className={`p-4 md:p-5 rounded-2xl ${iconBgColor} group-hover:scale-110 transition-transform duration-300`}>
           <Icon className={`w-14 h-14 md:w-16 md:h-16 ${iconColor}`} strokeWidth={1.5} />
         </div>
       </div>
 
-      {/* 라벨 */}
-      <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 text-center px-2">
-        {aspect.label}
-      </h3>
+      {/* 점선 구분선 (좌우 여백 없음) */}
+      <div className="w-full border-t-2 border-dashed border-gray-200" />
 
-      {/* 설명 */}
-      <p className="text-gray-600 text-sm md:text-base leading-relaxed text-center px-4">
-        {aspect.description}
-      </p>
+      {/* 하단 텍스트 영역 (2/3) */}
+      <div className="flex-[2] flex flex-col items-center justify-center p-6 md:p-8">
+        {/* 라벨 */}
+        <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 text-center">
+          {aspect.label}
+        </h3>
+
+        {/* 설명 */}
+        <p className="text-gray-600 text-sm md:text-base leading-relaxed text-center">
+          {aspect.description}
+        </p>
+      </div>
 
       {/* Hover 효과 */}
       {!isSelected && !isOtherSelected && (
