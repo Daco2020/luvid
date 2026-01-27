@@ -33,7 +33,7 @@ export function ValueSelection({
   onComplete,
 }: ValueSelectionProps) {
   const isSelected = (id: string) => selectedIds.includes(id);
-  const canSelect = selectedIds.length < 8;
+  const canSelect = selectedIds.length < 4;
 
   // 각 칩의 현재 색상 상태 (null이면 기본 상태)
   const [chipColors, setChipColors] = useState<Record<string, typeof PASTEL_COLORS[0] | null>>({});
@@ -83,10 +83,10 @@ export function ValueSelection({
         {/* Header */}
         <div className="text-center space-y-3">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-800">
-            당신이 중요하게 생각하는 가치<br />8가지를 선택해주세요
+            당신이 중요하게 생각하는 가치<br />4가지를 선택해주세요
           </h2>
           <p className="text-slate-600">
-            <span className="font-bold text-primary">{selectedIds.length}</span> / 8
+            <span className="font-bold text-primary">{selectedIds.length}</span> / 4
           </p>
         </div>
 
@@ -129,12 +129,12 @@ export function ValueSelection({
         <div className="flex justify-center pt-4">
           <button
             onClick={onComplete}
-            disabled={selectedIds.length !== 8}
+            disabled={selectedIds.length !== 4}
             className={`
               px-8 py-4 rounded-xl font-bold text-lg
               transition-all duration-200
               ${
-                selectedIds.length === 8
+                selectedIds.length === 4
                   ? "bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/30"
                   : "bg-gray-200 text-gray-400 cursor-not-allowed"
               }

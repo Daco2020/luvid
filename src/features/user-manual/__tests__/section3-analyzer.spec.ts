@@ -8,7 +8,7 @@ import { CORE_VALUES } from "@/features/user-manual/model/section3-values";
 
 describe("Section 3 Analyzer", () => {
   describe("createTournamentBracket", () => {
-    it("should create 2 semifinal matches from 4 aspects", () => {
+    it("should create 2 matches from 4 aspects (준결승)", () => {
       const aspects: ValueAspect[] = [
         {
           id: "test_1",
@@ -39,15 +39,15 @@ describe("Section 3 Analyzer", () => {
       const bracket = createTournamentBracket(aspects);
 
       expect(bracket).toHaveLength(2);
-      expect(bracket[0].round).toBe(1);
+      expect(bracket[0].round).toBe(3); // 4개 = 준결승 = round 3
       expect(bracket[0].matchNumber).toBe(1);
       expect(bracket[0].totalMatches).toBe(2);
-      expect(bracket[1].round).toBe(1);
+      expect(bracket[1].round).toBe(3);
       expect(bracket[1].matchNumber).toBe(2);
       expect(bracket[1].totalMatches).toBe(2);
     });
 
-    it("should throw error if not exactly 4 aspects", () => {
+    it("should throw error if not power of 2", () => {
       const aspects: ValueAspect[] = [
         {
           id: "test_1",
@@ -58,7 +58,7 @@ describe("Section 3 Analyzer", () => {
       ];
 
       expect(() => createTournamentBracket(aspects)).toThrow(
-        "Tournament requires exactly 4 aspects"
+        "Tournament requires a power of 2 aspects"
       );
     });
 

@@ -93,7 +93,7 @@ function generateTeaserHint(): string {
 
 /**
  * 토너먼트 브라켓 생성
- * 4개 항목으로 토너먼트 생성 (준결승 2경기 → 결승 1경기)
+ * 2의 거듭제곱 개수의 항목으로 토너먼트 생성 (16, 8, 4, 2)
  */
 export function createTournamentBracket(aspects: ValueAspect[]): {
   round: number;
@@ -102,29 +102,32 @@ export function createTournamentBracket(aspects: ValueAspect[]): {
   aspectA: ValueAspect;
   aspectB: ValueAspect;
 }[] {
-  if (aspects.length !== 4) {
-    throw new Error("Tournament requires exactly 4 aspects");
+  const count = aspects.length;
+  
+  // 2의 거듭제곱인지 확인
+  if (count < 2 || (count & (count - 1)) !== 0) {
+    throw new Error(`Tournament requires a power of 2 aspects, got ${count}`);
   }
+
+  // 라운드 계산 (16=1, 8=2, 4=3, 2=4)
+  const round = 5 - Math.log2(count);
+  const totalMatches = count / 2;
 
   // 랜덤 셔플
   const shuffled = [...aspects].sort(() => Math.random() - 0.5);
 
-  return [
-    // 준결승 1경기
-    {
-      round: 1,
-      matchNumber: 1,
-      totalMatches: 2,
-      aspectA: shuffled[0],
-      aspectB: shuffled[1],
-    },
-    // 준결승 2경기
-    {
-      round: 1,
-      matchNumber: 2,
-      totalMatches: 2,
-      aspectA: shuffled[2],
-      aspectB: shuffled[3],
-    },
-  ];
+  const matches = [];
+
+  // 매치 생성
+  for (let i = 0; i < totalMatches; i++) {
+    matches.push({
+      round,
+      matchNumber: i + 1,
+      totalMatches,
+      aspectA: shuffled[i * 2],
+      aspectB: shuffled[i * 2 + 1],
+    });
+  }
+
+  return matches;
 }

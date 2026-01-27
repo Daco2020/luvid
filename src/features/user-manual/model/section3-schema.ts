@@ -45,7 +45,7 @@ export interface TournamentResult {
 
 // Section 3 사용자 선택
 export const section3SelectionsSchema = z.object({
-  selectedCoreValues: z.array(z.string()).length(8), // 선택한 8개 핵심 가치 ID
+  selectedCoreValues: z.array(z.string()).length(4), // 선택한 4개 핵심 가치 ID
   positiveTournament: z.object({
     matches: z.array(
       z.object({
@@ -80,7 +80,7 @@ export type Section3Selections = z.infer<typeof section3SelectionsSchema>;
 export const section3ResultSchema = z.object({
   completed: z.boolean(),
   completedAt: z.string().optional(),
-  selectedCoreValues: z.array(z.string()).length(8), // 선택한 8개 핵심 가치 ID
+  selectedCoreValues: z.array(z.string()).length(4), // 선택한 4개 핵심 가치 ID
   topPositiveValue: z.object({
     // 가장 중요한 가치
     coreValueId: z.string(), // 어느 핵심 가치에서 나왔는지

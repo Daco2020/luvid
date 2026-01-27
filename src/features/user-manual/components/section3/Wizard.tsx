@@ -48,17 +48,14 @@ export function Wizard() {
 
   // 가치 선택 완료 → 긍정 토너먼트 시작
   const handleValueSelectionComplete = () => {
-    // 선택한 8개 핵심 가치에서 긍정 항목 4개 추출
+    // 선택한 4개 핵심 가치에서 모든 긍정 항목 추출 (4 × 4 = 16개)
     const selectedValues = CORE_VALUES.filter((v) =>
       selectedCoreValueIds.includes(v.id)
     );
     const positiveAspects = selectedValues.flatMap((v) => v.positiveAspects);
 
-    // 랜덤하게 4개 선택
-    const shuffled = [...positiveAspects].sort(() => Math.random() - 0.5);
-    const selected4 = shuffled.slice(0, 4);
-
-    setPositiveBracket(selected4);
+    // 16개 전체 사용 (16강 토너먼트)
+    setPositiveBracket(positiveAspects);
     setStep("positive_tournament");
   };
 
@@ -78,24 +75,22 @@ export function Wizard() {
 
     // 다음 매치로
     if (positiveCurrentMatchIndex < bracket.length - 1) {
+      // 현재 라운드 계속 진행
       setPositiveCurrentMatchIndex(positiveCurrentMatchIndex + 1);
     } else {
-      // 준결승 완료 → 결승 진행
-      const semifinalWinners = updatedMatches.map((m) =>
-        positiveBracket.find((a) => a.id === m.winnerId)!
-      );
+      // 현재 라운드 완료 → 다음 라운드 준비
+      const roundWinners = updatedMatches
+        .slice(-bracket.length) // 현재 라운드 매치만
+        .map((m) => positiveBracket.find((a) => a.id === m.winnerId)!);
 
-      // 결승 매치 추가
-      const finalMatch = {
-        aspectAId: semifinalWinners[0].id,
-        aspectBId: semifinalWinners[1].id,
-        winnerId: "", // 아직 선택 안 됨
-      };
-
-      // 결승 진행을 위해 bracket을 업데이트
-      setPositiveBracket(semifinalWinners);
-      setPositiveCurrentMatchIndex(0); // 결승은 인덱스 0
-      setPositiveMatches([...updatedMatches, finalMatch]);
+      if (roundWinners.length === 1) {
+        // 결승 완료 → 부정 토너먼트로
+        handlePositiveTournamentComplete(aspectId);
+      } else {
+        // 다음 라운드 진행
+        setPositiveBracket(roundWinners);
+        setPositiveCurrentMatchIndex(0);
+      }
     }
   };
 
@@ -112,11 +107,8 @@ export function Wizard() {
     );
     const negativeAspects = selectedValues.flatMap((v) => v.negativeAspects);
 
-    // 랜덤하게 4개 선택
-    const shuffled = [...negativeAspects].sort(() => Math.random() - 0.5);
-    const selected4 = shuffled.slice(0, 4);
-
-    setNegativeBracket(selected4);
+    // 16개 전체 사용 (16강 토너먼트)
+    setNegativeBracket(negativeAspects);
     setStep("negative_tournament");
   };
 
@@ -136,23 +128,22 @@ export function Wizard() {
 
     // 다음 매치로
     if (negativeCurrentMatchIndex < bracket.length - 1) {
+      // 현재 라운드 계속 진행
       setNegativeCurrentMatchIndex(negativeCurrentMatchIndex + 1);
     } else {
-      // 준결승 완료 → 결승 진행
-      const semifinalWinners = updatedMatches.map((m) =>
-        negativeBracket.find((a) => a.id === m.winnerId)!
-      );
+      // 현재 라운드 완료 → 다음 라운드 준비
+      const roundWinners = updatedMatches
+        .slice(-bracket.length) // 현재 라운드 매치만
+        .map((m) => negativeBracket.find((a) => a.id === m.winnerId)!);
 
-      // 결승 매치 추가
-      const finalMatch = {
-        aspectAId: semifinalWinners[0].id,
-        aspectBId: semifinalWinners[1].id,
-        winnerId: "", // 아직 선택 안 됨
-      };
-
-      setNegativeBracket(semifinalWinners);
-      setNegativeCurrentMatchIndex(0);
-      setNegativeMatches([...updatedMatches, finalMatch]);
+      if (roundWinners.length === 1) {
+        // 결승 완료 → 결과 분석으로
+        handleNegativeTournamentComplete(aspectId);
+      } else {
+        // 다음 라운드 진행
+        setNegativeBracket(roundWinners);
+        setNegativeCurrentMatchIndex(0);
+      }
     }
   };
 
@@ -228,30 +219,6 @@ export function Wizard() {
     const bracket = createTournamentBracket(positiveBracket);
     const currentMatch = bracket[positiveCurrentMatchIndex];
 
-    // 결승 여부 확인
-    const isFinal = positiveMatches.length === 2;
-
-    if (isFinal) {
-      // 결승: 준결승 우승자 2명
-      const semifinalWinners = positiveMatches.map((m) =>
-        positiveBracket.find((a) => a.id === m.winnerId)!
-      );
-
-      return (
-        <Tournament
-          type="positive"
-          currentMatch={{
-            round: 2,
-            matchNumber: 1,
-            totalMatches: 1,
-            aspectA: semifinalWinners[0],
-            aspectB: semifinalWinners[1],
-          }}
-          onSelect={handlePositiveTournamentComplete}
-        />
-      );
-    }
-
     return (
       <Tournament
         type="positive"
@@ -264,30 +231,6 @@ export function Wizard() {
   if (step === "negative_tournament") {
     const bracket = createTournamentBracket(negativeBracket);
     const currentMatch = bracket[negativeCurrentMatchIndex];
-
-    // 결승 여부 확인
-    const isFinal = negativeMatches.length === 2;
-
-    if (isFinal) {
-      // 결승: 준결승 우승자 2명
-      const semifinalWinners = negativeMatches.map((m) =>
-        negativeBracket.find((a) => a.id === m.winnerId)!
-      );
-
-      return (
-        <Tournament
-          type="negative"
-          currentMatch={{
-            round: 2,
-            matchNumber: 1,
-            totalMatches: 1,
-            aspectA: semifinalWinners[0],
-            aspectB: semifinalWinners[1],
-          }}
-          onSelect={handleNegativeTournamentComplete}
-        />
-      );
-    }
 
     return (
       <Tournament

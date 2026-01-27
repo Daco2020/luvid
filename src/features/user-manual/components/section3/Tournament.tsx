@@ -4,6 +4,7 @@
  */
 
 import { ValueAspect } from "@/features/user-manual/model/section3-schema";
+import { getValueAspectIcon } from "@/features/user-manual/model/icon-mapper";
 import { motion } from "framer-motion";
 
 interface TournamentProps {
@@ -27,7 +28,7 @@ export function Tournament({ type, currentMatch, onSelect }: TournamentProps) {
       ? "연인에게서 더 중요하게 생각하는 가치를 선택해주세요"
       : "절대 받아들일 수 없는 것을 선택해주세요";
 
-  const roundName = round === 1 ? "준결승" : "결승";
+  const roundName = round === 1 ? "16강" : round === 2 ? "8강" : round === 3 ? "준결승" : "결승";
   const bgColor = type === "positive" ? "from-blue-50 to-purple-50" : "from-red-50 to-orange-50";
 
   return (
@@ -73,7 +74,9 @@ interface ValueCardProps {
 }
 
 function ValueCard({ aspect, onSelect, type }: ValueCardProps) {
-  const accentColor = type === "positive" ? "border-blue-500 bg-blue-50" : "border-red-500 bg-red-50";
+  const Icon = getValueAspectIcon(aspect.id);
+  const iconColor = type === "positive" ? "text-blue-500" : "text-red-500";
+  const iconBgColor = type === "positive" ? "bg-blue-50" : "bg-red-50";
   const hoverColor =
     type === "positive"
       ? "hover:border-blue-600 hover:shadow-blue-200"
@@ -91,23 +94,20 @@ function ValueCard({ aspect, onSelect, type }: ValueCardProps) {
         group
       `}
     >
-      {/* 타입 배지 */}
-      <div
-        className={`
-        inline-block px-3 py-1 rounded-full text-xs font-medium mb-4
-        ${type === "positive" ? "bg-blue-100 text-blue-700" : "bg-red-100 text-red-700"}
-      `}
-      >
-        {type === "positive" ? "✓ 추구" : "✗ 거부"}
+      {/* 아이콘 */}
+      <div className="flex justify-center mb-4">
+        <div className={`p-4 rounded-2xl ${iconBgColor}`}>
+          <Icon className={`w-12 h-12 ${iconColor}`} strokeWidth={1.5} />
+        </div>
       </div>
 
       {/* 라벨 */}
-      <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary transition-colors">
+      <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary transition-colors text-center">
         {aspect.label}
       </h3>
 
       {/* 설명 */}
-      <p className="text-gray-600 text-sm leading-relaxed">{aspect.description}</p>
+      <p className="text-gray-600 text-sm leading-relaxed text-center">{aspect.description}</p>
 
       {/* Hover 효과 */}
       <div
