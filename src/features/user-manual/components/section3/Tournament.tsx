@@ -35,21 +35,36 @@ export function Tournament({ type, currentMatch, onSelect }: TournamentProps) {
   const matchKey = `${type}-${round}-${matchNumber}`;
 
   return (
-    <div className="min-h-screen bg-secondary flex items-center justify-center p-4 md:p-8">
+    <div className="min-h-screen bg-background flex items-center justify-center p-2 md:p-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-sm md:max-w-4xl"
       >
         {/* Header */}
-        <div className="text-center mb-8 md:mb-10">
-          <h1 className="text-2xl md:text-3xl font-bold text-slate-800 mb-3">
+        <div className="text-center mb-6 md:mb-10">
+          <h1 className="text-xl md:text-3xl font-bold text-slate-800 mb-2 md:mb-3">
             {title}
           </h1>
-          <p className="text-slate-600 text-base md:text-lg mb-2">{subtitle}</p>
-          <p className="text-sm text-slate-500">
-            {roundName} - {matchNumber} / {totalMatches}
-          </p>
+          <p className="text-slate-600 text-xs md:text-lg mb-2">{subtitle}</p>
+          
+          <motion.p
+            key={round} // 라운드가 바뀔 때만 애니메이션 (매치 변경때는 안함)
+            initial={{ scale: 1.5, color: "#2563eb", rotate: 0 }}
+            animate={{ 
+              scale: 1, 
+              color: "#64748b", 
+              rotate: [0, -5, 5, -3, 3, 0] // 살짝 흔들리는 효과
+            }}
+            transition={{ 
+              scale: { type: "spring", stiffness: 300, damping: 15 }, // 크기는 튕기듯이
+              rotate: { duration: 0.5, ease: "easeInOut" }, // 회전은 부드럽게
+              color: { duration: 0.5 }
+            }}
+            className="text-xs md:text-sm font-medium text-slate-500 inline-block px-4 py-2 my-2 bg-white/60 rounded-full"
+          >
+            {roundName} <span className="text-slate-300">|</span> {matchNumber} / {totalMatches}
+          </motion.p>
         </div>
 
         {/* 매치 영역 (key 변경 시 새로 마운트되어 상태 초기화) */}
@@ -92,7 +107,7 @@ function TournamentMatch({ type, aspectA, aspectB, onSelect }: TournamentMatchPr
   }, [selectedId, onSelect]);
 
   return (
-    <div className="relative grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-stretch">
+    <div className="relative grid grid-cols-2 gap-3 md:gap-10 items-stretch">
       {/* Card A */}
       <ValueCard
         key={aspectA.id}
@@ -107,14 +122,14 @@ function TournamentMatch({ type, aspectA, aspectB, onSelect }: TournamentMatchPr
       {/* VS Badge - Centered */}
       <AnimatePresence>
         {!selectedId && (
-          <div className="flex items-center justify-center md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:z-10 my-4 md:my-0 pointer-events-none">
+          <div className="flex items-center justify-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
             <motion.div
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0, transition: { duration: 0.2 } }}
-              className="bg-primary rounded-full w-14 h-14 md:w-16 md:h-16 flex items-center justify-center shadow-lg shadow-primary/30"
+              className="bg-primary rounded-full w-8 h-8 md:w-16 md:h-16 flex items-center justify-center shadow-lg shadow-primary/30"
             >
-              <span className="text-lg md:text-2xl font-semibold text-white">VS</span>
+              <span className="text-xs md:text-2xl font-semibold text-white">VS</span>
             </motion.div>
           </div>
         )}
@@ -198,34 +213,34 @@ function ValueCard({ aspect, onSelect, type, isSelected, isOtherSelected, positi
       whileHover={!isSelected && !isOtherSelected ? { scale: 1.02, y: -4 } : {}}
       whileTap={!isSelected && !isOtherSelected ? { scale: 0.98 } : {}}
       className={`
-        relative bg-white rounded-2xl border-2
+        relative bg-white rounded-xl md:rounded-2xl border-2
         ${isSelected ? selectedBorderColor : "border-gray-200"}
         ${!isSelected && !isOtherSelected ? `${hoverBorderColor} ${hoverShadowColor}` : ""}
         ${!isSelected && !isOtherSelected ? "hover:shadow-xl" : ""}
         transition-all duration-300
-        w-full min-h-[400px] md:min-h-[450px] flex flex-col
+        w-full aspect-[3/4] flex flex-col
         group cursor-pointer overflow-hidden
       `}
     >
-      {/* 상단 아이콘 영역 (2/3) */}
-      <div className="flex-5 flex items-center justify-center pt-8 md:pt-10">
-        <div className={`p-4 md:p-5 rounded-2xl ${iconBgColor} group-hover:scale-110 transition-transform duration-300`}>
-          <Icon className={`w-14 h-14 md:w-16 md:h-16 ${iconColor}`} strokeWidth={1.5} />
+      {/* 상단 아이콘 영역 (1/3) */}
+      <div className="flex-4 flex items-center justify-center pt-4 md:pt-10">
+        <div className={`p-3 md:p-5 rounded-xl md:rounded-2xl ${iconBgColor} group-hover:scale-110 transition-transform duration-300`}>
+          <Icon className={`w-8 h-8 md:w-16 md:h-16 ${iconColor}`} strokeWidth={1.5} />
         </div>
       </div>
 
       {/* 점선 구분선 (좌우 여백 없음) */}
-      <div className="w-full border-t-2 border-dashed border-gray-200" />
+      <div className="w-full border border-gray-100" />
 
       {/* 하단 텍스트 영역 (2/3) */}
-      <div className="flex-[2] flex flex-col items-center justify-center p-6 md:p-8">
+      <div className="flex-2 flex flex-col items-center justify-center p-3 md:p-8">
         {/* 라벨 */}
-        <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 text-center">
+        <h3 className="text-sm md:text-2xl font-bold text-gray-900 mb-1 md:mb-3 text-center break-keep">
           {aspect.label}
         </h3>
 
         {/* 설명 */}
-        <p className="text-gray-600 text-sm md:text-base leading-relaxed text-center">
+        <p className="text-gray-500 text-[10px] md:text-sm leading-snug md:leading-relaxed text-center break-keep">
           {aspect.description}
         </p>
       </div>
