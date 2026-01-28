@@ -277,7 +277,11 @@ export function Wizard() {
         );
 
       case "result":
-        return result ? <ResultSection3 result={result} /> : null;
+        return (
+          <div className="min-h-screen bg-background mt-10 py-10 px-4 sm:px-6 relative overflow-y-auto w-full flex items-start justify-center">
+            {result ? <ResultSection3 result={result} /> : null}
+          </div>
+        );
     }
   };
 
