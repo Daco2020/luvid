@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { SectionIntro } from "@/shared/components/SectionIntro";
 import { CORE_VALUES } from "../../model/section3-values";
 import { ValueAspect, Section3Result } from "../../model/section3-schema";
@@ -8,11 +9,14 @@ import { analyzeSection3, createTournamentBracket } from "../../model/section3-a
 import { ValueSelection } from "./ValueSelection";
 import { Tournament } from "./Tournament";
 import { ResultSection3 } from "./ResultSection3";
+import { TransitionScreen } from "./TransitionScreen";
 
 type WizardStep =
   | "intro"
   | "value_selection"
+  | "intro_positive"
   | "positive_tournament"
+  | "intro_negative"
   | "negative_tournament"
   | "result";
 
@@ -48,8 +52,13 @@ export function Wizard() {
     }
   };
 
-  // 가치 선택 완료 → 긍정 토너먼트 시작
+  // 가치 선택 완료 → 긍정 인트로로 이동
   const handleValueSelectionComplete = () => {
+    setStep("intro_positive");
+  };
+
+  // 긍정 인트로 완료 → 긍정 토너먼트 시작
+  const handlePositiveIntroComplete = () => {
     // 선택한 4개 핵심 가치에서 모든 긍정 항목 추출 (4 × 4 = 16개)
     const selectedValues = CORE_VALUES.filter((v) =>
       selectedCoreValueIds.includes(v.id)
@@ -100,13 +109,18 @@ export function Wizard() {
     }
   };
 
-  // 긍정 토너먼트 완료 → 부정 토너먼트 시작
+  // 긍정 토너먼트 완료 → 부정 인트로로 이동
   const handlePositiveTournamentComplete = (winnerId: string) => {
     // 마지막 매치(결승) 업데이트
     const updatedMatches = [...positiveMatches];
     updatedMatches[updatedMatches.length - 1].winnerId = winnerId;
     setPositiveMatches(updatedMatches);
 
+    setStep("intro_negative");
+  };
+
+  // 부정 인트로 완료 → 부정 토너먼트 시작
+  const handleNegativeIntroComplete = () => {
     // 부정 토너먼트 준비
     const selectedValues = CORE_VALUES.filter((v) =>
       selectedCoreValueIds.includes(v.id)
@@ -203,56 +217,84 @@ export function Wizard() {
   };
 
   // 현재 스텝 렌더링
-  if (step === "intro") {
-    return (
-      <SectionIntro
-        sectionNumber={3}
-        title="가치관 월드컵"
-        onComplete={() => setStep("value_selection")}
-      />
-    );
-  }
+  const renderContent = () => {
+    switch (step) {
+      case "intro":
+        return (
+          <SectionIntro
+            sectionNumber={3}
+            title="가치관 월드컵"
+            onComplete={() => setStep("value_selection")}
+          />
+        );
+      
+      case "value_selection":
+        return (
+          <ValueSelection
+            coreValues={CORE_VALUES}
+            selectedIds={selectedCoreValueIds}
+            onToggle={handleValueToggle}
+            onComplete={handleValueSelectionComplete}
+          />
+        );
 
-  if (step === "value_selection") {
-    return (
-      <ValueSelection
-        coreValues={CORE_VALUES}
-        selectedIds={selectedCoreValueIds}
-        onToggle={handleValueToggle}
-        onComplete={handleValueSelectionComplete}
-      />
-    );
-  }
+      case "intro_positive":
+        return (
+          <TransitionScreen 
+            type="positive" 
+            onComplete={handlePositiveIntroComplete} 
+          />
+        );
 
-  if (step === "positive_tournament") {
-    if (positiveFullBracket.length === 0) return null;
-    const currentMatch = positiveFullBracket[positiveCurrentMatchIndex];
+      case "positive_tournament":
+        if (positiveFullBracket.length === 0) return null;
+        const currentPosMatch = positiveFullBracket[positiveCurrentMatchIndex];
+        return (
+          <Tournament
+            type="positive"
+            currentMatch={currentPosMatch}
+            onSelect={handlePositiveTournamentSelect}
+          />
+        );
+      
+      case "intro_negative":
+        return (
+          <TransitionScreen 
+            type="negative" 
+            onComplete={handleNegativeIntroComplete} 
+          />
+        );
 
-    return (
-      <Tournament
-        type="positive"
-        currentMatch={currentMatch}
-        onSelect={handlePositiveTournamentSelect}
-      />
-    );
-  }
+      case "negative_tournament":
+        if (negativeFullBracket.length === 0) return null;
+        const currentNegMatch = negativeFullBracket[negativeCurrentMatchIndex];
+        return (
+          <Tournament
+            type="negative"
+            currentMatch={currentNegMatch}
+            onSelect={handleNegativeTournamentSelect}
+          />
+        );
 
-  if (step === "negative_tournament") {
-    if (negativeFullBracket.length === 0) return null;
-    const currentMatch = negativeFullBracket[negativeCurrentMatchIndex];
+      case "result":
+        return result ? <ResultSection3 result={result} /> : null;
+    }
+  };
 
-    return (
-      <Tournament
-        type="negative"
-        currentMatch={currentMatch}
-        onSelect={handleNegativeTournamentSelect}
-      />
-    );
-  }
-
-  if (step === "result" && result) {
-    return <ResultSection3 result={result} />;
-  }
-
-  return null;
+  return (
+    <div className="w-full min-h-screen bg-background">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={step}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="w-full h-full"
+        >
+          {renderContent()}
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
 }
