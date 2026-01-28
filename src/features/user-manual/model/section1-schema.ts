@@ -32,26 +32,11 @@ export type UserAnswer = z.infer<typeof userAnswerSchema>;
 
 // 감정 패턴 분석 결과
 export const emotionalPatternSchema = z.object({
-  stress_response: z.enum([
-    "acceptance",
-    "anxiety",
-    "independence",
-    "avoidance",
-  ]),
+  stress_response: z.string(),
   uncertainty_tolerance: z.enum(["high", "medium", "low"]),
-  conflict_resolution: z.enum([
-    "quick_fix",
-    "time_needed",
-    "indirect",
-    "standoff",
-  ]),
-  recharge_method: z.enum(["solitude", "close_friends", "social", "activity"]),
-  comfort_language: z.enum([
-    "physical_touch",
-    "listening",
-    "distraction",
-    "space",
-  ]),
+  conflict_resolution: z.string(),
+  recharge_method: z.string(),
+  comfort_language: z.string(),
 });
 
 export type EmotionalPattern = z.infer<typeof emotionalPatternSchema>;
@@ -61,7 +46,7 @@ export const insightSchema = z.object({
   title: z.string(), // "당신은 혼자만의 시간이 필요한 사람이에요"
   description: z.string(), // 상세 설명
   tip: z.string().optional(), // 실용적인 팁
-  teaserHint: z.string(), // 결과 페이지용 재치있는 한 줄 힌트
+  teaserHint: z.string().optional(), // 결과 페이지용 재치있는 한 줄 힌트
 });
 
 export type Insight = z.infer<typeof insightSchema>;
@@ -83,8 +68,15 @@ export const userManualStorageSchema = z.object({
   userId: z.string(), // anonymous UUID
   startedAt: z.string(), // ISO 8601 timestamp
   section1: section1ResultSchema.optional(),
-  section2: z.any().optional(), // Section2Result - 임시로 any 사용
-  // section3는 나중에 추가
+  section2: z.any().optional(), // Section2Result
+  section3: z.any().optional(), // Section3Result
 });
 
-export type UserManualStorage = z.infer<typeof userManualStorageSchema>;
+// 순환 참조 및 복잡성 방지를 위해 Section 2, 3 타입은 직접 import 하여 확장
+import { Section2Result } from "./section2-schema";
+import { Section3Result } from "./section3-schema";
+
+export type UserManualStorage = z.infer<typeof userManualStorageSchema> & {
+  section2?: Section2Result;
+  section3?: Section3Result;
+};

@@ -6,6 +6,7 @@ import { SectionIntro } from "@/shared/components/SectionIntro";
 import { CORE_VALUES } from "../../model/section3-values";
 import { ValueAspect, Section3Result } from "../../model/section3-schema";
 import { analyzeSection3, createTournamentBracket } from "../../model/section3-analyzer";
+import { saveUserManual, loadUserManual } from "@/features/user-manual/utils/storage";
 import { ValueSelection } from "./ValueSelection";
 import { Tournament } from "./Tournament";
 import { ResultSection3 } from "./ResultSection3";
@@ -213,6 +214,18 @@ export function Wizard() {
     });
 
     setResult(analysisResult);
+
+    const currentStorage = loadUserManual() || {
+      version: "1.0",
+      userId: crypto.randomUUID(),
+      startedAt: new Date().toISOString(),
+    };
+    
+    saveUserManual({
+      ...currentStorage,
+      section3: analysisResult
+    });
+
     setStep("result");
   };
 

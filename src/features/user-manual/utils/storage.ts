@@ -1,6 +1,6 @@
 import { UserManualStorage, userManualStorageSchema } from "../model/section1-schema";
 
-const STORAGE_KEY = "luvid_user_manual_v1";
+export const STORAGE_KEY = "luvid_user_manual_v1";
 
 /**
  * 로컬스토리지에서 사용자 데이터 불러오기

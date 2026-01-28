@@ -10,6 +10,7 @@ import { SectionIntro } from "@/shared/components/SectionIntro";
 import { section2Scenarios } from "@/features/user-manual/model/section2-scenarios";
 import type { Scenario, UserChoice, Section2Result, Branch, Choice } from "@/features/user-manual/model/section2-schema";
 import { analyzeSection2 } from "@/features/user-manual/model/section2-analyzer";
+import { saveUserManual, loadUserManual } from "@/features/user-manual/utils/storage";
 import { ResultSection2 } from "@/features/user-manual/components/section2/ResultSection2";
 import { ScenarioSelection } from "@/features/user-manual/components/section2/ScenarioSelection";
 import { ChatMessage } from "./ChatMessage";
@@ -327,6 +328,17 @@ export function Wizard() {
                   if (selectedScenario) {
                     const analysisResult = analyzeSection2(selectedScenario.id, choices);
                     setResult(analysisResult);
+
+                    const currentStorage = loadUserManual() || {
+                      version: "1.0",
+                      userId: crypto.randomUUID(),
+                      startedAt: new Date().toISOString(),
+                    };
+                    
+                    saveUserManual({
+                      ...currentStorage,
+                      section2: analysisResult
+                    });
                   }
                 }}
                 isComplete={true}
