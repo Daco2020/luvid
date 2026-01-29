@@ -142,35 +142,35 @@ export function generateTKIInsight(analysis: TKIAnalysis): Insight {
     competing: {
       title: "경쟁형 (Competing)",
       description:
-        "당신은 갈등 상황에서 자신의 의견을 강하게 주장하는 경향이 있습니다. 자기주장이 높고, 상대방과의 협조보다는 자신의 목표 달성을 우선시합니다.",
-      tip: '연인에게 이렇게 말하세요: "나는 내 생각을 솔직하게 말하는 편이야. 하지만 네 의견도 듣고 싶어."',
+        "갈등 상황에서 자신의 의견을 솔직하고 강하게 이야기하는 편이에요. 내 목표를 달성하는 것이 중요하고, 주관이 뚜렷한 스타일이랍니다.",
+      tip: '연인에게 이렇게 말하세요: "나는 내 생각을 솔직하게 말하는 편이야. 하지만 네 의견도 꼭 듣고 싶어."',
       teaserHint: "내 생각은 확실하게 말하는 편이시네요! 💪",
     },
     avoiding: {
       title: "회피형 (Avoiding)",
       description:
-        "당신은 갈등 상황을 피하거나 뒤로 미루는 경향이 있습니다. 자기주장과 협조성이 모두 낮으며, 갈등 자체를 불편해합니다.",
-      tip: '연인에게 이렇게 말하세요: "갈등이 생기면 일단 시간이 필요해. 하지만 나중에 꼭 이야기하자."',
+        "갈등이 생기면 일단 한 발짝 뒤로 물러나거나 시간을 두고 싶어 해요. 불편한 공기를 견디기보다는 상황이 진정되길 기다리는 편이죠.",
+      tip: '연인에게 이렇게 말하세요: "싸우고 싶지 않아서 그러는 거야. 생각 정리할 시간이 조금 필요해."',
       teaserHint: "일단 거리를 두고 보는 스타일인가봐요? 🌫️",
     },
     accommodating: {
       title: "수용형 (Accommodating)",
       description:
-        "당신은 갈등 상황에서 상대방을 배려하며 양보하는 경향이 있습니다. 협조성이 높고, 관계 유지를 위해 자신의 의견을 접을 수 있습니다.",
+        "관계의 평화를 위해 내가 조금 양보하는 게 낫다고 생각하는 다정한 사람이에요. 상대방의 의견을 존중하고 맞춰주는 걸 편하게 느낍니다.",
       tip: '연인에게 이렇게 말하세요: "나는 네 의견을 존중해. 하지만 내 생각도 들어줬으면 좋겠어."',
       teaserHint: "관계가 우선이라 양보도 잘하시는 편이죠? 🕊️",
     },
     collaborating: {
       title: "협력형 (Collaborating)",
       description:
-        "당신은 갈등 상황에서 서로 win-win할 수 있는 해결책을 찾으려 합니다. 자기주장과 협조성이 모두 높으며, 대화를 통한 문제 해결을 선호합니다.",
+        "갈등이 생기면 서로에게 가장 좋은 답을 찾기 위해 끝까지 대화하려 해요. 단순히 덮어두기보다 근본적인 해결을 원하는 적극적인 스타일이에요.",
       tip: '연인에게 이렇게 말하세요: "우리 둘 다 만족할 수 있는 방법을 찾아보자. 함께 이야기하면 해결할 수 있어."',
       teaserHint: "함께 좋은 방법을 찾아가는 걸 좋아하시네요! 🤝",
     },
     compromising: {
       title: "타협형 (Compromising)",
       description:
-        "당신은 갈등 상황에서 중간 지점을 찾으려 합니다. 자기주장과 협조성이 중간 정도이며, 빠른 해결을 위해 서로 양보하는 것을 선호합니다.",
+        "갈등을 빠르고 공정하게 해결하고 싶어 해요. '너 하나, 나 하나' 서로 반반씩 양보해서 중간 지점을 찾는 것이 현실적이라고 생각합니다.",
       tip: '연인에게 이렇게 말하세요: "우리 서로 조금씩 양보하면 어떨까? 중간에서 만나자."',
       teaserHint: "서로 반반씩 양보하는 게 현실적이라고 보시나봐요 ⚖️",
     },
@@ -181,7 +181,7 @@ export function generateTKIInsight(analysis: TKIAnalysis): Insight {
 
   if (analysis.secondaryStyle) {
     const secondary = styleDescriptions[analysis.secondaryStyle];
-    description += ` 하지만 동시에 ${secondary.title.split(" ")[0]} 성향도 보입니다.`;
+    description += ` 하지만 상황에 따라서는 ${secondary.title.split(" ")[0]} 성향이 나오기도 해요.`;
   }
 
   return {
@@ -201,35 +201,35 @@ export function generateApologyInsight(analysis: ApologyAnalysis): Insight {
     expressing_regret: {
       title: "후회 표현형",
       description:
-        '당신에게는 "미안해"라는 감정적 표현이 가장 중요합니다. 진심 어린 사과의 말을 듣는 것이 화해의 시작입니다.',
+        '"미안해"라는 진심 어린 말 한마디가 무엇보다 중요해요. 어떤 변명보다도, 미안하다는 감정이 느껴질 때 마음이 녹아내린답니다.',
       tip: '연인에게 이렇게 말하세요: "나한테는 \'미안해\'라는 말을 직접 듣는 게 정말 중요해."',
       teaserHint: "진심 어린 \"미안해\" 한 마디가 중요하시죠? 💬",
     },
     accepting_responsibility: {
       title: "책임 인정형",
       description:
-        "당신은 상대방이 자신의 잘못을 명확히 인정하는 것을 중요하게 생각합니다. 무엇이 잘못되었는지 구체적으로 설명해주길 원합니다.",
+        "구체적으로 무엇을 잘못했는지 인정해줄 때 진정성을 느껴요. '그냥 미안해'가 아니라 '내가 ~~해서 미안해'라고 말해주길 바라는 꼼꼼한 스타일이에요.",
       tip: '연인에게 이렇게 말하세요: "왜 그랬는지, 무엇이 잘못됐는지 솔직하게 말해줘."',
       teaserHint: "뭐가 잘못됐는지 확실히 알고 싶은 스타일이네요 📋",
     },
     making_restitution: {
       title: "보상형",
       description:
-        "당신은 말보다 행동으로 보여주는 사과를 중요하게 생각합니다. 실질적인 보상이나 상황을 바로잡는 행동이 필요합니다.",
-      tip: '연인에게 이렇게 말하세요: "말보다는 행동으로 보여줘. 함께 시간을 보내거나 뭔가 해주면 좋겠어."',
+        "말뿐인 사과보다는, 행동으로 보여주는 노력이 중요하다고 생각해요. 상황을 바로잡거나 기분을 풀어주려는 실질적인 행동이 필요합니다.",
+      tip: '연인에게 이렇게 말하세요: "말보다는 행동으로 보여줘. 맛있는 걸 먹거나 같이 시간을 보내면 좋겠어."',
       teaserHint: "말보다 행동으로 보여주는 게 진짜 사과라고 생각하시나봐요! 🎁",
     },
     genuinely_repenting: {
       title: "진심 어린 뉘우침형",
       description:
-        "당신은 상대방이 진심으로 뉘우치고 변화를 약속하는 것을 중요하게 생각합니다. 앞으로 이런 일이 없을 거라는 확신이 필요합니다.",
+        "다시는 같은 실수를 반복하지 않겠다는 약속과 의지가 중요해요. 변화하려는 노력이 보일 때 비로소 믿음이 회복되는 신중한 타입이에요.",
       tip: '연인에게 이렇게 말하세요: "다음엔 이런 일 없게 해줘. 약속할 수 있어?"',
       teaserHint: "다시는 안 그러겠다는 약속이 필요하시죠? 🙏",
     },
     requesting_forgiveness: {
       title: "용서 구하기형",
       description:
-        "당신은 상대방이 정중하게 용서를 구하는 것을 중요하게 생각합니다. 관계 회복을 위한 노력과 용서를 구하는 태도가 필요합니다.",
+        "상대방이 정중하게 용서를 구하는 태도를 중요하게 여겨요. 관계를 소중히 여기고 내 마음이 풀릴 때까지 기다려주는 모습에서 사랑을 느낍니다.",
       tip: '연인에게 이렇게 말하세요: "용서해달라고 진심으로 말해줘. 그럼 용서할게."',
       teaserHint: "\"용서해줘\"라는 말이 꼭 필요한 편이시네요 🤲",
     },
@@ -240,7 +240,7 @@ export function generateApologyInsight(analysis: ApologyAnalysis): Insight {
 
   if (analysis.secondaryLanguage) {
     const secondary = languageDescriptions[analysis.secondaryLanguage];
-    description += ` 또한 ${secondary.title}의 요소도 중요하게 생각합니다.`;
+    description += ` 또한 ${secondary.title}의 요소도 중요하게 생각하는 편이에요.`;
   }
 
   return {
@@ -261,41 +261,41 @@ export function generateGottmanInsight(analysis: GottmanAnalysis): Insight | und
     criticism: {
       title: "비난 (Criticism)",
       description:
-        "상대방의 성격이나 인격을 공격하는 경향이 있습니다. '너는 항상~', '너는 절대~' 같은 표현을 조심하세요.",
+        "상대방의 성격이나 인격을 공격하는 말이 튀어나올 때가 있어요. '너는 항상~', '너는 절대~' 같은 표현은 서로에게 상처가 될 수 있답니다.",
     },
     defensiveness: {
       title: "방어 (Defensiveness)",
       description:
-        "자신을 정당화하고 상대를 역공격하는 경향이 있습니다. '나도 마찬가지야', '내 잘못이 아니야' 같은 반응을 줄여보세요.",
+        "억울한 마음에 나를 정당화하거나 상대를 역공격하고 싶어질 때가 있죠. '나도 마찬가지야'보다는 '그렇게 보였구나'라고 받아주면 좋아요.",
     },
     contempt: {
       title: "경멸 (Contempt)",
       description:
-        "상대방을 무시하거나 조롱하는 경향이 있습니다. 냉소, 비꼬기, 눈 굴리기 같은 행동은 관계에 가장 치명적입니다.",
+        "화가 나면 상대를 무시하거나 비꼬는 마음이 들 수도 있어요. 하지만 이건 관계를 가장 빨리 무너뜨리는 행동이니 꼭 조심해야 해요.",
     },
     stonewalling: {
       title: "담쌓기 (Stonewalling)",
       description:
-        "대화를 거부하고 회피하는 경향이 있습니다. 침묵, 무시, 자리 뜨기 같은 행동은 문제를 더 악화시킵니다.",
+        "대화가 너무 힘들면 입을 닫거나 자리를 피하고 싶어지죠? 하지만 침묵이 길어지면 상대방은 더 답답해할 수 있어요.",
     },
   };
 
-  let title = "주의가 필요합니다";
+  let title = "주의가 필요해요";
   let description = "";
   let tip = "";
 
   if (analysis.riskLevel === "caution") {
     title = "⚠️ 갈등 패턴 주의";
-    description = "갈등 상황에서 부정적인 패턴이 일부 나타납니다. ";
+    description = "갈등 상황에서 조금은 날선 반응이 나올 수 있어요. ";
   } else {
     title = "🚨 갈등 패턴 위험";
-    description = "갈등 상황에서 부정적인 패턴이 자주 나타납니다. ";
+    description = "갈등 상황에서 서로에게 상처 주는 패턴이 자주 나타날 수 있어요. ";
   }
 
   if (analysis.dominantPattern) {
     const pattern = patternDescriptions[analysis.dominantPattern];
-    description += `특히 ${pattern.title} 패턴이 두드러집니다. ${pattern.description}`;
-    tip = "갈등 상황에서 한 발 물러서서 심호흡을 하고, 상대방의 입장에서 생각해보세요. 필요하다면 '타임아웃'을 요청하는 것도 좋습니다.";
+    description += `특히 ${pattern.title} 패턴이 두드러져요. ${pattern.description}`;
+    tip = "화가 날 땐 잠시 심호흡을 하고, 한 발짝 물러서서 생각해보세요. '잠깐 쉬었다가 이야기하자'고 타임아웃을 요청하는 것도 현명한 방법이에요.";
   }
 
   return {

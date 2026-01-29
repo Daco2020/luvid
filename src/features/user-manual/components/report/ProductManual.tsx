@@ -96,7 +96,7 @@ export function ProductManual({ report }: ProductManualProps) {
            </div>
            
            <div className="space-y-2">
-             <h2 className="text-sm font-bold text-primary tracking-widest uppercase">고유 아이덴티티</h2>
+             <h2 className="text-sm font-bold text-primary tracking-widest uppercase">당신의 추구미</h2>
              <h3 className="text-3xl md:text-4xl font-bold text-slate-900">{report.identity.archetype}</h3>
              <p className="text-slate-500 text-lg">"{report.identity.catchphrase}"</p>
            </div>

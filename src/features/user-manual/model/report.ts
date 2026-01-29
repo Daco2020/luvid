@@ -24,7 +24,7 @@ export interface UserManualReport {
   identity: {
     archetype: string;
     catchphrase: string;
-    description: string;
+    description: string; // Top Value 설명 + Vision
     keywords: string[];
     themeColor: string; 
   };
@@ -44,7 +44,7 @@ export interface UserManualReport {
     description: string;
   }[];
   userGuide: {
-    dos: UserGuideItem[]; // 객체 배열로 변경
+    dos: UserGuideItem[]; 
     donts: UserGuideItem[];
   };
 }
@@ -57,8 +57,47 @@ const ARCHETYPES: Record<string, string> = {
   commitment: "변치 않는 약속의 수호자",
   communication: "마음과 마음을 잇는 가교",
   respect: "있는 그대로를 비추는 거울",
-  stablility: "편안한 휴식 같은 안식처",
+  stability: "편안한 휴식 같은 안식처",
+  emotional_regulation: "고요한 내면의 항해사",
+  independence: "단단한 뿌리를 내린 나무",
+  empathy: "마음에 스며드는 다정한 비",
+  humor: "미소를 피워내는 햇살",
+  diligence: "변치 않는 성실함의 정원사",
+  positivity: "희망을 노래하는 새",
+  passion: "타오르는 열정의 불꽃",
+  planning: "미래를 그리는 건축가",
+  intellectual_curiosity: "깊은 지혜의 탐험가",
+  sensitivity: "섬세한 감성의 시인",
+  proactiveness: "먼저 손 내미는 용기",
+  self_control: "균형 잡힌 삶의 조율사",
+  acceptance: "넓은 바다 같은 포용자",
+  consideration: "따뜻한 배려의 수호천사",
   default: "고유한 빛을 지닌 영혼",
+};
+
+// 미래 비전 매핑 (18개 가치관별)
+const VISION_MAP: Record<string, string> = {
+  trust: "서로에게 가장 안전한 기지가 되어주며, 말하지 않아도 믿을 수 있는 깊은 관계를 만들어갈 거예요.",
+  honesty: "어떤 순간에도 숨김없이 투명하게, 있는 그대로의 모습을 사랑하며 진실된 사랑을 나눌 거예요.",
+  growth: "서로의 꿈을 응원하며, 함께 있을 때 어제보다 더 나은 우리가 되는 멋진 팀이 될 거예요.",
+  commitment: "시간이 지날수록 더 깊어지는 신뢰 속에서, 서로에게 든든한 버팀목이 되어줄 거예요.",
+  communication: "작은 오해도 남기지 않고, 대화할수록 서로를 더 깊이 이해하게 되는 소울메이트가 될 거예요.",
+  respect: "서로의 다름을 존중하고 아껴주며, 나답게 있을 때 가장 사랑받는 편안한 관계가 될 거예요.",
+  stability: "불안함 없이 평온하게, 언제 돌아와도 따뜻하게 반겨주는 서로의 안식처가 되어줄 거예요.",
+  emotional_regulation: "어떤 파도가 쳐도 흔들리지 않고, 서로의 감정을 보듬어주는 성숙한 사랑을 할 거예요.",
+  independence: "각자의 삶도 멋지게 가꾸면서, 둘이 함께할 때 더 큰 시너지를 내는 건강한 연인이 될 거예요.",
+  empathy: "말하지 않아도 마음을 알아주고, 슬픔은 나누고 기쁨은 배가 되는 따뜻한 사랑을 할 거예요.",
+  humor: "힘든 날에도 서로의 얼굴만 보면 웃음이 나는, 유쾌하고 즐거운 단짝 친구 같은 연인이 될 거예요.",
+  diligence: "한결같은 마음으로 서로를 아끼며, 매일매일 조금씩 더 깊어지는 사랑을 쌓아갈 거예요.",
+  positivity: "어떤 어려움이 와도 희망을 잃지 않고, 서로에게 밝은 에너지를 주는 비타민 같은 존재가 될 거예요.",
+  passion: "매 순간 서로에게 설레며, 식지 않는 열정으로 다채롭고 뜨거운 사랑을 만들어갈 거예요.",
+  planning: "함께 그리는 미래가 설레고, 차근차근 꿈을 현실로 만들어가는 든든한 파트너가 될 거예요.",
+  intellectual_curiosity: "끊임없이 대화하며 서로의 세상을 넓혀주고, 지적인 영감을 주고받는 뮤즈가 될 거예요.",
+  sensitivity: "일상의 작은 순간들도 영화처럼 로맨틱하게 만들며, 서로의 감성을 채워주는 예술 같은 사랑을 할 거예요.",
+  proactiveness: "재지 않고 먼저 다가가 사랑을 표현하며, 매일매일 확신을 주는 직진 로맨스를 할 거예요.",
+  self_control: "서로의 삶을 배려하며 선을 지키는, 성숙하고 균형 잡힌 어른스러운 연애를 할 거예요.",
+  acceptance: "어떤 모습이든 판단하지 않고 있는 그대로 안아주며, 세상에서 가장 든든한 내 편이 되어줄 거예요.",
+  consideration: "나보다 나를 더 생각해주며, 사소한 것까지 챙겨주는 다정한 사랑을 나눌 거예요."
 };
 
 export function generateUserManual(data: UserManualStorage): UserManualReport | null {
@@ -80,6 +119,10 @@ export function generateUserManual(data: UserManualStorage): UserManualReport | 
     s2.analysis?.tki?.primaryStyle === "competing" ? "솔직함" : 
     s2.analysis?.tki?.primaryStyle === "collaborating" ? "함께 성장" : "다정한 배려",
   ];
+
+  // Identity Description 생성
+  const vision = VISION_MAP[coreValueKey] || "서로의 고유한 빛을 알아봐주며, 함께 있을 때 가장 나다워지는 사랑을 할 거예요.";
+  const identityDescription = `당신에게 가장 중요한 가치는 "${s3.topPositiveValue.aspect.label}"(이)에요. \n${vision}`;
 
   // 2. Specs Mapping (요약)
   const specs: PsychologicalSpec[] = [];
@@ -138,7 +181,6 @@ export function generateUserManual(data: UserManualStorage): UserManualReport | 
   });
 
   // 3. Details Mapping (심층 분석)
-  
   // Stress Response
   const stressMap: Record<string, string> = {
     acceptance: "있는 그대로 받아들여요",
@@ -194,20 +236,18 @@ export function generateUserManual(data: UserManualStorage): UserManualReport | 
   // Apology Language
   const apologyInsight = s2.insights?.apology;
   const apologyTitle = apologyInsight?.title || "진심이 담긴 사과";
-  const apologyDesc = apologyInsight?.description 
-    ? apologyInsight.description.replace(/입니다\./g, "이에요.").replace(/합니다\./g, "해요.") 
-    : "상처받은 마음을 어루만져주는 진솔한 대화가 필요해요.";
+  // section2-analyzer가 이미 해요체로 주므로 replace 불필요
+  const apologyDesc = apologyInsight?.description || "상처받은 마음을 어루만져주는 진솔한 대화가 필요해요.";
 
-  
   // 4. Dealbreakers
   const dealbreakers = [
     {
       label: s3.topNegativeValue.aspect.label,
-      description: `미래의 연인에게 마음이 가장 차갑게 식어버리는 순간이에요. ${s3.topNegativeValue.aspect.description?.replace(/합니다\./g, "해요.") || ""}`,
+      description: `미래의 연인에게 마음이 가장 차갑게 식어버리는 순간이에요. ${s3.topNegativeValue.aspect.description || ""}`,
     },
   ];
 
-  // 5. User Guide (Dos & Donts) - Future Oriented + Scenario Based
+  // 5. User Guide (Dos & Donts)
   const guideDos: UserGuideItem[] = [];
   const guideDonts: UserGuideItem[] = [];
 
@@ -279,7 +319,7 @@ export function generateUserManual(data: UserManualStorage): UserManualReport | 
     identity: {
       archetype,
       catchphrase: `"${s3.topPositiveValue.aspect.label}"에서 시작되는 사랑`,
-      description: s3.insight ? s3.insight.replace(/입니다\./g, "이에요.").replace(/합니다\./g, "해요.") : "당신은 당신 그대로 충분히 사랑받을 자격이 있는 사람이에요.",
+      description: identityDescription,
       keywords,
       themeColor,
     },
