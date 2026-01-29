@@ -324,11 +324,12 @@ export function ProductManual({ report }: ProductManualProps) {
            </h3>
            
            <p className="text-slate-600 leading-loose break-keep">
-             이 보고서는 당신이 답변한 내용을 바탕으로 작성되었어요.<br/><br/>
-             사람의 마음은 날씨처럼 변하기도 하고,<br/>
-             상황에 따라 다른 모습이 나오기도 한답니다.<br/><br/>
-             이 결과가 당신의 모든 것을 정의하진 않아요.<br/>
-             지금의 나를 이해하는 <strong>작은 나침반</strong>으로 활용해주세요.
+             사람의 마음은 날씨처럼 변하기도 하고<br/>
+             상황이나 대상에 따라 다른 모습이 나오기도 해요.<br/><br/>
+             이 설명서는 당신의 답변을 바탕으로 작성되었지만<br/>
+             분석 결과가 당신의 모든 것을 정의하진 않아요.<br/><br/>
+             우리가 함께 만든 <strong>나 사용 설명서</strong>는 <br/>
+             '지금의 나'를 이해하는 <strong>작은 나침반</strong>으로 활용해주세요.
            </p>
         </motion.div>
       </section>
@@ -344,7 +345,7 @@ export function ProductManual({ report }: ProductManualProps) {
         >
            <h2 className="text-2xl md:text-3xl font-bold text-slate-800 leading-snug">
              이제, 당신에게 꼭 맞는<br/>
-             사랑을 시작할 준비가 되었어요.
+             사랑을 시작할 준비가 되었군요!
            </h2>
            <p className="text-slate-500">
              이 설명서를 잊지 않는다면,<br/>
