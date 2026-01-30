@@ -170,7 +170,7 @@ export function ProductManual({ report }: ProductManualProps) {
             <div className="md:col-span-2 text-center mb-4">
                <h2 className="text-2xl font-bold text-slate-800 flex items-center justify-center gap-2">
                  <MessageCircle className="text-orange-500" />
-                 우리가 다툴 땐 이렇게
+                 갈등은 이렇게 풀고 싶어요
                </h2>
                <p className="text-slate-500">갈등을 넘어 더 깊은 이해로 나아가요</p>
             </div>
@@ -407,7 +407,7 @@ function DetailCard({ title, value, description, icon: Icon, color, delay }: { t
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.6 }}
-      className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 flex flex-col items-start text-left gap-4 hover:-translate-y-1 transition-transform w-full"
+      className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 flex flex-col items-start text-left gap-4 hover:-translate-y-1 w-full"
     >
       <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${bgColors[color] || bgColors.indigo}`}>
         <Icon size={24} />

@@ -249,15 +249,7 @@ export function generateUserManual(data: UserManualStorage): UserManualReport | 
   const comfortVal = s1.patterns.comfort_language || "listening";
 
   // Conflict Secondary (2순위)
-  let conflictSecondarySpec: DetailSpec | undefined;
-  if (s2.analysis?.tki?.secondaryStyle) {
-    const secondaryStyle = s2.analysis.tki.secondaryStyle;
-    conflictSecondarySpec = {
-      title: "상황에 따라서는",
-      value: conflictMap[secondaryStyle],
-      description: conflictDescMap[secondaryStyle] || "이런 모습도 보일 수 있어요.",
-    };
-  }
+  const secondaryStyle = s2.analysis?.tki?.secondaryStyle!;
 
   // Apology Language
   const apologyInsight = s2.insights?.apology;
@@ -369,7 +361,11 @@ export function generateUserManual(data: UserManualStorage): UserManualReport | 
           value: apologyTitle,
           description: apologyDesc,
         },
-        conflictSecondary: conflictSecondarySpec,
+        conflictSecondary: {
+          title: "상황에 따라서는",
+          value: conflictMap[secondaryStyle],
+          description: conflictDescMap[secondaryStyle] || "이런 모습도 보일 수 있어요.",
+        },
       }
     },
     dealbreakers,
