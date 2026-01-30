@@ -133,9 +133,9 @@ export function ProductManual({ report }: ProductManualProps) {
             <div className="md:col-span-2 text-center mb-4">
                <h2 className="text-2xl font-bold text-slate-800 flex items-center justify-center gap-2">
                  <CloudLightning className="text-indigo-500" />
-                 내 마음은 이렇게 움직여요
+                 내 마음은 이렇게 회복해요
                </h2>
-               <p className="text-slate-500">힘들 때와 위로받을 때의 모습이에요</p>
+               <p className="text-slate-500">스트레스에 대한 당신의 반응과 받고 싶은 위로 방식이에요</p>
             </div>
 
             <DetailCard 
@@ -172,7 +172,7 @@ export function ProductManual({ report }: ProductManualProps) {
                  <MessageCircle className="text-orange-500" />
                  갈등은 이렇게 풀고 싶어요
                </h2>
-               <p className="text-slate-500">갈등을 넘어 더 깊은 이해로 나아가요</p>
+               <p className="text-slate-500">당신의 상한 마음을 달래주는 사과 방식이에요</p>
             </div>
 
             {/* Apology Style */}
@@ -187,14 +187,14 @@ export function ProductManual({ report }: ProductManualProps) {
               />
             </div>
 
-             {/* Secondary Conflict Style (Optional) */}
-             {report.details.section2.conflictSecondary && (
+             {/* Apology Secondary */}
+             {report.details.section2.apologySecondary && (
                 <div className="w-full">
                   <DetailCard 
-                    title={report.details.section2.conflictSecondary.title}
-                    value={report.details.section2.conflictSecondary.value}
-                    description={report.details.section2.conflictSecondary.description}
-                    icon={Wifi}
+                    title={report.details.section2.apologySecondary.title}
+                    value={report.details.section2.apologySecondary.value}
+                    description={report.details.section2.apologySecondary.description}
+                    icon={CheckCircle}
                     color="slate"
                     delay={0.3}
                   />
@@ -320,16 +320,16 @@ export function ProductManual({ report }: ProductManualProps) {
            <Info size={32} className="mx-auto text-slate-400 mb-2" />
            
            <h3 className="text-xl font-bold text-slate-800">
-             이 설명서는 '지금의 나'를 나타내요
+             이 설명서는 '현재의 나'를 나타내요
            </h3>
            
            <p className="text-slate-600 leading-loose break-keep">
              사람의 마음은 날씨처럼 변하기도 하고<br/>
              상황이나 대상에 따라 다른 모습이 나오기도 해요.<br/><br/>
              이 설명서는 당신의 답변을 바탕으로 작성되었지만<br/>
-             분석 결과가 당신의 모든 것을 정의하진 않아요.<br/><br/>
+             분석 결과가 당신의 미래까지 정의하진 않아요.<br/><br/>
              우리가 함께 만든 <strong>나 사용 설명서</strong>는 <br/>
-             '지금의 나'를 이해하는 <strong>작은 나침반</strong>으로 활용해주세요.
+             '현재의 나'를 이해하는 <strong>작은 나침반</strong>으로 활용해주세요.
            </p>
         </motion.div>
       </section>

@@ -136,9 +136,8 @@ export function analyzeGottman(choices: UserChoice[]): GottmanAnalysis {
   };
 }
 
-// 인사이트 생성 - TKI
-export function generateTKIInsight(analysis: TKIAnalysis): Insight {
-  const styleDescriptions: Record<ConflictStyle, { title: string; description: string; tip: string; teaserHint: string }> = {
+// TKI Descriptions
+export const TKI_DESCRIPTIONS: Record<ConflictStyle, { title: string; description: string; tip: string; teaserHint: string }> = {
     competing: {
       title: "경쟁형 (Competing)",
       description:
@@ -176,11 +175,15 @@ export function generateTKIInsight(analysis: TKIAnalysis): Insight {
     },
   };
 
-  const primary = styleDescriptions[analysis.primaryStyle];
+// 인사이트 생성 - TKI
+export function generateTKIInsight(analysis: TKIAnalysis): Insight {
+
+
+  const primary = TKI_DESCRIPTIONS[analysis.primaryStyle];
   let description = primary.description;
 
   if (analysis.secondaryStyle) {
-    const secondary = styleDescriptions[analysis.secondaryStyle];
+    const secondary = TKI_DESCRIPTIONS[analysis.secondaryStyle];
     description += ` 하지만 상황에 따라서는 ${secondary.title.split(" ")[0]} 성향이 나오기도 해요.`;
   }
 
@@ -192,9 +195,8 @@ export function generateTKIInsight(analysis: TKIAnalysis): Insight {
   };
 }
 
-// 인사이트 생성 - 사과 언어
-export function generateApologyInsight(analysis: ApologyAnalysis): Insight {
-  const languageDescriptions: Record<
+// Apology Descriptions
+export const APOLOGY_DESCRIPTIONS: Record<
     ApologyLanguage,
     { title: string; description: string; tip: string; teaserHint: string }
   > = {
@@ -235,13 +237,12 @@ export function generateApologyInsight(analysis: ApologyAnalysis): Insight {
     },
   };
 
-  const primary = languageDescriptions[analysis.primaryLanguage];
-  let description = primary.description;
+// 인사이트 생성 - 사과 언어
+export function generateApologyInsight(analysis: ApologyAnalysis): Insight {
 
-  if (analysis.secondaryLanguage) {
-    const secondary = languageDescriptions[analysis.secondaryLanguage];
-    description += ` 또한 ${secondary.title}의 요소도 중요하게 생각하는 편이에요.`;
-  }
+
+  const primary = APOLOGY_DESCRIPTIONS[analysis.primaryLanguage];
+  let description = primary.description;
 
   return {
     title: primary.title,
