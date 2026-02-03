@@ -1,6 +1,6 @@
 import { UserManualStorage } from "./section1-schema";
 import { TKI_DESCRIPTIONS, APOLOGY_DESCRIPTIONS } from "./section2-analyzer";
-import { RECHARGE_INSIGHTS, STRESS_INSIGHTS, COMFORT_INSIGHTS } from "./section1-analyzer";
+import { BASELINE_INSIGHTS, STRESS_INSIGHTS, RECOVERY_INSIGHTS } from "./section1-analyzer";
 import { ConflictStyle, ApologyLanguage } from "./section2-schema";
 
 // 리포트 데이터 구조
@@ -140,7 +140,8 @@ export function generateUserManual(data: UserManualStorage): UserManualReport | 
   // 1. Identity
   const coreValueKey = s3.topPositiveValue.aspect.id.split('_')[0]; 
   const archetype = ARCHETYPES[coreValueKey] || ARCHETYPES.default;
-  const themeColor = s1.patterns.recharge_method === "solitude" ? "indigo" : "orange"; 
+  // independent, solitude check -> independent
+  const themeColor = s1.patterns.recharge_method === "independent" ? "indigo" : "orange"; 
 
   const keywords = [
     s3.topPositiveValue.aspect.label,
@@ -159,8 +160,8 @@ export function generateUserManual(data: UserManualStorage): UserManualReport | 
   // [Spec 1] Energy
   specs.push({
     label: "마음의 휴식처",
-    value: RECHARGE_INSIGHTS[s1.patterns.recharge_method]?.title.replace("당신은 ", "").replace(" 사람이에요", "") || "나만의 고유한 충전 방식",
-    description: RECHARGE_INSIGHTS[s1.patterns.recharge_method]?.description || "지친 하루 끝에 배터리를 다시 채우는 가장 확실한 방법이에요.",
+    value: BASELINE_INSIGHTS[s1.patterns.recharge_method]?.title.replace("당신은 ", "").replace(" 사람이에요", "") || "나만의 고유한 충전 방식",
+    description: BASELINE_INSIGHTS[s1.patterns.recharge_method]?.description || "지친 하루 끝에 배터리를 다시 채우는 가장 확실한 방법이에요.",
     icon: "battery",
   });
 
@@ -184,49 +185,24 @@ export function generateUserManual(data: UserManualStorage): UserManualReport | 
 
   // 3. Details Mapping (심층 분석)
   // Stress Response
-  const stressMap: Record<string, string> = {
-    acceptance: "있는 그대로 받아들여요",
-    anxiety: "조금 불안해하며 확인받고 싶어 해요",
-    independence: "혼자서 해결하려고 해요",
-    avoidance: "잠시 상황을 피하고 싶어 해요",
-    withdrawal: "마음의 문을 닫고 숨고 싶어 해요",
-    shutdown: "생각이 멈추고 얼어붙어요",
-    mobilization: "해결하기 위해 에너지를 쏟아요",
-    defensiveness: "자신을 보호하려고 방어적으로 변해요",
-  };
-  const stressTitleMap: Record<string, string> = {
-    acceptance: "잔잔한 호수 같은 평정심",
-    anxiety: "확인이 필요한 불안한 마음",
-    independence: "스스로 일어서는 오뚝이",
-    avoidance: "잠시 멈춤 버튼이 필요한 순간",
-    withdrawal: "안전한 동굴 속의 휴식",
-    shutdown: "일시 정지된 회로",
-    mobilization: "해결을 향해 달리는 전차",
-    defensiveness: "나를 지키는 방패",
-  };
-  const stressDescMap: Record<string, string> = {
-    acceptance: "상황을 부정하기보다는, '그럴 수도 있지' 하고 차분하게 현실을 바라보는 편이에요.",
-    anxiety: "혹시 내가 실수한 건 아닐까 걱정하며, 그 사람의 마음이 변치 않았는지 확인받고 싶어 한답니다.",
-    independence: "누군가에게 기대기보다는, 스스로 상황을 통제하고 해결할 때 마음이 편안해져요.",
-    avoidance: "감당하기 힘든 감정이 몰려오면, 일단 잠시 스위치를 끄고 거리를 두고 싶어져요.",
-    withdrawal: "상처받지 않기 위해 마음 깊은 곳 안전한 동굴로 숨어버리는 경향이 있어요.",
-    shutdown: "너무 큰 스트레스 앞에서는 머릿속이 하얗게 되고, 아무 말도 할 수 없게 되어버려요.",
-  };
+    // Consolidated logic used in analyzer, so report uses analyzer's insights directly for title/desc.
+    // However, guideDonts (line 270) uses raw pattern CHECK.
 
-  const stressValRaw = s1.patterns.stress_response || "acceptance";
-  const stressVal = (stressValRaw in STRESS_INSIGHTS) ? stressValRaw : "acceptance";
+
+  const stressValRaw = s1.patterns.stress_response || "secure";
+  const stressVal = (stressValRaw in STRESS_INSIGHTS) ? stressValRaw : "secure";
 
   // Comfort Language
-  const comfortValRaw = s1.patterns.comfort_language || "listening";
-  const comfortVal = (comfortValRaw in COMFORT_INSIGHTS) ? comfortValRaw : "listening";
+  const comfortValRaw = s1.patterns.comfort_language || "connection";
+  const comfortVal = (comfortValRaw in RECOVERY_INSIGHTS) ? comfortValRaw : "connection";
 
   // Coping Secondary Logic is removed as per user request
   // Instead, we use Apology Secondary
   
   // Apology Language
-  const apologyInsight = s2.insights?.apology;
-  const apologyTitle = apologyInsight?.title || "진심이 담긴 사과";
-  const apologyDesc = apologyInsight?.description || "상처받은 마음을 어루만져주는 진솔한 대화가 필요해요.";
+  const apologyPrimaryVal = s2.analysis!.apology!.primaryLanguage as ApologyLanguage;
+  const apologyTitle = APOLOGY_DESCRIPTIONS[apologyPrimaryVal].title;
+  const apologyDesc = APOLOGY_DESCRIPTIONS[apologyPrimaryVal].description;
 
   const apologySecondaryVal = s2.analysis?.apology?.secondaryLanguage as ApologyLanguage | undefined;
 
@@ -246,7 +222,7 @@ export function generateUserManual(data: UserManualStorage): UserManualReport | 
   // [Do 1] Comfort
   guideDos.push({
     title: "힘들어보일 땐 이렇게 해주세요",
-    detailedExample: COMFORT_INSIGHTS[comfortVal].description,
+    detailedExample: RECOVERY_INSIGHTS[comfortVal].description,
   });
 
   // [Do 2] Apology
@@ -268,12 +244,13 @@ export function generateUserManual(data: UserManualStorage): UserManualReport | 
   });
 
   // [Dont 2] Stress Response
-  if (s1.patterns.stress_response === "avoidance" || s1.patterns.stress_response === "withdrawal") {
+  if (s1.patterns.stress_response === "flight" || s1.patterns.stress_response === "freeze") {
     guideDonts.push({
       title: "혼자 있고 싶어 할 때",
       detailedExample: "제가 동굴로 들어갔을 때 억지로 대화를 시도하거나 문을 두드리지 말아주세요. 잠시 기다려주시면 스스로 충전하고 웃으며 나올 거예요.",
     });
-  } else if (s1.patterns.stress_response === "anxiety") {
+  } else if (s1.patterns.stress_response === "anxious") {
+
     guideDonts.push({
       title: "연락이 닿지 않을 때",
       detailedExample: "제가 불안해할 때 연락을 뚝 끊거나 잠수를 타버리는 건 정말 힘들어요. 바쁘다면 '바빠서 나중에 연락할게' 한 마디면 충분해요.",
@@ -325,8 +302,8 @@ export function generateUserManual(data: UserManualStorage): UserManualReport | 
         },
         comfort: {
           title: "가장 필요한 위로",
-          value: COMFORT_INSIGHTS[comfortVal].title,
-          description: COMFORT_INSIGHTS[comfortVal].description,
+          value: RECOVERY_INSIGHTS[comfortVal].title,
+          description: RECOVERY_INSIGHTS[comfortVal].description,
         }
       },
       section2: {

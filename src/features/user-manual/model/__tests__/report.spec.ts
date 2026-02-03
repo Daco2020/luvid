@@ -13,9 +13,9 @@ const createMockStorage = (): UserManualStorage => ({
     completed: true,
     answers: [],
     patterns: {
-      recharge_method: "solitude", // -> "나만의 동굴이 필요한 사람 (고독형)"
-      stress_response: "avoidance", // -> "잠시 상황을 피하고 싶어 해요"
-      comfort_language: "listening", // -> "조용히 내 편이 되어 들어주기"
+      recharge_method: "independent", // -> "홀로서기 가능한 독립형"
+      stress_response: "flight",
+      comfort_language: "connection", // -> "따뜻한 공감이 필요한 연결형"
       uncertainty_tolerance: "high",
       conflict_resolution: "constructive"
     },
@@ -98,7 +98,7 @@ describe("generateUserManual", () => {
     // Spec 1: Energy (Recharge)
     const energySpec = report.specs.find(s => s.icon === "battery");
     expect(energySpec).toBeDefined();
-    expect(energySpec?.value).toContain("혼자만의 시간이 필요한"); // Processed from RECHARGE_INSIGHTS.solitude.title
+    expect(energySpec?.value).toContain("홀로서기 가능한 독립형"); // Processed from RECHARGE_INSIGHTS.independent.title
 
     // Spec 2: Conflict (Primary Style)
     const conflictSpec = report.specs.find(s => s.icon === "wifi");
@@ -115,20 +115,20 @@ describe("generateUserManual", () => {
     
     // Stress
     expect(details.section1.stress.title).toBe("스트레스가 찾아오면");
-    expect(details.section1.stress.value).toBe("잠시 멈춤 버튼이 필요한 순간"); // "avoidance" title map check
+    expect(details.section1.stress.value).toContain("'일단 이 자리를 피하자'"); // "flight" title map check
     
     // Comfort
     expect(details.section1.comfort.title).toBe("가장 필요한 위로");
-    expect(details.section1.comfort.value).toBe("묵묵히 들어주는 대나무 숲"); // "listening" title map check
+    expect(details.section1.comfort.value).toBe("\"힘들었지?\" (토닥토닥)");
 
     // Apology
     expect(details.section2.apology.title).toBe("마음이 풀리는 사과"); 
-    expect(details.section2.apology.value).toBe("진심 어린 후회 표현"); 
+    expect(details.section2.apology.value).toBe("\"진심으로 미안해\""); 
 
     // Apology Secondary (New Logic)
     expect(details.section2.apologySecondary).toBeDefined();
     expect(details.section2.apologySecondary?.title).toBe("이런 사과도 좋아요");
-    expect(details.section2.apologySecondary?.value).toBe("책임 인정형"); 
+    expect(details.section2.apologySecondary?.value).toBe("\"내가 ~~해서 잘못했어\""); 
     expect(details.section2.apologySecondary?.description).toContain("구체적으로 무엇을 잘못했는지 인정해줄 때"); // check map correctness
 
     // 4. Dealbreakers Verification
@@ -139,7 +139,7 @@ describe("generateUserManual", () => {
     // Dos - Check keywords
     const dos = report.userGuide.dos;
     // comfort: "listening" -> "해결책을 주지 않아도 괜찮아요..." (from comfortDescMap)
-    expect(dos.some(d => d.detailedExample.includes("해결책을 주지 않아도 괜찮아요"))).toBe(true); 
+    expect(dos.some(d => d.detailedExample.includes("해결책보다는 내 감정을 알아주고"))).toBe(true); 
     expect(dos.some(d => d.detailedExample.includes("굳건한 신뢰"))).toBe(true); // core value check
 
     // Donts - Check keywords

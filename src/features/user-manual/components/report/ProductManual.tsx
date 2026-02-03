@@ -131,7 +131,7 @@ export function ProductManual({ report }: ProductManualProps) {
              className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-8"
           >
             <div className="md:col-span-2 text-center mb-4">
-               <h2 className="text-2xl font-bold text-slate-800 flex items-center justify-center gap-2">
+               <h2 className="text-2xl font-bold text-slate-800 flex items-center justify-center gap-2 mb-2">
                  <CloudLightning className="text-indigo-500" />
                  내 마음은 이렇게 회복해요
                </h2>
@@ -168,7 +168,7 @@ export function ProductManual({ report }: ProductManualProps) {
              className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-8"
           >
             <div className="md:col-span-2 text-center mb-4">
-               <h2 className="text-2xl font-bold text-slate-800 flex items-center justify-center gap-2">
+               <h2 className="text-2xl font-bold text-slate-800 flex items-center justify-center gap-2 mb-2">
                  <MessageCircle className="text-orange-500" />
                  갈등은 이렇게 풀고 싶어요
                </h2>
@@ -245,7 +245,7 @@ export function ProductManual({ report }: ProductManualProps) {
              <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto text-emerald-600 mb-4">
                <BookOpen size={24} />
              </div>
-             <h2 className="text-3xl font-bold text-slate-900">이렇게 해주세요 (Do's)</h2>
+             <h2 className="text-2xl font-bold text-slate-900">이렇게 해주세요 (Do's)</h2>
              <p className="text-slate-500">우리가 더 행복해지기 위한 작은 약속들이에요</p>
           </div>
 

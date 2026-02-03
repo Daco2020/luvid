@@ -247,7 +247,7 @@ export const scenarioB: Scenario = {
         },
         {
           id: "b5_5",
-          text: '어이없네. 너 진짜 그러는 거야?',
+          text: '어이없네. 너 진짜 왜 그러는 거야?',
           patterns: {
             primary: { type: "contempt", score: 3 },
             secondary: { type: "criticism", score: 1 },
