@@ -204,7 +204,7 @@ export function ProductManual({ report }: ProductManualProps) {
         </section>
       )}
       {/* 5.5 Core Values Section */ }
-      <section className="h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 bg-pink-700/80 text-white">
+      <section className="h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 bg-pink-700/75 text-white">
         <motion.div
            initial={{ opacity: 0 }}
            whileInView={{ opacity: 1 }}
@@ -218,7 +218,7 @@ export function ProductManual({ report }: ProductManualProps) {
 
           <div className="space-y-4">
             <h2 className="text-3xl md:text-4xl font-bold text-white/90">내 마음의 나침반</h2>
-            <p className="text-slate-200 text-lg">이것만큼은 꼭 지키고 싶어요.</p>
+            <p className="text-slate-200 text-lg">이것만큼은 꼭 함께 지키고 싶어요.</p>
           </div>
 
           <div className="grid grid-cols-1 gap-4 w-full">

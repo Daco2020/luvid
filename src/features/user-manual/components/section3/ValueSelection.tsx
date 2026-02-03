@@ -82,7 +82,7 @@ export function ValueSelection({
       <div className="w-full max-w-4xl space-y-8">
         {/* Header */}
         <div className="text-center space-y-3">
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-800">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-800 leading-normal">
             당신이 중요하게 생각하는 가치<br />4가지를 선택해주세요
           </h2>
           <p className="text-slate-600">
@@ -91,7 +91,7 @@ export function ValueSelection({
         </div>
 
         {/* Value Grid */}
-        <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-5 gap-4 md:gap-6">
+        <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4 md:gap-6">
           {coreValues.map((value) => {
             const selected = isSelected(value.id);
             const animatedColor = chipColors[value.id];

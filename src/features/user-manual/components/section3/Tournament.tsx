@@ -26,7 +26,7 @@ export function Tournament({ type, currentMatch, onSelect }: TournamentProps) {
   const title = type === "positive" ? "추구하는 가치 토너먼트" : "거부하는 가치 토너먼트";
   const subtitle =
     type === "positive"
-      ? "연인에게서 더 중요하게 생각하는 가치를 선택해주세요"
+      ? "연인과 함께 추구하고 싶은 것을 선택해주세요"
       : "절대 받아들일 수 없는 것을 선택해주세요";
 
   const roundName = round === 1 ? "16강" : round === 2 ? "8강" : round === 3 ? "준결승" : "결승";
