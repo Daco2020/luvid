@@ -69,6 +69,10 @@ const createMockStorage = (): UserManualStorage => ({
         type: "positive"
       }
     },
+    top4PositiveValues: [
+      { rank: 1, coreValueId: "trust", aspect: { id: "trust_positive_1", label: "굳건한 신뢰", description: "서로를 믿는 마음", type: "positive" } },
+      { rank: 2, coreValueId: "growth", aspect: { id: "growth_positive_1", label: "함께하는 성장", description: "발전하는 관계", type: "positive" } },
+    ],
     topNegativeValue: {
       coreValueId: "honesty",
       aspect: {
@@ -78,6 +82,10 @@ const createMockStorage = (): UserManualStorage => ({
         type: "negative"
       }
     },
+    top4NegativeValues: [
+      { rank: 1, coreValueId: "honesty", aspect: { id: "honesty_negative_1", label: "거짓말", description: "속이는 행동", type: "negative" } },
+      { rank: 2, coreValueId: "respect", aspect: { id: "respect_negative_1", label: "무시", description: "존중없는 태도", type: "negative" } },
+    ],
     insight: "test insight"
   } as Section3Result
 });
@@ -133,6 +141,7 @@ describe("generateUserManual", () => {
 
     // 4. Dealbreakers Verification
     expect(report.dealbreakers[0].label).toBe("거짓말"); // section3 topNegativeValue
+    expect(report.dealbreakers[0].rank).toBe(1);
     expect(report.dealbreakers[0].description).toContain("속이는 행동");
 
     // 5. User Guide Verification

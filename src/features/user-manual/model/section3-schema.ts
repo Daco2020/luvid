@@ -86,11 +86,21 @@ export const section3ResultSchema = z.object({
     coreValueId: z.string(), // 어느 핵심 가치에서 나왔는지
     aspect: valueAspectSchema, // 구체적인 항목
   }),
+  top4PositiveValues: z.array(z.object({
+    rank: z.number(),
+    coreValueId: z.string(),
+    aspect: valueAspectSchema,
+  })).optional(),
   topNegativeValue: z.object({
     // 가장 큰 딜브레이커
     coreValueId: z.string(),
     aspect: valueAspectSchema,
   }),
+  top4NegativeValues: z.array(z.object({
+    rank: z.number(), // 1, 2, 3, 3
+    coreValueId: z.string(),
+    aspect: valueAspectSchema,
+  })).optional(), // Optional for backward compatibility but we will populate it
   insight: z.string(), // 분석 결과 인사이트
 });
 

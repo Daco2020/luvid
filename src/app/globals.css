@@ -2,23 +2,25 @@
 
 @theme {
   /* User Provided Palette */
-  --color-primary: #547AB3; /* Strong Steel Blue */
-  --color-secondary: #ECEFF1; /* Soft Periwinkle */
-  --color-accent: #B1D6DE; /* Light Teal/Blue */
-  --color-highlight: #CDDBF5; /* Pale Blue */
-  --color-background: #EEF0FC; /* Very Light Lavender Blue Background */
-  
-  --color-success: #B1D6DE; 
-  --color-error: #EF9A9A;
-  
+  --color-primary: #547ab3; /* Strong Steel Blue */
+  --color-secondary: #eceff1; /* Soft Periwinkle */
+  --color-accent: #b1d6de; /* Light Teal/Blue */
+  --color-highlight: #cddbf5; /* Pale Blue */
+  --color-background: #eef0fc; /* Very Light Lavender Blue Background */
+
+  --color-success: #b1d6de;
+  --color-error: #ef9a9a;
+
   --color-foreground: #232931; /* Slate 800 */
-  --color-muted: #94A3B8; /* Slate 400 */
-  --color-border: #CDDBF5; /* Matching highlight for borders */
-  
+  --color-muted: #94a3b8; /* Slate 400 */
+  --color-border: #cddbf5; /* Matching highlight for borders */
+
   /* Fonts */
-  --font-sans: var(--font-geist-sans), "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-  --font-display: var(--font-nunito), "Pretendard", -apple-system, BlinkMacSystemFont, sans-serif;
-  
+  --font-sans: var(--font-geist-sans), "Pretendard", -apple-system,
+    BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+  --font-display: var(--font-nunito), "Pretendard", -apple-system,
+    BlinkMacSystemFont, sans-serif;
+
   /* Radii - Clean & Modern */
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
@@ -31,7 +33,8 @@
   .glass-card {
     background-color: white;
     border: 1px solid var(--color-border);
-    box-shadow: 0 4px 6px -1px rgba(84, 122, 179, 0.05), 0 2px 4px -1px rgba(84, 122, 179, 0.05);
+    box-shadow: 0 4px 6px -1px rgba(84, 122, 179, 0.05),
+      0 2px 4px -1px rgba(84, 122, 179, 0.05);
   }
 }
 
@@ -40,6 +43,11 @@ body {
   @apply bg-background text-foreground font-sans text-sm antialiased;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  @apply font-display font-bold text-slate-800 tracking-tight;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-display font-bold tracking-tight;
 }

@@ -37,6 +37,10 @@ export function analyzeSection3(selections: Section3Selections): Section3Result 
     topNegativeData.aspect
   );
 
+  // Top 4 Values Logic
+  const top4PositiveValues = getTop4Values(positiveTournament);
+  const top4NegativeValues = getTop4Values(negativeTournament);
+
   return {
     completed: true,
     completedAt: new Date().toISOString(),
@@ -45,12 +49,59 @@ export function analyzeSection3(selections: Section3Selections): Section3Result 
       coreValueId: topPositiveData.coreValue.id,
       aspect: topPositiveData.aspect,
     },
+    top4PositiveValues,
     topNegativeValue: {
       coreValueId: topNegativeData.coreValue.id,
       aspect: topNegativeData.aspect,
     },
+    top4NegativeValues,
     insight,
   };
+}
+
+function getTop4Values(tournament: { 
+    matches: Section3Selections["positiveTournament"]["matches"]; 
+    winnerId: string; 
+    runnerUpId: string; 
+}) {
+  const { matches, winnerId, runnerUpId } = tournament;
+  const results: { rank: number; coreValueId: string; aspect: ValueAspect }[] = [];
+
+  // Rank 1: Winner
+  const winnerData = getValueAspectById(winnerId);
+  if (winnerData) {
+    results.push({ rank: 1, coreValueId: winnerData.coreValue.id, aspect: winnerData.aspect });
+  }
+
+  // Rank 2: Runner Up
+  const runnerUpData = getValueAspectById(runnerUpId);
+  if (runnerUpData) {
+    results.push({ rank: 2, coreValueId: runnerUpData.coreValue.id, aspect: runnerUpData.aspect });
+  }
+
+  // Rank 3: Losers of Semi-Finals
+  // Find max round (Finals)
+  const rounds = matches.map(m => m.round);
+  const maxRound = Math.max(...rounds);
+  const semiFinalRound = maxRound - 1;
+
+  if (semiFinalRound >= 1) {
+    const semiFinalMatches = matches.filter(m => m.round === semiFinalRound);
+    
+    semiFinalMatches.forEach(match => {
+      // Find loser
+      const loserId = match.winnerId === match.aspectAId ? match.aspectBId : match.aspectAId;
+      // Exclude if this loser is somehow strictly equal to winner/runnerUp (shouldn't happen)
+      if (loserId !== runnerUpId && loserId !== winnerId) {
+         const loserData = getValueAspectById(loserId);
+         if (loserData) {
+            results.push({ rank: 3, coreValueId: loserData.coreValue.id, aspect: loserData.aspect });
+         }
+      }
+    });
+  }
+  
+  return results;
 }
 
 /**
