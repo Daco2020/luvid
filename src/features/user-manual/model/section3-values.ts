@@ -183,65 +183,6 @@ export const CORE_VALUES: CoreValue[] = [
     ],
   },
 
-  // 4. 신뢰성 (제외)
-  // {
-  //   id: "reliability",
-  //   name: "신뢰성",
-  //   nameEn: "Reliability",
-  //   positiveAspects: [
-  //     {
-  //       id: "reliability_pos_1",
-  //       label: "일관된 행동",
-  //       description: "말과 행동이 일치한다",
-  //       type: "positive",
-  //     },
-  //     {
-  //       id: "reliability_pos_2",
-  //       label: "책임감",
-  //       description: "맡은 일을 끝까지 해낸다",
-  //       type: "positive",
-  //     },
-  //     {
-  //       id: "reliability_pos_3",
-  //       label: "예측 가능성",
-  //       description: "행동 패턴이 일정하다",
-  //       type: "positive",
-  //     },
-  //     {
-  //       id: "reliability_pos_4",
-  //       label: "의지할 수 있음",
-  //       description: "어려울 때 믿고 기댈 수 있다",
-  //       type: "positive",
-  //     },
-  //   ],
-  //   negativeAspects: [
-  //     {
-  //       id: "reliability_neg_1",
-  //       label: "말과 행동 불일치",
-  //       description: "말만 하고 행동하지 않는다",
-  //       type: "negative",
-  //     },
-  //     {
-  //       id: "reliability_neg_2",
-  //       label: "무책임",
-  //       description: "중요한 일도 대충 한다",
-  //       type: "negative",
-  //     },
-  //     {
-  //       id: "reliability_neg_3",
-  //       label: "변덕스러움",
-  //       description: "기분에 따라 태도가 달라진다",
-  //       type: "negative",
-  //     },
-  //     {
-  //       id: "reliability_neg_4",
-  //       label: "믿을 수 없음",
-  //       description: "중요한 순간에 의지할 수 없다",
-  //       type: "negative",
-  //     },
-  //   ],
-  // },
-
   // 5. 존중
   {
     id: "respect",
@@ -772,65 +713,6 @@ export const CORE_VALUES: CoreValue[] = [
       },
     ],
   },
-
-  // 14. 친절함 (제외)
-  // {
-  //   id: "kindness",
-  //   name: "친절함",
-  //   nameEn: "Kindness",
-  //   positiveAspects: [
-  //     {
-  //       id: "kindness_pos_1",
-  //       label: "따뜻한 말",
-  //       description: "따뜻한 말을 자주 한다",
-  //       type: "positive",
-  //     },
-  //     {
-  //       id: "kindness_pos_2",
-  //       label: "작은 배려",
-  //       description: "작은 것도 챙겨준다",
-  //       type: "positive",
-  //     },
-  //     {
-  //       id: "kindness_pos_3",
-  //       label: "타인에게 친절",
-  //       description: "다른 사람들에게도 친절하다",
-  //       type: "positive",
-  //     },
-  //     {
-  //       id: "kindness_pos_4",
-  //       label: "부드러운 태도",
-  //       description: "항상 부드럽게 대한다",
-  //       type: "positive",
-  //     },
-  //   ],
-  //   negativeAspects: [
-  //     {
-  //       id: "kindness_neg_1",
-  //       label: "차가운 말투",
-  //       description: "말이 차갑고 날카롭다",
-  //       type: "negative",
-  //     },
-  //     {
-  //       id: "kindness_neg_2",
-  //       label: "무신경",
-  //       description: "작은 것을 챙기지 않는다",
-  //       type: "negative",
-  //     },
-  //     {
-  //       id: "kindness_neg_3",
-  //       label: "타인에게 무례",
-  //       description: "다른 사람들에게 무례하다",
-  //       type: "negative",
-  //     },
-  //     {
-  //       id: "kindness_neg_4",
-  //       label: "거친 태도",
-  //       description: "태도가 거칠다",
-  //       type: "negative",
-  //     },
-  //   ],
-  // },
 
   // 15. 지적 호기심
   {

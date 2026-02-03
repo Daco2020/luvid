@@ -217,13 +217,13 @@ export function generateUserManual(data: UserManualStorage): UserManualReport | 
   const coreValues = (s3.top4PositiveValues && s3.top4PositiveValues.length > 0)
     ? s3.top4PositiveValues.map((item: any) => ({
         label: item.aspect.label,
-        description: item.aspect.description || "당신이 가장 중요하게 생각하는 가치예요.",
+        description: item.aspect.description,
         rank: item.rank
       }))
     : [
         {
           label: s3.topPositiveValue.aspect.label,
-          description: s3.topPositiveValue.aspect.description || "당신이 가장 중요하게 생각하는 가치예요.",
+          description: s3.topPositiveValue.aspect.description,
           rank: 1
         }
       ];
@@ -232,13 +232,13 @@ export function generateUserManual(data: UserManualStorage): UserManualReport | 
   const dealbreakers = (s3.top4NegativeValues && s3.top4NegativeValues.length > 0)
     ? s3.top4NegativeValues.map((item: any) => ({
         label: item.aspect.label,
-        description: `미래의 연인에게 마음이 가장 차갑게 식어버리는 순간이에요. ${item.aspect.description || ""}`,
+        description: item.aspect.description,
         rank: item.rank
       }))
     : [
         {
           label: s3.topNegativeValue.aspect.label,
-          description: `미래의 연인에게 마음이 가장 차갑게 식어버리는 순간이에요. ${s3.topNegativeValue.aspect.description || ""}`,
+          description: s3.topNegativeValue.aspect.description,
           rank: 1
         },
       ];

@@ -204,21 +204,21 @@ export function ProductManual({ report }: ProductManualProps) {
         </section>
       )}
       {/* 5.5 Core Values Section */ }
-      <section className="h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 bg-[#0F172A] text-white">
+      <section className="h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 bg-pink-700/80 text-white">
         <motion.div
            initial={{ opacity: 0 }}
            whileInView={{ opacity: 1 }}
            transition={{ duration: 0.8 }}
            className="max-w-xl w-full text-center space-y-10"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-400/20 text-amber-300 rounded-full text-sm font-bold border border-amber-400/30">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-400/25 text-amber-300 rounded-full text-sm font-bold border border-amber-400/30">
             <Star size={16} />
             <span>추구 가치</span>
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-3xl md:text-5xl font-bold text-white">내 마음의 나침반</h2>
-            <p className="text-slate-400 text-lg">이것만큼은 꼭 지키고 싶어요.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-white/90">내 마음의 나침반</h2>
+            <p className="text-slate-200 text-lg">이것만큼은 꼭 지키고 싶어요.</p>
           </div>
 
           <div className="grid grid-cols-1 gap-4 w-full">
@@ -227,21 +227,21 @@ export function ProductManual({ report }: ProductManualProps) {
                 key={idx} 
                 className={`p-6 rounded-2xl border backdrop-blur-md text-left transition-colors ${
                   idx === 0 
-                  ? "bg-amber-400/10 border-amber-400/30 shadow-[0_0_30px_-10px_rgba(251,191,36,0.2)]" 
-                  : "bg-white/5 border-white/10 hover:bg-white/10"
+                  ? "bg-amber-400/25 border-amber-400/40 shadow-[0_0_30px_-10px_rgba(251,191,36,0.2)]" 
+                  : "bg-white/10 border-white/20 hover:bg-white/20"
                 }`}
               >
                   <div className="flex items-center gap-3 mb-2">
                     <span className={`px-2 py-1 rounded text-xs font-bold ${
-                      idx === 0 ? "bg-amber-400 text-slate-900" : "bg-slate-700 text-slate-300"
+                      idx === 0 ? "bg-amber-400 text-slate-900" : "bg-slate-700 text-slate-200"
                     }`}>
                       {item.rank || idx + 1}위
                     </span>
-                    <h3 className={`text-xl font-bold ${idx === 0 ? "text-amber-300" : "text-white"}`}>
+                    <h3 className={`text-xl font-bold ${idx === 0 ? "text-amber-300" : "text-white/90"}`}>
                       {item.label}
                     </h3>
                   </div>
-                  <p className="text-slate-300 text-sm leading-relaxed">
+                  <p className="text-slate-200 text-sm leading-relaxed">
                     {item.description}
                   </p>
               </div>
@@ -264,7 +264,7 @@ export function ProductManual({ report }: ProductManualProps) {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-3xl md:text-5xl font-bold text-white">마음의 문이 닫히는 순간</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white/90">마음의 문이 닫히는 순간</h2>
             <p className="text-slate-400 text-lg">이것만큼은 정말 참기 힘들어요.</p>
           </div>
 
