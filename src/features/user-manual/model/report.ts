@@ -8,7 +8,7 @@ export interface PsychologicalSpec {
   label: string; 
   value: string; 
   description: string;
-  icon: "battery" | "wifi" | "cpu" | "shield" | "star";
+  icon: string;
 }
 
 export interface DetailSpec {
@@ -167,8 +167,8 @@ export function generateUserManual(data: UserManualStorage): UserManualReport | 
   // [Spec 1] Energy
   specs.push({
     label: "마음의 휴식처",
-    value: BASELINE_INSIGHTS[s1.patterns.recharge_method]?.title.replace("당신은 ", "").replace(" 사람이에요", "") || "나만의 고유한 충전 방식",
-    description: BASELINE_INSIGHTS[s1.patterns.recharge_method]?.description || "지친 하루 끝에 배터리를 다시 채우는 가장 확실한 방법이에요.",
+    value: BASELINE_INSIGHTS[s1.patterns.recharge_method]?.title.replace("당신은 ", "").replace(" 사람이에요", ""),
+    description: BASELINE_INSIGHTS[s1.patterns.recharge_method]?.description,
     icon: "battery",
   });
 
@@ -177,17 +177,17 @@ export function generateUserManual(data: UserManualStorage): UserManualReport | 
   
   specs.push({
     label: "갈등을 대하는 태도",
-    value: TKI_DESCRIPTIONS[conflictStyle]?.title || "유연한 대처 방식",
-    description: "미래의 연인과 다툴 때, 무의식적으로 나오게 되는 태도랍니다.",
-    icon: "wifi",
+    value: TKI_DESCRIPTIONS[conflictStyle]?.title,
+    description: TKI_DESCRIPTIONS[conflictStyle]?.description,
+    icon: "sword", // 갈등 (Swords or Boxing Glove)
   });
 
   // [Spec 3] Core Value
   specs.push({
     label: "가장 소중한 가치",
     value: s3.topPositiveValue.aspect.label,
-    description: "미래의 연애에서 이것만큼은 절대적으로 지켜지길 바라는 기준이에요.",
-    icon: "cpu",
+    description: s3.topPositiveValue.aspect.description,
+    icon: "star",
   });
 
   // 3. Details Mapping (심층 분석)

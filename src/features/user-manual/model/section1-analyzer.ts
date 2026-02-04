@@ -43,26 +43,26 @@ export function mapUncertaintyTolerance(
 
 export const BASELINE_INSIGHTS: Record<string, Insight> = {
   independent: { // Previously Solitude
-    title: "홀로서기 가능한 독립형",
+    title: "혼자서도 괜찮아! 독립형",
     description: "혼자만의 시간과 자율성이 보장될 때 가장 안정감을 느껴요. 방해받지 않는 환경을 선호해요.",
     tip: "연인에게 \"지금은 혼자 생각할 시간이 필요해\"라고 명확히 알려주세요.",
-    teaserHint: "혼자 있을 때 가장 자유로운가요? 🌿",
+    teaserHint: "혼자 있을 때 가장 편안한가요? 🌿",
   },
   relational: { // Previously Connection (Social)
-    title: "사람 속에서 피어나는 관계형",
+    title: "함께할 때 빛나는 관계형",
     description: "타인과의 교류와 소속감 속에서 에너지를 얻어요. 관계의 단절이나 소외감에 예민하게 반응해요.",
     tip: "힘들 땐 혼자 끙끙 앓지 말고 친구나 연인을 만나 에너지를 채우세요.",
     teaserHint: "사람들과 함께할 때 살아있음을 느끼나요? ⚡",
   },
   emotional: { // New: Deep Intimacy/Sensitivity
-    title: "마음을 나누는 정서형",
-    description: "깊은 정서적 유대감과 공감을 통해 회복해요. 분위기나 감정의 변화에 섬세하게 반응하는 편이에요.",
+    title: "깊은 마음을 나누는 정서형",
+    description: "깊은 정서적 교감과 공감을 통해 에너지를 얻어요. 분위기나 감정의 변화에 섬세하게 반응하는 편이에요.",
     tip: "자신의 감정을 솔직하게 표현하고 위로받는 것을 주저하지 마세요.",
     teaserHint: "깊은 대화를 나눌 때 마음이 편안해지나요? ☁️",
   },
   physical: { // Previously Sensory/Activity
-    title: "감각이 깨어있는 신체형",
-    description: "직접 몸을 움직이거나 오감을 만족시킬 때 활력을 되찾아요. 신체적 컨디션이 기분에 큰 영향을 미쳐요.",
+    title: "감각을 깨우는 신체형",
+    description: "직접 몸을 움직이거나 오감을 만족시킬 때 에너지를 얻어요. 신체적 컨디션이 기분에 큰 영향을 미쳐요.",
     tip: "기분이 다운될 땐 맛있는 걸 먹거나 땀 흘리는 운동을 해보세요.",
     teaserHint: "몸을 움직여야 스트레스가 풀리나요? 🏃",
   },

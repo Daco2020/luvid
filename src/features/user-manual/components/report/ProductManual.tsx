@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { Battery, Wifi, Cpu, AlertTriangle, CheckCircle, Share2, Sparkles, BookOpen, Heart, MessageCircle, CloudLightning, Shield, Info, X, Star, HeartHandshake, HeartIcon, HeartOff, HeartPlus, HeartPulseIcon, HeartMinus, BoxSelect, LassoSelect, HandFist, InfoIcon, Anchor, Sprout, Home, Waves, TreeDeciduous, Umbrella, Smile, Hammer, Sun, Flame, Map, Telescope, Feather, Footprints, Scale, Gift, HandHeart } from "lucide-react";
+import { Battery, Wifi, Cpu, AlertTriangle, CheckCircle, Share2, Sparkles, BookOpen, Heart, MessageCircle, CloudLightning, Shield, Info, X, Star, HeartHandshake, HeartIcon, HeartOff, HeartPlus, HeartPulseIcon, HeartMinus, BoxSelect, LassoSelect, HandFist, InfoIcon, Anchor, Sprout, Home, Waves, TreeDeciduous, Umbrella, Smile, Hammer, Sun, Flame, Map, Telescope, Feather, Footprints, Scale, Gift, HandHeart, SwordIcon, Sword, BatteryChargingIcon, BatteryIcon } from "lucide-react";
 import { PsychologicalSpec, UserManualReport, UserGuideItem } from "../../model/report";
 import { Modal } from "@/shared/components/Modal";
 
@@ -98,7 +98,7 @@ export function ProductManual({ report }: ProductManualProps) {
         onClose={closeModal} 
         title={modalData?.title || ""}
       >
-        <p className="text-slate-500 text-xs">상대에게 이렇게 말해보세요</p>
+        <p className="text-slate-500 text-xs text-center">상대에게 이렇게 말해보세요</p>
         <div className="space-y-4">
           <div className="p-4 bg-slate-100 rounded-xl border border-slate-100 text-slate-700 leading-relaxed font-medium">
              <span className="text-2xl mr-2">💬</span>
@@ -122,7 +122,7 @@ export function ProductManual({ report }: ProductManualProps) {
             나 사용 설명서<br/>
             <span className="text-primary italic">for you</span>
           </h1>
-          <p className="text-lg md:text-xl text-slate-600 font-light leading-relaxed">
+          <p className="text-lg md:text-xl text-slate-600 font-medium leading-relaxed">
             나조차 몰랐던 나를 이해하는 시간.<br/>
             당신만을 위한 하나뿐인 설명서가 도착했어요.
           </p>
@@ -487,12 +487,19 @@ export function ProductManual({ report }: ProductManualProps) {
 
 function SpecCard({ spec, delay }: { spec: PsychologicalSpec; delay: number }) {
   const Icon = {
-    battery: Battery,
-    wifi: Wifi,
-    cpu: Cpu,
+    battery: BatteryChargingIcon,
+    sword: SwordIcon,
+    spackles: Sparkles,
     shield: AlertTriangle,
-    star: Sparkles,
+    star: Star,
   }[spec.icon] || Sparkles;
+
+  const iconStyles = {
+    battery: "bg-green-100 text-green-600",
+    sword: "bg-rose-100 text-rose-600",
+    star: "bg-amber-100 text-amber-600",
+    shield: "bg-orange-100 text-orange-600", 
+  }[spec.icon] || "bg-slate-100 text-slate-600";
 
   return (
     <motion.div
@@ -501,7 +508,7 @@ function SpecCard({ spec, delay }: { spec: PsychologicalSpec; delay: number }) {
       transition={{ delay, duration: 0.6 }}
       className="bg-white p-6 rounded-2xl shadow-lg border border-slate-100 flex flex-col items-center text-center gap-4 hover:shadow-xl transition-shadow"
     >
-      <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-600">
+      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${iconStyles}`}>
         <Icon size={24} />
       </div>
       <div>

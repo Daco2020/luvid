@@ -139,38 +139,38 @@ export function analyzeGottman(choices: UserChoice[]): GottmanAnalysis {
 // TKI Descriptions
 export const TKI_DESCRIPTIONS: Record<ConflictStyle, { title: string; description: string; tip: string; teaserHint: string }> = {
     competing: {
-      title: "경쟁형 (Competing)",
+      title: "싸우자! 경쟁형",
       description:
         "갈등 상황에서 자신의 의견을 솔직하고 강하게 이야기하는 편이에요. 내 목표를 달성하는 것이 중요하고, 주관이 뚜렷한 스타일이랍니다.",
-      tip: '연인에게 이렇게 말하세요: "나는 내 생각을 솔직하게 말하는 편이야. 하지만 네 의견도 꼭 듣고 싶어."',
+      tip: '연인에게 이렇게 말해보세요. "나는 내 생각을 솔직하게 말하는 편이야. 하지만 네 의견도 꼭 듣고 싶어."',
       teaserHint: "내 생각은 확실하게 말하는 편이시네요! 💪",
     },
     avoiding: {
-      title: "회피형 (Avoiding)",
+      title: "도망쳐! 회피형",
       description:
         "갈등이 생기면 일단 한 발짝 뒤로 물러나거나 시간을 두고 싶어 해요. 불편한 공기를 견디기보다는 상황이 진정되길 기다리는 편이죠.",
-      tip: '연인에게 이렇게 말하세요: "싸우고 싶지 않아서 그러는 거야. 생각 정리할 시간이 조금 필요해."',
+      tip: '연인에게 이렇게 말해보세요. "싸우고 싶지 않아서 그러는 거야. 생각 정리할 시간이 조금 필요해."',
       teaserHint: "일단 거리를 두고 보는 스타일인가봐요? 🌫️",
     },
     accommodating: {
-      title: "수용형 (Accommodating)",
+      title: "알겠어. 수용형",
       description:
         "관계의 평화를 위해 내가 조금 양보하는 게 낫다고 생각하는 다정한 사람이에요. 상대방의 의견을 존중하고 맞춰주는 걸 편하게 느낍니다.",
-      tip: '연인에게 이렇게 말하세요: "나는 네 의견을 존중해. 하지만 내 생각도 들어줬으면 좋겠어."',
+      tip: '연인에게 이렇게 말해보세요. "나는 네 의견을 존중해. 하지만 내 생각도 들어줬으면 좋겠어."',
       teaserHint: "관계가 우선이라 양보도 잘하시는 편이죠? 🕊️",
     },
     collaborating: {
-      title: "협력형 (Collaborating)",
+      title: "해보자! 협력형",
       description:
         "갈등이 생기면 서로에게 가장 좋은 답을 찾기 위해 끝까지 대화하려 해요. 단순히 덮어두기보다 근본적인 해결을 원하는 적극적인 스타일이에요.",
-      tip: '연인에게 이렇게 말하세요: "우리 둘 다 만족할 수 있는 방법을 찾아보자. 함께 이야기하면 해결할 수 있어."',
+      tip: '연인에게 이렇게 말해보세요. "우리 둘 다 만족할 수 있는 방법을 찾아보자. 함께 이야기하면 해결할 수 있어."',
       teaserHint: "함께 좋은 방법을 찾아가는 걸 좋아하시네요! 🤝",
     },
     compromising: {
-      title: "타협형 (Compromising)",
+      title: "반반씩. 타협형",
       description:
         "갈등을 빠르고 공정하게 해결하고 싶어 해요. '너 하나, 나 하나' 서로 반반씩 양보해서 중간 지점을 찾는 것이 현실적이라고 생각합니다.",
-      tip: '연인에게 이렇게 말하세요: "우리 서로 조금씩 양보하면 어떨까? 중간에서 만나자."',
+      tip: '연인에게 이렇게 말해보세요. "우리 서로 조금씩 양보하면 어떨까? 중간에서 만나자."',
       teaserHint: "서로 반반씩 양보하는 게 현실적이라고 보시나봐요 ⚖️",
     },
   };
