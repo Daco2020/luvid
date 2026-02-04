@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { Battery, Wifi, Cpu, AlertTriangle, CheckCircle, Share2, Sparkles, BookOpen, Heart, MessageCircle, CloudLightning, Shield, Info, X, Star, HeartHandshake, HeartIcon, HeartOff, HeartPlus, HeartPulseIcon, HeartMinus, BoxSelect, LassoSelect, HandFist, InfoIcon } from "lucide-react";
+import { Battery, Wifi, Cpu, AlertTriangle, CheckCircle, Share2, Sparkles, BookOpen, Heart, MessageCircle, CloudLightning, Shield, Info, X, Star, HeartHandshake, HeartIcon, HeartOff, HeartPlus, HeartPulseIcon, HeartMinus, BoxSelect, LassoSelect, HandFist, InfoIcon, Anchor, Sprout, Home, Waves, TreeDeciduous, Umbrella, Smile, Hammer, Sun, Flame, Map, Telescope, Feather, Footprints, Scale, Gift, HandHeart } from "lucide-react";
 import { PsychologicalSpec, UserManualReport, UserGuideItem } from "../../model/report";
 import { Modal } from "@/shared/components/Modal";
 
@@ -10,7 +10,58 @@ interface ProductManualProps {
   report: UserManualReport;
 }
 
+// Icon Mapping
+const ARCHETYPE_ICONS: Record<string, any> = {
+  trust: Anchor,
+  honesty: Shield,
+  communication: MessageCircle,
+  respect: HandHeart,
+  stability: Home,
+  emotional_regulation: Waves,
+  independence: TreeDeciduous,
+  empathy: Umbrella,
+  humor: Smile,
+  diligence: Hammer,
+  positivity: Sun,
+  passion: Flame,
+  planning: Map,
+  intellectual_curiosity: Telescope,
+  sensitivity: Feather,
+  proactiveness: Footprints,
+  self_control: Scale,
+  acceptance: Waves,
+  consideration: Gift,
+  default: Sparkles,
+};
+
+// Gradient Color Mapping (Tailwind Classes)
+const ARCHETYPE_GRADIENTS: Record<string, string> = {
+  trust: "from-blue-500 to-cyan-400",
+  honesty: "from-emerald-500 to-teal-400",
+  communication: "from-sky-400 to-blue-400",
+  respect: "from-violet-500 to-purple-400",
+  stability: "from-green-600 to-emerald-400",
+  emotional_regulation: "from-teal-500 to-emerald-400",
+  independence: "from-indigo-500 to-blue-400",
+  empathy: "from-rose-400 to-pink-300",
+  humor: "from-amber-400 to-orange-300",
+  diligence: "from-slate-600 to-gray-400",
+  positivity: "from-yellow-400 to-amber-300",
+  passion: "from-red-500 to-rose-400",
+  planning: "from-blue-600 to-indigo-400",
+  intellectual_curiosity: "from-purple-600 to-violet-400",
+  sensitivity: "from-pink-400 to-rose-300",
+  proactiveness: "from-orange-500 to-amber-400",
+  self_control: "from-slate-700 to-slate-500",
+  acceptance: "from-teal-600 to-cyan-500",
+  consideration: "from-pink-500 to-rose-400",
+  default: "from-primary to-purple-400",
+};
+
 export function ProductManual({ report }: ProductManualProps) {
+  const IdentityIcon = ARCHETYPE_ICONS[report.identity.archetypeId] || Sparkles;
+  const gradientClass = ARCHETYPE_GRADIENTS[report.identity.archetypeId] || ARCHETYPE_GRADIENTS.default;
+
   const { scrollYProgress } = useScroll();
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
   
@@ -89,8 +140,8 @@ export function ProductManual({ report }: ProductManualProps) {
            transition={{ duration: 0.8 }}
            className="max-w-md w-full text-center space-y-8"
         >
-           <div className="w-24 h-24 mx-auto bg-gradient-to-br from-primary to-purple-400 rounded-3xl rotate-3 shadow-2xl flex items-center justify-center text-white">
-             <Sparkles size={48} />
+           <div className={`w-24 h-24 mx-auto bg-linear-to-br ${gradientClass} rounded-3xl rotate-3 shadow-2xl flex items-center justify-center text-white`}>
+             <IdentityIcon size={48} />
            </div>
            
            <div className="space-y-2">
@@ -109,8 +160,8 @@ export function ProductManual({ report }: ProductManualProps) {
       <section className="h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10">
         <div className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="col-span-1 md:col-span-3 text-center mb-8">
-             <h2 className="text-3xl font-bold text-slate-900">나를 보여주는 3가지 모습</h2>
-             <p className="text-slate-500">저를 가장 잘 나타내는 특징들이에요</p>
+             <h2 className="text-3xl font-bold text-slate-900 mb-2">나를 보여주는 3가지 모습</h2>
+             <p className="text-slate-500">나를 가장 잘 나타내는 특징들이에요</p>
           </div>
           
           {report.specs.map((spec, index) => (
@@ -216,7 +267,7 @@ export function ProductManual({ report }: ProductManualProps) {
 
           <div className="space-y-4">
             <h2 className="text-3xl md:text-4xl font-bold text-white/90">내 마음의 나침반</h2>
-            <p className="text-slate-200 text-lg">이것만큼은 꼭 함께 지키고 싶어요.</p>
+            <p className="text-white/70 text-lg">이것만큼은 꼭 함께 지키고 싶어요.</p>
           </div>
 
           <div className="grid grid-cols-1 gap-4 w-full">
@@ -226,7 +277,7 @@ export function ProductManual({ report }: ProductManualProps) {
                 className={`p-6 rounded-2xl border backdrop-blur-md text-left transition-colors ${
                   idx === 0 
                   ? "bg-amber-400/25 border-amber-400/40 shadow-[0_0_30px_-10px_rgba(251,191,36,0.2)]" 
-                  : "bg-white/10 border-white/20 hover:bg-white/20"
+                  : "bg-white/10 border-white/20"
                 }`}
               >
                   <div className="flex items-center gap-3 mb-2">
@@ -239,7 +290,7 @@ export function ProductManual({ report }: ProductManualProps) {
                       {item.label}
                     </h3>
                   </div>
-                  <p className="text-slate-200 text-sm leading-relaxed">
+                  <p className="text-white/90 text-sm leading-relaxed">
                     {item.description}
                   </p>
               </div>
@@ -273,7 +324,7 @@ export function ProductManual({ report }: ProductManualProps) {
                 className={`p-6 rounded-2xl border backdrop-blur-md text-left transition-colors ${
                   idx === 0 
                   ? "bg-red-500/10 border-red-500/30" 
-                  : "bg-white/5 border-white/10 hover:bg-white/10"
+                  : "bg-white/5 border-white/10"
                 }`}
               >
                   <div className="flex items-center gap-3 mb-2">
@@ -286,7 +337,7 @@ export function ProductManual({ report }: ProductManualProps) {
                       {item.label}
                     </h3>
                   </div>
-                  <p className="text-slate-300 text-sm leading-relaxed">
+                  <p className="text-slate-400 text-sm leading-relaxed">
                     {item.description}
                   </p>
               </div>
@@ -354,7 +405,7 @@ export function ProductManual({ report }: ProductManualProps) {
                 <div 
                   key={i} 
                   onClick={() => openModal(item)}
-                  className="flex items-center justify-between p-5 bg-indigo-100 hover:bg-indigo-100 transition-colors rounded-2xl cursor-pointer group active:scale-[0.98]"
+                  className="flex items-center justify-between p-5 bg-indigo-50 hover:bg-indigo-100 transition-colors rounded-2xl cursor-pointer group active:scale-[0.98]"
                 >
                   <div className="flex items-center gap-4">
                      <span className="w-8 h-8 rounded-full bg-indigo-300 text-indigo-600 flex items-center justify-center font-bold text-sm">

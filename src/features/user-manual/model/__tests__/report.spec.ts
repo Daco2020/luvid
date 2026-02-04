@@ -154,7 +154,11 @@ describe("generateUserManual", () => {
     // Donts - Check keywords
     const donts = report.userGuide.donts;
     expect(donts.some(d => d.detailedExample.includes("거짓말"))).toBe(true); // dealbreaker check
-    expect(donts.some(d => d.title === "혼자 있고 싶어 할 때")).toBe(true); // stress response: avoidance check
+    expect(donts.some(d => d.title === "내가 혼자 있고 싶어 할 때")).toBe(true); // Stress response title
+    
+    // Check archetypeId
+    // In mock data: topPositiveValue.coreValueId is "stability" (from line 71 in file)
+    expect(report.identity.archetypeId).toBe("stability");
     
   });
 

@@ -26,6 +26,7 @@ export interface UserManualReport {
   userName: string;
   identity: {
     archetype: string;
+    archetypeId: string;
     catchphrase: string;
     description: string; // Top Value 설명 + Vision
     keywords: string[];
@@ -115,10 +116,10 @@ const CATCHPHRASE_MAP: Record<string, string> = {
   honesty: "가면 없이 마주할 때 비로소 완성되는 진심",
   growth: "함께 걷는 걸음마다 더 근사해지는 우리",
   commitment: "계절이 바뀌어도 변치 않는 온기",
-  communication: "말보다 깊은 이해로 서로를 감싸 안는 순간",
+  communication: "대화를 통해 서로를 더 깊이 이해하는 순간",
   respect: "서로의 색깔을 있는 그대로 아껴주는 다정한 거리",
   stability: "가장 따뜻한 품에서 느끼는 완전한 평온",
-  emotional_regulation: "폭풍우 속에서도 서로를 지키는 고요한 등대처럼",
+  emotional_regulation: "감정의 파도 속에서도 서로를 지지해주는 든든한 존재",
   independence: "따로 또 같이, 서로를 더 빛나게 하는 완벽한 조화",
   empathy: "당신의 마음결을 가장 먼저 읽어주는 섬세한 사랑",
   humor: "함께 마주 보는 눈빛 속에 피어나는 유쾌한 웃음",
@@ -430,6 +431,7 @@ export function generateUserManual(data: UserManualStorage): UserManualReport | 
     userName: "User",
     identity: {
       archetype,
+      archetypeId: coreValueKey,
       catchphrase,
       description: identityDescription,
       keywords,
