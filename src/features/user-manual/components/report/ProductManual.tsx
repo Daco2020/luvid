@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { Battery, Wifi, Cpu, AlertTriangle, CheckCircle, Share2, Sparkles, BookOpen, Heart, MessageCircle, CloudLightning, Shield, Info, X, Star, HeartHandshake, HeartIcon, HeartOff, HeartPlus, HeartPulseIcon, HeartMinus, BoxSelect, LassoSelect, HandFist, InfoIcon, Anchor, Sprout, Home, Waves, TreeDeciduous, Umbrella, Smile, Hammer, Sun, Flame, Map, Telescope, Feather, Footprints, Scale, Gift, HandHeart, SwordIcon, Sword, BatteryChargingIcon, BatteryIcon } from "lucide-react";
+import { Battery, Wifi, Cpu, AlertTriangle, CheckCircle, Share2, Sparkles, BookOpen, Heart, MessageCircle, CloudLightning, Shield, Info, X, Star, HeartHandshake, HeartIcon, HeartOff, HeartPlus, HeartPulseIcon, HeartMinus, BoxSelect, LassoSelect, HandFist, InfoIcon, Anchor, Sprout, Home, Waves, TreeDeciduous, Umbrella, Smile, Hammer, Sun, Flame, Map, Telescope, Feather, Footprints, Scale, Gift, HandHeart, SwordIcon, Sword, BatteryChargingIcon, BatteryIcon, Compass, LucideCompass, CompassIcon, MapIcon } from "lucide-react";
 import { PsychologicalSpec, UserManualReport, UserGuideItem } from "../../model/report";
 import { Modal } from "@/shared/components/Modal";
 
@@ -430,7 +430,7 @@ export function ProductManual({ report }: ProductManualProps) {
            transition={{ duration: 0.8 }}
            className="max-w-md w-full text-center space-y-6 bg-white p-8 rounded-2xl shadow-sm border border-slate-100"
         >
-           <Info size={32} className="mx-auto text-slate-400 mb-2" />
+           <MapIcon size={32} className="mx-auto text-slate-400 mb-4" /> 
            
            <h3 className="text-xl font-bold text-slate-800">
              이 설명서는 '현재의 나'를 나타내요
@@ -442,7 +442,7 @@ export function ProductManual({ report }: ProductManualProps) {
              이 설명서는 당신의 답변을 바탕으로 작성되었지만<br/>
              분석 결과가 당신의 미래까지 정의하진 않아요.<br/><br/>
              우리가 함께 만든 <strong>나 사용 설명서</strong>는 <br/>
-             '현재의 나'를 이해하는 <strong>작은 나침반</strong>으로 활용해주세요.
+             <strong>'현재의 나'를 이해하는 삶의 지도로 활용해주세요.</strong>
            </p>
         </motion.div>
       </section>
