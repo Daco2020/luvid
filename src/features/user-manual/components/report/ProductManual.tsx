@@ -1,5 +1,7 @@
 "use client";
 
+
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { Battery, Wifi, Cpu, AlertTriangle, CheckCircle, Share2, Sparkles, BookOpen, Heart, MessageCircle, CloudLightning, Shield, Info, X, Star, HeartHandshake, HeartIcon, HeartOff, HeartPlus, HeartPulseIcon, HeartMinus, BoxSelect, LassoSelect, HandFist, InfoIcon, Anchor, Sprout, Home, Waves, TreeDeciduous, Umbrella, Smile, Hammer, Sun, Flame, Map, Telescope, Feather, Footprints, Scale, Gift, HandHeart, SwordIcon, Sword, BatteryChargingIcon, BatteryIcon, Compass, LucideCompass, CompassIcon, MapIcon } from "lucide-react";
@@ -59,6 +61,7 @@ const ARCHETYPE_GRADIENTS: Record<string, string> = {
 };
 
 export function ProductManual({ report }: ProductManualProps) {
+  const router = useRouter();
   const IdentityIcon = ARCHETYPE_ICONS[report.identity.archetypeId] || Sparkles;
   const gradientClass = ARCHETYPE_GRADIENTS[report.identity.archetypeId] || ARCHETYPE_GRADIENTS.default;
 
@@ -467,7 +470,10 @@ export function ProductManual({ report }: ProductManualProps) {
            
            <div className="flex gap-4">
            <div className="pt-8">
-             <button className="flex items-center gap-2 px-8 py-4 bg-pink-700/75 text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto">
+             <button 
+               onClick={() => router.push("/")}
+               className="flex items-center gap-2 px-8 py-4 bg-pink-700/75 text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto"
+             >
                <HeartHandshake size={20} />
                <span>Luv ID 발급받기</span>
              </button>
