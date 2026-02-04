@@ -159,7 +159,7 @@ export function ProductManual({ report }: ProductManualProps) {
       {/* 3. Specs Summary (3 Keys) */}
       <section className="h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10">
         <div className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="col-span-1 md:col-span-3 text-center mb-8">
+          <div className="col-span-1 md:col-span-3 text-center mb-4">
              <h2 className="text-3xl font-bold text-slate-900 mb-2">나를 보여주는 3가지 모습</h2>
              <p className="text-slate-500">나를 가장 잘 나타내는 특징들이에요</p>
           </div>
@@ -179,7 +179,7 @@ export function ProductManual({ report }: ProductManualProps) {
              transition={{ duration: 0.8 }}
              className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-8"
           >
-            <div className="md:col-span-2 text-center mb-4">
+            <div className="md:col-span-2 text-center mb-2">
                <h2 className="text-2xl font-bold text-slate-800 flex items-center justify-center gap-2 mb-2">
                  <CloudLightning className="text-indigo-500" />
                  내 마음은 이렇게 회복해요
@@ -216,7 +216,7 @@ export function ProductManual({ report }: ProductManualProps) {
              transition={{ duration: 0.8 }}
              className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-8"
           >
-            <div className="md:col-span-2 text-center mb-4">
+            <div className="md:col-span-2 text-center mb-2">
                <h2 className="text-2xl font-bold text-slate-800 flex items-center justify-center gap-2 mb-2">
                  <MessageCircle className="text-orange-500" />
                  갈등은 이렇게 풀고 싶어요
@@ -537,7 +537,7 @@ function DetailCard({ title, value, description, icon: Icon, color, delay }: { t
         <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider">{title}</h3>
         <h4 className="text-xl font-bold text-slate-900 break-keep">{value}</h4>
       </div>
-      <p className="text-slate-600 leading-relaxed break-keep">
+      <p className="text-slate-600 leading-relaxed break-keep min-h-[4.5rem]">
         {description}
       </p>
     </motion.div>
