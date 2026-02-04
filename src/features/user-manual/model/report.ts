@@ -360,7 +360,7 @@ export function generateUserManual(data: UserManualStorage): UserManualReport | 
   const posGuide = valueGuideMap[topPosId];
 
   guideDos.push({
-    title: "이럴 때 사랑받는다고 느껴",
+    title: "이럴 때 행복을 느껴",
     detailedExample: posGuide.do,
   });
 

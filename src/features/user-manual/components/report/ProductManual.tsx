@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { Battery, Wifi, Cpu, AlertTriangle, CheckCircle, Share2, Sparkles, BookOpen, Heart, MessageCircle, CloudLightning, Shield, Info, X, Star, HeartHandshake, HeartIcon, HeartOff, HeartPlus, HeartPulseIcon, HeartMinus } from "lucide-react";
+import { Battery, Wifi, Cpu, AlertTriangle, CheckCircle, Share2, Sparkles, BookOpen, Heart, MessageCircle, CloudLightning, Shield, Info, X, Star, HeartHandshake, HeartIcon, HeartOff, HeartPlus, HeartPulseIcon, HeartMinus, BoxSelect, LassoSelect, HandFist, InfoIcon } from "lucide-react";
 import { PsychologicalSpec, UserManualReport, UserGuideItem } from "../../model/report";
 import { Modal } from "@/shared/components/Modal";
 
@@ -304,7 +304,7 @@ export function ProductManual({ report }: ProductManualProps) {
            className="max-w-2xl w-full space-y-10 px-6"
         >
           <div className="text-center space-y-2">
-             <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto text-emerald-600 mb-4">
+             <div className="w-12 h-12 bg-pink-200 rounded-xl flex items-center justify-center mx-auto text-pink-600 mb-4">
                <BookOpen size={24} />
              </div>
              <h2 className="text-2xl font-bold text-slate-900">"이렇게 해줄 수 있어?"</h2>
@@ -316,15 +316,15 @@ export function ProductManual({ report }: ProductManualProps) {
                 <div 
                   key={i} 
                   onClick={() => openModal(item)}
-                  className="flex items-center justify-between p-5 bg-emerald-50 hover:bg-emerald-100/80 transition-colors rounded-2xl cursor-pointer group active:scale-[0.98]"
+                  className="flex items-center justify-between p-5 bg-pink-50 hover:bg-pink-100/80 transition-colors rounded-2xl cursor-pointer group active:scale-[0.98]"
                 >
                   <div className="flex items-center gap-4">
-                     <span className="w-8 h-8 rounded-full bg-emerald-200 text-emerald-700 flex items-center justify-center font-bold text-sm">
+                     <span className="w-8 h-8 rounded-full bg-pink-200 text-pink-700 flex items-center justify-center font-bold text-sm">
                        {i+1}
                      </span>
                      <span className="font-bold text-slate-800 text-lg">{item.title}</span>
                   </div>
-                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-emerald-500 shadow-sm group-hover:scale-110 transition-transform">
+                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-pink-500 shadow-sm group-hover:scale-110 transition-transform">
                      <Info size={20} />
                   </div>
                 </div>
@@ -342,7 +342,7 @@ export function ProductManual({ report }: ProductManualProps) {
            className="max-w-2xl w-full space-y-10 px-6"
         >
           <div className="text-center space-y-2">
-             <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mx-auto text-slate-600 mb-4">
+             <div className="w-12 h-12 bg-indigo-200 rounded-xl flex items-center justify-center mx-auto text-indigo-600 mb-4">
                <AlertTriangle size={24} />
              </div>
              <h2 className="text-2xl font-bold text-slate-900">"이것만은 조심해줄래?"</h2>
@@ -354,15 +354,15 @@ export function ProductManual({ report }: ProductManualProps) {
                 <div 
                   key={i} 
                   onClick={() => openModal(item)}
-                  className="flex items-center justify-between p-5 bg-slate-100 hover:bg-slate-100 transition-colors rounded-2xl cursor-pointer group active:scale-[0.98]"
+                  className="flex items-center justify-between p-5 bg-indigo-100 hover:bg-indigo-100 transition-colors rounded-2xl cursor-pointer group active:scale-[0.98]"
                 >
                   <div className="flex items-center gap-4">
-                     <span className="w-8 h-8 rounded-full bg-slate-300 text-slate-600 flex items-center justify-center font-bold text-sm">
+                     <span className="w-8 h-8 rounded-full bg-indigo-300 text-indigo-600 flex items-center justify-center font-bold text-sm">
                        {i+1}
                      </span>
                      <span className="font-bold text-slate-800 text-lg">{item.title}</span>
                   </div>
-                   <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-slate-400 shadow-sm group-hover:scale-110 transition-transform">
+                   <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-indigo-500 shadow-sm group-hover:scale-110 transition-transform">
                      <Info size={20} />
                   </div>
                 </div>
@@ -410,13 +410,13 @@ export function ProductManual({ report }: ProductManualProps) {
              사랑을 시작할 준비가 되었군요!
            </h2>
            <p className="text-slate-500">
-             나의 <strong>Luv ID</strong> 를 발급받고<br/>
+             지금 바로 <strong className="text-pink-700/75">Luv ID</strong> 를 발급받고<br/>
              나에게 꼭 맞는 인연을 찾아보세요!
            </p>
            
            <div className="flex gap-4">
            <div className="pt-8">
-             <button className="flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto">
+             <button className="flex items-center gap-2 px-8 py-4 bg-pink-700/75 text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto">
                <HeartHandshake size={20} />
                <span>Luv ID 발급받기</span>
              </button>
