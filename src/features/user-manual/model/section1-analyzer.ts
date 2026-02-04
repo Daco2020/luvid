@@ -103,25 +103,25 @@ export const STRESS_INSIGHTS: Record<string, Insight> = {
 
 export const RECOVERY_INSIGHTS: Record<string, Insight> = {
     space: {
-      title: "\"정리 되면 연락줘\"",
+      title: "생각 정리 되면 연락줘",
       description: "감정이 가라앉을 때까지 재촉하지 않고 가만히 기다려주는 것이 최고의 배려입니다.",
       tip: "생각 정리할 시간을 달라고 명확히 표현하세요.",
       teaserHint: "혼자 생각할 시간이 필요하신가요? ⏳",
     },
     connection: {
-      title: "\"힘들었지?\" (토닥토닥)",
+      title: "힘들었지? (토닥토닥)",
       description: "해결책보다는 내 감정을 알아주고 편들어줄 때, 따뜻하게 안아줄 때 가장 큰 위로를 받습니다.",
       tip: "연인에게 \"지금은 그냥 내 편 들어줘\"라고 말해보세요.",
       teaserHint: "말없이 안아줄 때 위로가 되시나요? 🫂",
     },
     sensory: {
-      title: "\"맛있는거 먹으러 갈래?\"",
+      title: "맛있는거 먹으러 갈래?",
       description: "복잡한 말보다 맛있는 음식, 좋은 향기, 따뜻한 온기가 당신을 더 빨리 회복시킵니다.",
       tip: "스트레스 받을 땐 오감을 편안하게 해주는 환경을 찾아보세요.",
       teaserHint: "맛있는 걸 먹으면 기분이 나아지나요? 🍰",
     },
     solution: {
-      title: "\"이렇게 해보면 어떄?\"",
+      title: "이렇게 해보면 어떄?",
       description: "막연한 위로보다는 문제가 해결되거나 구체적인 계획이 설 때 비로소 마음이 놓입니다.",
       tip: "원하는 도움을 구체적으로 요청하여 문제를 해결해보세요.",
       teaserHint: "문제가 해결되어야 발를 뻗고 자나요? 💡",

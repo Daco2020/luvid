@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { Battery, Wifi, Cpu, AlertTriangle, CheckCircle, Share2, Sparkles, BookOpen, Heart, MessageCircle, CloudLightning, Shield, Info, X, Star } from "lucide-react";
+import { Battery, Wifi, Cpu, AlertTriangle, CheckCircle, Share2, Sparkles, BookOpen, Heart, MessageCircle, CloudLightning, Shield, Info, X, Star, HeartHandshake, HeartIcon, HeartOff, HeartPlus, HeartPulseIcon, HeartMinus } from "lucide-react";
 import { PsychologicalSpec, UserManualReport, UserGuideItem } from "../../model/report";
 import { Modal } from "@/shared/components/Modal";
 
@@ -47,14 +47,12 @@ export function ProductManual({ report }: ProductManualProps) {
         onClose={closeModal} 
         title={modalData?.title || ""}
       >
-        <div className="space-y-4 pt-4">
-          <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 text-slate-700 leading-relaxed font-medium">
-             <span className="text-2xl mr-2">💌</span>
+        <p className="text-slate-500 text-xs">상대에게 이렇게 말해보세요</p>
+        <div className="space-y-4">
+          <div className="p-4 bg-slate-100 rounded-xl border border-slate-100 text-slate-700 leading-relaxed font-medium">
+             <span className="text-2xl mr-2">💬</span>
              {modalData?.content}
           </div>
-          <p className="text-xs text-slate-400 text-center">
-            미래의 연인이 이 점을 꼭 기억해줬으면 해요.
-          </p>
         </div>
       </Modal>
 
@@ -309,8 +307,8 @@ export function ProductManual({ report }: ProductManualProps) {
              <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto text-emerald-600 mb-4">
                <BookOpen size={24} />
              </div>
-             <h2 className="text-2xl font-bold text-slate-900">이렇게 해주세요 (Do's)</h2>
-             <p className="text-slate-500">우리가 더 행복해지기 위한 작은 약속들이에요</p>
+             <h2 className="text-2xl font-bold text-slate-900">"이렇게 해줄 수 있어?"</h2>
+             <p className="text-slate-500">함께 더 행복해지기 위한 약속들이에요</p>
           </div>
 
           <div className="bg-white p-6 rounded-3xl shadow-xl border border-slate-100 space-y-4">
@@ -347,8 +345,8 @@ export function ProductManual({ report }: ProductManualProps) {
              <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mx-auto text-slate-600 mb-4">
                <AlertTriangle size={24} />
              </div>
-             <h2 className="text-3xl font-bold text-slate-900">이것만은 피해주세요 (Don'ts)</h2>
-             <p className="text-slate-500">배려가 조금 더 필요한 순간들이에요</p>
+             <h2 className="text-2xl font-bold text-slate-900">"이것만은 조심해줄래?"</h2>
+             <p className="text-slate-500">함께 갈등을 줄이기 위한 약속들이에요</p>
           </div>
 
           <div className="bg-white p-6 rounded-3xl shadow-xl border border-slate-100 space-y-4">
@@ -356,10 +354,10 @@ export function ProductManual({ report }: ProductManualProps) {
                 <div 
                   key={i} 
                   onClick={() => openModal(item)}
-                  className="flex items-center justify-between p-5 bg-slate-50 hover:bg-slate-100 transition-colors rounded-2xl cursor-pointer group active:scale-[0.98]"
+                  className="flex items-center justify-between p-5 bg-slate-100 hover:bg-slate-100 transition-colors rounded-2xl cursor-pointer group active:scale-[0.98]"
                 >
                   <div className="flex items-center gap-4">
-                     <span className="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm">
+                     <span className="w-8 h-8 rounded-full bg-slate-300 text-slate-600 flex items-center justify-center font-bold text-sm">
                        {i+1}
                      </span>
                      <span className="font-bold text-slate-800 text-lg">{item.title}</span>
@@ -374,7 +372,7 @@ export function ProductManual({ report }: ProductManualProps) {
       </section>
 
       {/* 8. Disclaimer */}
-      <section className="h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 bg-slate-50">
+      <section className="h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 bg-slate-100">
         <motion.div
            initial={{ opacity: 0 }}
            whileInView={{ opacity: 1 }}
@@ -412,15 +410,23 @@ export function ProductManual({ report }: ProductManualProps) {
              사랑을 시작할 준비가 되었군요!
            </h2>
            <p className="text-slate-500">
-             이 설명서를 잊지 않는다면,<br/>
-             우리는 분명 더 행복해질 거예요.
+             나의 <strong>Luv ID</strong> 를 발급받고<br/>
+             나에게 꼭 맞는 인연을 찾아보세요!
            </p>
            
+           <div className="flex gap-4">
+           <div className="pt-8">
+             <button className="flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto">
+               <HeartHandshake size={20} />
+               <span>Luv ID 발급받기</span>
+             </button>
+           </div>
            <div className="pt-8">
              <button className="flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto">
                <Share2 size={20} />
                <span>설명서 공유하기</span>
              </button>
+           </div>
            </div>
         </motion.div>
       </section>

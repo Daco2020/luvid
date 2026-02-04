@@ -61,16 +61,16 @@ const createMockStorage = (): UserManualStorage => ({
     completed: true,
     selectedCoreValues: [],
     topPositiveValue: {
-      coreValueId: "trust",
+      coreValueId: "stability",
       aspect: {
-        id: "trust_positive_1",
+        id: "stability_pos_1",
         label: "굳건한 신뢰",
         description: "서로를 믿는 마음",
         type: "positive"
       }
     },
     top4PositiveValues: [
-      { rank: 1, coreValueId: "trust", aspect: { id: "trust_positive_1", label: "굳건한 신뢰", description: "서로를 믿는 마음", type: "positive" } },
+      { rank: 1, coreValueId: "stability", aspect: { id: "stability_pos_1", label: "굳건한 신뢰", description: "서로를 믿는 마음", type: "positive" } },
       { rank: 2, coreValueId: "growth", aspect: { id: "growth_positive_1", label: "함께하는 성장", description: "발전하는 관계", type: "positive" } },
     ],
     topNegativeValue: {
@@ -99,7 +99,7 @@ describe("generateUserManual", () => {
     if (!report) return;
 
     // 1. Identity Verification
-    expect(report.identity.archetype).toBe("흔들리지 않는 믿음의 닻"); // Trust archetype
+    expect(report.identity.archetype).toBe("편안한 휴식 같은 안식처"); // Stability archetype
     expect(report.identity.themeColor).toBe("indigo"); // Solitude recharge -> indigo
 
     // 2. Specs Verification
@@ -127,16 +127,16 @@ describe("generateUserManual", () => {
     
     // Comfort
     expect(details.section1.comfort.title).toBe("가장 필요한 위로");
-    expect(details.section1.comfort.value).toBe("\"힘들었지?\" (토닥토닥)");
+    expect(details.section1.comfort.value).toBe("힘들었지? (토닥토닥)");
 
     // Apology
     expect(details.section2.apology.title).toBe("마음이 풀리는 사과"); 
-    expect(details.section2.apology.value).toBe("\"진심으로 미안해\""); 
+    expect(details.section2.apology.value).toBe("진심으로 미안해"); 
 
     // Apology Secondary (New Logic)
     expect(details.section2.apologySecondary).toBeDefined();
     expect(details.section2.apologySecondary?.title).toBe("이런 사과도 좋아요");
-    expect(details.section2.apologySecondary?.value).toBe("\"내가 ~~해서 잘못했어\""); 
+    expect(details.section2.apologySecondary?.value).toBe("내가 ~~해서 잘못했어"); 
     expect(details.section2.apologySecondary?.description).toContain("구체적으로 무엇을 잘못했는지 인정해줄 때"); // check map correctness
 
     // 4. Dealbreakers Verification
@@ -148,8 +148,8 @@ describe("generateUserManual", () => {
     // Dos - Check keywords
     const dos = report.userGuide.dos;
     // comfort: "listening" -> "해결책을 주지 않아도 괜찮아요..." (from comfortDescMap)
-    expect(dos.some(d => d.detailedExample.includes("해결책보다는 내 감정을 알아주고"))).toBe(true); 
-    expect(dos.some(d => d.detailedExample.includes("굳건한 신뢰"))).toBe(true); // core value check
+    expect(dos.some(d => d.detailedExample.includes("해결책을 찾기보다 그냥 따뜻하게 안아줬으면 좋겠어"))).toBe(true); 
+    expect(dos.some(d => d.detailedExample.includes("변함없이 내 곁을 지켜주는"))).toBe(true); // core value check (stability)
 
     // Donts - Check keywords
     const donts = report.userGuide.donts;

@@ -247,67 +247,182 @@ export function generateUserManual(data: UserManualStorage): UserManualReport | 
   const guideDos: UserGuideItem[] = [];
   const guideDonts: UserGuideItem[] = [];
 
+
+  // [Map 1] Comfort NVC Map
+  const comfortNVC: Record<string, string> = {
+    space: `"지금 감정이 벅차서 정리가 필요해. 여기서 재촉하면 더 힘들어질 것 같아. 조금만 기다려주면 내가 먼저 다가갈게."`,
+    connection: `"지금 마음이 너무 힘들어... 해결책을 찾기보다 그냥 따뜻하게 안아줬으면 좋겠어. 네 품에 있으면 안심이 될 것 같아."`,
+    sensory: `"기분이 가라앉아서 몸도 무거운 것 같아. 맛있는 거 먹거나 바람 쐬러 갈까? 감각이 편안해지면 기분도 나아질 거야."`,
+    solution: `"이 문제 때문에 머리가 너무 복잡하고 답답해. 막연한 위로보다는 현실적인 해결책을 같이 찾아줄래? 그래야 안심할 수 있어."`,
+  };
+
+  // [Map 2] Apology NVC Map
+  const apologyNVC: Record<string, string> = {
+    expressing_regret: `"변명부터 들으면 내 마음이 풀리지 않아. 진심으로 '미안해'라고 먼저 말해줘. 그 한마디면 충분해."`,
+    accepting_responsibility: `"잘못을 모호하게 넘기면 나를 이해 못 하는 것 같아 답답해. 구체적으로 뭘 잘못했는지 인정해줘. 그래야 네가 내 마음을 안다고 느낄 수 있어."`,
+    making_restitution: `"말뿐인 사과는 진심이 느껴지지 않아서 서운해. 행동으로 보여주거나 내 기분을 풀어주려는 노력을 해줘."`,
+    genuinely_repenting: `"같은 일이 반복될까 봐 불안해... 다시는 그러지 않겠다는 확실한 약속을 해줘. 너의 의지를 보여줘야 다시 믿을 수 있어."`,
+    requesting_forgiveness: `"사과가 충분했다면, 이제 나에게 용서를 구하고 기다려줘. 내가 마음을 열 때까지 재촉하지 말아줘."`,
+  };
+
+  // [Map 3] Core Value NVC Map (18 Match IDs)
+  type ValueGuide = { do: string; dont: string };
+  const valueGuideMap: Record<string, ValueGuide> = {
+    honesty: {
+      do: `"네가 솔직하게 모든 걸 이야기해줄 때, 우리가 정말 연결되어 있다고 느껴. 숨김없이 투명하게 대해줘."`,
+      dont: `"거짓말을 알게 되면 신뢰가 무너져서 너무 불안해... 제발 작은 거라도 나한테는 솔직해줘."`
+    },
+    consideration: {
+      do: `"네가 나를 먼저 배려해서 챙겨줄 때, 내가 소중한 존재라고 느껴. 그 따뜻한 마음 항상 간직해줘."`,
+      dont: `"나를 배려하지 않고 행동하면, 내가 존중받지 못하는 것 같아 상처받아. 내 입장을 한 번만 더 생각해줄래?"`
+    },
+    communication: {
+      do: `"대화가 잘 통하는 너와 있을 때 정말 행복해. 우리 사이에 오해가 없도록 항상 많이 이야기하자."`,
+      dont: `"대화를 피하거나 입을 닫아버리면, 벽이랑 이야기하는 것 같아 너무 답답해. 문제가 생기면 꼭 대화로 풀자."`
+    },
+    respect: {
+      do: `"나를 깊이 존중해주는 너의 태도에서 큰 사랑을 느껴. 서로를 귀하게 여기는 마음 변치 말자."`,
+      dont: `"나를 무시하거나 함부로 대하면, 마음이 닫혀버려. 서로에 대한 존중은 꼭 지켜줘."`
+    },
+    emotional_regulation: {
+      do: `"네가 감정을 차분하게 다스릴 때, 나도 덩달아 마음이 편안해져. 너의 그 안정감이 참 좋아."`,
+      dont: `"감정을 주체하지 못하고 폭발하면, 나는 너무 불안하고 무서워... 화가 나도 조금만 차분하게 말해줘."`
+    },
+    independence: {
+      do: `"서로의 독립성을 인정해줄 때, 우리 관계가 더 건강하다고 느껴. 각자의 시간도 소중히 여기자."`,
+      dont: `"나에게 지나치게 의존하거나 집착하면 숨이 막혀... 가끔은 혼자만의 시간도 필요해."`
+    },
+    empathy: {
+      do: `"내 감정에 깊이 공감해줄 때 정말 큰 위로를 받아. 앞으로도 내 마음을 잘 알아줘."`,
+      dont: `"내 이야기에 무관심하거나 감정을 무시하면, 혼자 있는 기분이 들어. 내 마음을 조금만 더 헤아려줄래?"`
+    },
+    humor: {
+      do: `"너랑 있으면 웃음이 끊이질 않아서 너무 행복해. 유머 감각 넘치는 네가 참 좋아."`,
+      dont: `"너무 진지해서 농담도 안 통하면 숨이 막혀... 가끔은 가볍게 웃어넘길 줄도 알았으면 해."`
+    },
+    diligence: {
+      do: `"맡은 일을 성실하게 해내는 네 모습이 정말 존경스러워. 꾸준히 노력하는 널 항상 응원할게."`,
+      dont: `"게으르거나 무책임한 모습을 보면 실망하게 돼... 성실한 태도를 보여줬으면 좋겠어."`
+    },
+    positivity: {
+      do: `"너의 긍정적인 에너지가 나를 힘나게 해. 힘들 때마다 밝은 웃음으로 나를 비춰줘."`,
+      dont: `"매사에 부정적이거나 불평만 하면 나까지 힘이 빠져... 우리 밝은 면을 보려고 노력하자."`
+    },
+    passion: {
+      do: `"무언가에 열중하는 네 눈빛이 정말 섹시해. 꿈을 향해 달려가는 너의 열정을 사랑해."`,
+      dont: `"무기력하게 하루하루를 보내는 모습은 매력 없어... 네가 좋아하는 일에 더 몰입했으면 해."`
+    },
+    planning: {
+      do: `"미래를 계획하고 준비하는 네가 참 듬직해. 우리 함께 멋진 미래를 그려나가자."`,
+      dont: `"아무런 계획 없이 즉흥적으로만 행동하면 불안해... 최소한의 계획은 같이 세워줘."`
+    },
+    intellectual_curiosity: {
+      do: `"새로운 것을 배우고 탐구하는 네 모습이 멋져. 우리 깊이 있는 대화를 많이 나누자."`,
+      dont: `"배움에 관심이 없고 대화가 통하지 않으면 지루해... 우리 서로 성장할 수 있는 관계가 되자."`
+    },
+    sensitivity: {
+      do: `"나의 감성을 이해해주고 함께 느껴줄 때 행복해. 예쁜 것들 많이 보고 느끼며 살자."`,
+      dont: `"내 감성을 이해하지 못하고 핀잔을 주면 서운해... 나의 이런 점도 사랑해줄래?"`
+    },
+    stability: {
+      do: `"변함없이 내 곁을 지켜주는 너에게서 큰 안정을 얻어. 흔들리지 않는 나무처럼 늘 그 자리에 있어줘."`,
+      dont: `"감정 기복이 심하거나 불안정한 모습은 나를 힘들게 해... 내가 기댈 수 있게 든든한 버팀목이 되어줘."`
+    },
+    proactiveness: {
+      do: `"먼저 다가와주고 이끌어주는 네 적극성이 좋아. 사랑 앞에서도 망설이지 말고 직진해줘."`,
+      dont: `"항상 내가 먼저 하기를 기다리는 수동적인 태도는 지쳐... 네가 먼저 표현해주면 좋겠어."`
+    },
+    self_control: {
+      do: `"자신을 잘 통제하고 절제하는 어른스러운 네가 좋아. 흔들리지 않는 그 모습 계속 지켜줘."`,
+      dont: `"욕구를 참지 못하고 충동적으로 행동하면 믿음이 안 가... 조금만 더 자제력을 발휘해줘."`
+    },
+    acceptance: {
+      do: `"나를 있는 그대로 받아주는 너의 넓은 마음이 고마워. 너 앞에선 내가 온전해지는 기분이야."`,
+      dont: `"내 모습을 있는 그대로 봐주지 않고 바꾸려 하면 힘들어... 나를 있는 그대로 이해하고 안아줘."`
+    }
+  };
+
   // [Do 1] Comfort
   guideDos.push({
-    title: "힘들어보일 땐 이렇게 해주세요",
-    detailedExample: RECOVERY_INSIGHTS[comfortVal].description,
+    title: "내가 힘들어 보일 땐",
+    detailedExample: comfortNVC[comfortVal] || comfortNVC.connection,
   });
 
   // [Do 2] Apology
+  const apologyText = apologyNVC[apologyPrimaryVal] || apologyNVC.expressing_regret;
   guideDos.push({
     title: "사과할 상황이 생긴다면",
-    detailedExample: `변명보다는 진심을 담아 이야기해주세요. ${apologyTitle} 방식의 사과라면 저는 금방 마음을 열 거예요.`,
+    detailedExample: apologyText,
   });
 
   // [Do 3] Core Value Positive
+  const topPosId = s3.topPositiveValue.coreValueId;
+  const posGuide = valueGuideMap[topPosId];
+
   guideDos.push({
-    title: "가장 사랑받는다고 느낄 때",
-    detailedExample: `평소에 "${s3.topPositiveValue.aspect.label}"라는 가치를 소중히 여기는 모습을 보여주세요. 그럴 때 저는 당신에게 깊은 신뢰를 느껴요.`,
+    title: "이럴 때 사랑받는다고 느껴",
+    detailedExample: posGuide.do,
   });
 
   // [Dont 1] Core Value Negative
+  const topNegId = s3.topNegativeValue.coreValueId;
+  const negGuide = valueGuideMap[topNegId];
+
   guideDonts.push({
-    title: "이것만큼은 정말 참을 수 없어요",
-    detailedExample: `"${s3.topNegativeValue.aspect.label}" 같은 행동은 제 신뢰를 한순간에 무너뜨릴 수 있어요. 아무리 화가 나도 이것만은 지켜주세요.`,
+    title: "이것만큼은 참기 힘들어",
+    detailedExample: negGuide.dont,
   });
 
-  // [Dont 2] Stress Response
+  // [Dont 2] Stress Response (NVC + Casual)
   if (s1.patterns.stress_response === "flight" || s1.patterns.stress_response === "freeze") {
     guideDonts.push({
-      title: "혼자 있고 싶어 할 때",
-      detailedExample: "제가 동굴로 들어갔을 때 억지로 대화를 시도하거나 문을 두드리지 말아주세요. 잠시 기다려주시면 스스로 충전하고 웃으며 나올 거예요.",
+      title: "내가 혼자 있고 싶어 할 때",
+      detailedExample: `"내가 동굴로 들어가면 걱정되겠지만, 혼자만의 시간이 조금 필요할 뿐이야. 충전하고 웃으면서 돌아올 테니까 기다려줘."`,
     });
   } else if (s1.patterns.stress_response === "anxious") {
-
     guideDonts.push({
-      title: "연락이 닿지 않을 때",
-      detailedExample: "제가 불안해할 때 연락을 뚝 끊거나 잠수를 타버리는 건 정말 힘들어요. 바쁘다면 '바빠서 나중에 연락할게' 한 마디면 충분해요.",
+      title: "내가 연락이 닿지 않을 때",
+      detailedExample: `"연락이 안 되면 나쁜 상상이 들어서 너무 불안해... 아무리 바빠도 '바빠'라고 짧게라도 카톡 하나만 남겨줘."`,
+    });
+  } else if (s1.patterns.stress_response === "fight") {
+    guideDonts.push({
+      title: "내가 흥분했을 때",
+      detailedExample: `"내가 흥분해서 목소리가 커지면, 같이 화내지 말고 잠시만 멈춰줘. 나도 마음을 진정시키고 차분하게 얘기하고 싶어."`,
     });
   } else {
     guideDonts.push({
-      title: "제가 예민해져 있을 때",
-      detailedExample: "스트레스를 받을 때 저를 다그치거나 논리적으로 분석하려 하지 말아주세요. 지금은 해결책보다 공감이 필요한 순간이에요.",
+      title: "내가 예민해져 있을 때",
+      detailedExample: `"내가 예민할 땐 논리적으로 따지기보다 내 마음을 먼저 읽어줘. 지금 나한테 필요한 건 해결책이 아니라 너의 공감이야."`,
     });
   }
 
-  // [Dont 3] Conflict Caution (Gottman or Primary Style Caution)
+  // [Dont 3] Conflict Caution (NVC + Casual)
   const conflictCautionMap: Record<string, string> = {
-    competing: "제 의견이 강해 보일 때, 무조건 맞서 싸우려 하기보다는 '너는 그렇게 생각하는구나' 하고 한 템포 쉬어가주세요. 불같이 화냈다가도 금방 가라앉을 거예요.",
-    avoiding: "제가 갈등을 피하려고 할 때, 비겁하다며 몰아붙이지 말아주세요. 저는 관계가 깨지는 게 두려워서 그러는 거랍니다.",
-    accommodating: "제가 '다 괜찮아'라고 할 때, 정말 괜찮은지 한 번 더 물어봐주세요. 참고 있다가 나중에 터질 수도 있거든요.",
-    collaborating: "모든 문제를 완벽하게 해결해야 한다고 압박하지 말아주세요. 가끔은 그냥 넘어가주는 여유도 필요해요.",
-    compromising: "애매하게 대충 합의하고 끝내려 하지 말아주세요. 확실한 결론이 나지 않으면 저는 계속 찜찜해할 수 있어요.",
+    competing: `"내 말이 날카롭게 들릴 땐 공격받는다고 느끼지 말고, '너는 그렇게 생각하는구나' 하고 한 번만 받아줘. 그러면 나도 금방 진정될 거야."`,
+    avoiding: `"내가 입을 다물고 피하면 답답하겠지만, 싸워서 우리 사이가 나빠질까 봐 겁이 나서 그래. 비겁하다고 몰아세우지 말고 조금만 기다려줘."`,
+    accommodating: `"내가 무조건 '괜찮아'라고 하면, 정말 괜찮은 건지 한 번 더 물어봐줘. 너를 배려하느라 꾹 참고 있는 걸 수도 있어."`,
+    collaborating: `"모든 걸 완벽하게 풀려고 하면 내가 너무 지쳐... 가끔은 '대충 넘어가도 괜찮아'라고 말해줘. 그런 여유가 필요해."`,
+    compromising: `"적당히 얼버무리고 끝내면, 나중에 또 문제가 될까 봐 찝찝해. 확실하게 매듭을 짓고 넘어가도록 도와줘."`,
   };
   
+  // [Gottman NVC Map]
+  const gottmanNVC: Record<string, string> = {
+    criticism: `"네가 나를 비난하거나 공격적인 말투로 대하면 마음이 너무 아파. 부드럽게 말해줘도 충분히 알아들을 수 있으니까, 조금만 더 존중해줘."`,
+    defensiveness: `"내 말을 듣지 않고 변명부터 하면, 내 마음이 받아들여지지 않는 것 같아서 답답해. 억울하더라도 일단은 '그랬구나' 하고 내 얘기를 먼저 들어줄래?"`,
+    contempt: `"나를 무시하거나 비웃는 태도를 볼 때면, 나 자신이 하찮게 느껴져서 정말 큰 상처를 받아. 우리 서로를 소중한 존재로 존중해줬으면 좋겠어."`,
+    stonewalling: `"아무 말 없이 대화를 끊어버리면, 거절당하는 기분이 들어서 너무 불안해. 힘들면 그냥 무시하지 말고 '생각할 시간이 필요해'라고 말해줄래?"`,
+  };
+
   if (s2.analysis?.gottman?.riskLevel === "danger" || s2.analysis?.gottman?.riskLevel === "caution") {
+    const pattern = s2.analysis.gottman.dominantPattern;
     guideDonts.push({
-      title: "싸움이 격해질 때",
-      detailedExample: "제가 감정적으로 반응하더라도 비난이나 경멸의 말로 상처 주지 말아주세요. 화가 난 게 아니라 마음이 다친 거랍니다.",
+      title: "우리의 싸움이 격해질 때",
+      detailedExample: gottmanNVC[pattern],
     });
   } else {
     guideDonts.push({
       title: "우리가 다툴 때",
-      detailedExample: conflictCautionMap[conflictStyle] || "제가 고집을 부리더라도 조금만 너그럽게 이해해주세요.",
+      detailedExample: conflictCautionMap[conflictStyle],
     });
   }
 
