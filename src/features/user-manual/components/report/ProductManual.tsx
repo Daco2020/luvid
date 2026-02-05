@@ -7,6 +7,8 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { Battery, Wifi, Cpu, AlertTriangle, CheckCircle, Share2, Sparkles, BookOpen, Heart, MessageCircle, CloudLightning, Shield, Info, X, Star, HeartHandshake, HeartIcon, HeartOff, HeartPlus, HeartPulseIcon, HeartMinus, BoxSelect, LassoSelect, HandFist, InfoIcon, Anchor, Sprout, Home, Waves, TreeDeciduous, Umbrella, Smile, Hammer, Sun, Flame, Map, Telescope, Feather, Footprints, Scale, Gift, HandHeart, SwordIcon, Sword, BatteryChargingIcon, BatteryIcon, Compass, LucideCompass, CompassIcon, MapIcon, SmileIcon, PencilIcon } from "lucide-react";
 import { PsychologicalSpec, UserManualReport, UserGuideItem } from "../../model/report";
 import { Modal } from "@/shared/components/Modal";
+import { Toast } from "@/shared/components/Toast";
+import { useToast } from "@/shared/hooks/useToast";
 interface ProductManualProps {
   report: UserManualReport;
   isOwner?: boolean; 
@@ -69,6 +71,9 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
   
   // Modal State
   const [modalData, setModalData] = useState<{title: string, content: string} | null>(null);
+  
+  // Toast
+  const { toast, showToast } = useToast();
 
   const openModal = (item: UserGuideItem) => {
     setModalData({ title: item.title, content: item.detailedExample });
@@ -76,6 +81,19 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
   
   const closeModal = () => {
     setModalData(null);
+  };
+
+  const handleShare = async () => {
+    try {
+      const currentUrl = window.location.href;
+      await navigator.clipboard.writeText(currentUrl);
+      showToast({
+        title: "링크가 복사되었어요!",
+        description: "나를 알리고 싶은 분에게 공유해보세요."
+      });
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
   };
 
   return (
@@ -497,7 +515,10 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
                   </button>
                 </div>
                 <div className="pt-8">
-                  <button className="flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto">
+                  <button 
+                    onClick={handleShare}
+                    className="flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto"
+                  >
                     <Share2 size={20} />
                     <span>설명서 공유하기</span>
                   </button>
@@ -517,6 +538,9 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
             </div>
         </motion.div>
       </section>
+
+      {/* Toast Notification */}
+      <Toast message={toast} />
     </div>
   );
 }
