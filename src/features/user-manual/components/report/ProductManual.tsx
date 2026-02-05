@@ -7,14 +7,13 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { Battery, Wifi, Cpu, AlertTriangle, CheckCircle, Share2, Sparkles, BookOpen, Heart, MessageCircle, CloudLightning, Shield, Info, X, Star, HeartHandshake, HeartIcon, HeartOff, HeartPlus, HeartPulseIcon, HeartMinus, BoxSelect, LassoSelect, HandFist, InfoIcon, Anchor, Sprout, Home, Waves, TreeDeciduous, Umbrella, Smile, Hammer, Sun, Flame, Map, Telescope, Feather, Footprints, Scale, Gift, HandHeart, SwordIcon, Sword, BatteryChargingIcon, BatteryIcon, Compass, LucideCompass, CompassIcon, MapIcon } from "lucide-react";
 import { PsychologicalSpec, UserManualReport, UserGuideItem } from "../../model/report";
 import { Modal } from "@/shared/components/Modal";
-
 interface ProductManualProps {
   report: UserManualReport;
+  isOwner?: boolean; 
 }
 
 // Icon Mapping
 const ARCHETYPE_ICONS: Record<string, any> = {
-  trust: Anchor,
   honesty: Shield,
   communication: MessageCircle,
   respect: HandHeart,
@@ -38,7 +37,6 @@ const ARCHETYPE_ICONS: Record<string, any> = {
 
 // Gradient Color Mapping (Tailwind Classes)
 const ARCHETYPE_GRADIENTS: Record<string, string> = {
-  trust: "from-blue-500 to-cyan-400",
   honesty: "from-emerald-500 to-teal-400",
   communication: "from-sky-400 to-blue-400",
   respect: "from-violet-500 to-purple-400",
@@ -60,7 +58,8 @@ const ARCHETYPE_GRADIENTS: Record<string, string> = {
   default: "from-primary to-purple-400",
 };
 
-export function ProductManual({ report }: ProductManualProps) {
+export function ProductManual({ report, isOwner = true }: ProductManualProps) {
+  console.log("🎨 ProductManual Rendered. isOwner prop:", isOwner);
   const router = useRouter();
   const IdentityIcon = ARCHETYPE_ICONS[report.identity.archetypeId] || Sparkles;
   const gradientClass = ARCHETYPE_GRADIENTS[report.identity.archetypeId] || ARCHETYPE_GRADIENTS.default;
@@ -467,24 +466,37 @@ export function ProductManual({ report }: ProductManualProps) {
              지금 바로 <strong className="text-pink-700/75">Luv ID</strong> 를 발급받고<br/>
              나에게 꼭 맞는 인연을 찾아보세요!
            </p>
-           
            <div className="flex gap-4">
-           <div className="pt-8">
-             <button 
-               onClick={() => router.push("/")}
-               className="flex items-center gap-2 px-8 py-4 bg-pink-700/75 text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto"
-             >
-               <HeartHandshake size={20} />
-               <span>Luv ID 발급받기</span>
-             </button>
-           </div>
-           <div className="pt-8">
-             <button className="flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto">
-               <Share2 size={20} />
-               <span>설명서 공유하기</span>
-             </button>
-           </div>
-           </div>
+            {isOwner ? (
+              <>
+                <div className="pt-8">
+                  <button 
+                    onClick={() => router.push("/")}
+                    className="flex items-center gap-2 px-8 py-4 bg-pink-700/75 text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto"
+                  >
+                    <HeartHandshake size={20} />
+                    <span>Luv ID 발급받기</span>
+                  </button>
+                </div>
+                <div className="pt-8">
+                  <button className="flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto">
+                    <Share2 size={20} />
+                    <span>설명서 공유하기</span>
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="pt-8 w-full flex justify-center">
+                <button 
+                  onClick={() => router.push("/")}
+                  className="flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto"
+                >
+                  <Sparkles size={20} />
+                  <span>나 사용 설명서 만들러가기</span>
+                </button>
+              </div>
+            )}
+            </div>
         </motion.div>
       </section>
     </div>

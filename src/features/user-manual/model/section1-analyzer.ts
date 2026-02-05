@@ -121,8 +121,8 @@ export const RECOVERY_INSIGHTS: Record<string, Insight> = {
       teaserHint: "맛있는 걸 먹으면 기분이 나아지나요? 🍰",
     },
     solution: {
-      title: "이렇게 해보면 어떄?",
-      description: "막연한 위로보다는 문제가 해결되거나 구체적인 계획이 설 때 비로소 마음이 놓여요.",
+      title: "이렇게 해보면 어때?",
+      description: "막연한 위로보다는 문제가 해결되거나 구체적인 계획을 제안해 줄 때 마음이 놓여요.",
       tip: "원하는 도움을 구체적으로 요청하여 문제를 해결해보세요.",
       teaserHint: "문제가 해결되어야 발를 뻗고 자나요? 💡",
     },

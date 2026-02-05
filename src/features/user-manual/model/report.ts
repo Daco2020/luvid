@@ -352,7 +352,7 @@ export function generateUserManual(data: UserManualStorage): UserManualReport | 
   // [Do 2] Apology
   const apologyText = apologyNVC[apologyPrimaryVal] || apologyNVC.expressing_regret;
   guideDos.push({
-    title: "사과할 상황이 생긴다면",
+    title: "사과받을 상황이 생긴다면",
     detailedExample: apologyText,
   });
 
