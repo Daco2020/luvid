@@ -68,7 +68,7 @@ export default function Home() {
             </motion.div>
           </Link>
 
-          {/* Coming Soon: Love ID */}
+          {/* Coming Soon: Luv ID */}
           <div className="bg-slate-50 p-6 rounded-3xl border border-slate-100 relative overflow-hidden opacity-80">
             <div className="flex items-center justify-between mb-4">
               <div className="bg-slate-200/50 p-2 rounded-xl text-slate-400">
@@ -78,11 +78,11 @@ export default function Home() {
             </div>
             
             <h2 className="text-lg font-bold text-slate-400 mb-1">
-              Love ID 카드 발급
+              Luv ID 발급
             </h2>
             <p className="text-slate-400 text-sm">
               설명서를 완성하면 당신만의<br/> 
-              연애 프로필 카드가 발급돼요.
+              연애 프로필 ID가 발급돼요.
             </p>
           </div>
         </div>

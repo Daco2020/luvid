@@ -2,7 +2,7 @@
 
 This document outlines the step-by-step implementation plan for the Luvid MVP (Minimum Viable Product), based on the [Service Plan](SERVICE_PLAN.md), [Design Guidelines](.agent/rules/design-guidelines.md), and [Development Guide](.agent/rules/development-guide.md).
 
-**Goal**: Successfully implement the "Personal User Manual (Level 1)" and "Love ID Card" with a "Ready-to-Date" focus.
+**Goal**: Successfully implement the "Personal User Manual (Level 1)" and "Luv ID Card" with a "Ready-to-Date" focus.
 
 ---
 
@@ -68,16 +68,16 @@ _Dev Strategy: TDD for Logic -> UI Implementation_
 
 ---
 
-## Phase 3: Feature - Love ID Card & Compatibility
+## Phase 3: Feature - Luv ID Card & Compatibility
 
 _Ref: [Service Plan - Section 7 / Appendix](SERVICE_PLAN.md#1-차-mvp-구현-계획)_
 
-### 3.1 Love ID Card
+### 3.1 Luv ID Card
 
 - [ ] **Card Generation Logic**
   - Extract key traits (Keywords) from the User Manual.
   - **Test**: `generateCardData.spec.ts` - ensure correct keywords are picked.
-- [ ] **Love ID UI Component**
+- [ ] **Luv ID UI Component**
   - Design a "Trading Card" style component.
   - Display: Nickname, Key Traits, "Ready-to-Date" Badge, Emotional Availability Level.
 
@@ -94,7 +94,7 @@ _Ref: [Service Plan - Section 7 / Appendix](SERVICE_PLAN.md#1-차-mvp-구현-계
 ### 3.3 Matching UI
 
 - [ ] **Comparison View**
-  - Side-by-side view of two Love ID Cards.
+  - Side-by-side view of two Luv ID Cards.
   - Compatibility Score visualization.
   - "Recommended Topics" section.
 
@@ -124,5 +124,5 @@ _Ref: [Service Plan - Section 7 / Appendix](SERVICE_PLAN.md#1-차-mvp-구현-계
   - [ ] Section 1 (Complete)
   - [ ] Section 2 (Pending)
   - [ ] Section 3 (Pending)
-- [ ] **Feat 2**: Love ID (Logic -> UI)
+- [ ] **Feat 2**: Luv ID (Logic -> UI)
 - [ ] **Feat 3**: Compatibility (Algo -> UI)

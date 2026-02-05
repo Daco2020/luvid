@@ -1,6 +1,6 @@
 # Luvid
 
-**Luvid** is a dashboard application for managing your **Love Identity**.
+**Luvid** is a dashboard application for managing your **Luv IDentity**.
 
 ## Getting Started
 

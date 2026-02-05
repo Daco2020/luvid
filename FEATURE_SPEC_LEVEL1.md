@@ -596,6 +596,6 @@ interface Section3Result {
 
 ### 6.2 기능 흐름
 
-매뉴얼 확인 (Guest) -> CTA 클릭 -> 로그인/가입 -> Love ID Card 발급 및 공유 가능
+매뉴얼 확인 (Guest) -> CTA 클릭 -> 로그인/가입 -> Luv ID Card 발급 및 공유 가능
 
 ---
