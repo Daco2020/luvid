@@ -1,10 +1,40 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, BookHeart, Sparkles } from "lucide-react";
+import { ArrowRight, BookHeart, Sparkles, Lock } from "lucide-react";
 import { motion } from "framer-motion";
+import { getUserManual } from "@/features/user-manual/utils/supabase-service";
+import { getOrCreateUserId } from "@/features/user-manual/utils/user-storage";
+import { checkLuvIdExists } from "@/features/luvid/utils/supabase-service";
 
 export default function Home() {
+  const [hasManual, setHasManual] = useState(false);
+  const [hasLuvId, setHasLuvId] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function checkStatus() {
+      try {
+        const userId = getOrCreateUserId();
+        
+        // 설명서 존재 여부 확인 (Supabase에서 조회)
+        const { checkUserManualExists } = await import("@/features/user-manual/utils/supabase-service");
+        const manualExists = await checkUserManualExists(userId);
+        setHasManual(manualExists);
+        
+        // Luv ID 존재 여부 확인
+        const luvIdExists = await checkLuvIdExists(userId);
+        setHasLuvId(luvIdExists);
+      } catch (err) {
+        console.error('Status check failed:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    checkStatus();
+  }, []);
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 relative overflow-hidden">
       
@@ -68,23 +98,91 @@ export default function Home() {
             </motion.div>
           </Link>
 
-          {/* Coming Soon: Luv ID */}
-          <div className="bg-slate-50 p-6 rounded-3xl border border-slate-100 relative overflow-hidden opacity-80">
-            <div className="flex items-center justify-between mb-4">
-              <div className="bg-slate-200/50 p-2 rounded-xl text-slate-400">
-                <Sparkles size={24} />
+          {/* Luv ID Card - 상태별 분기 */}
+          {loading ? (
+            <div className="bg-slate-50 p-6 rounded-3xl border border-slate-100 relative overflow-hidden opacity-80">
+              <div className="animate-pulse">
+                <div className="h-6 bg-slate-200 rounded w-1/3 mb-4"></div>
+                <div className="h-4 bg-slate-200 rounded w-2/3"></div>
               </div>
-              <span className="text-xs font-bold text-slate-400 bg-slate-200/50 px-3 py-1 rounded-full">Coming Soon</span>
             </div>
-            
-            <h2 className="text-lg font-bold text-slate-400 mb-1">
-              Luv ID 발급
-            </h2>
-            <p className="text-slate-400 text-sm">
-              설명서를 완성하면 당신만의<br/> 
-              연애 프로필 ID가 발급돼요.
-            </p>
-          </div>
+          ) : !hasManual ? (
+            // 설명서 없음 - 잠금 상태
+            <div className="bg-slate-50 p-6 rounded-3xl border border-slate-100 relative overflow-hidden opacity-60">
+              <div className="flex items-center justify-between mb-4">
+                <div className="bg-slate-200/50 p-2 rounded-xl text-slate-400">
+                  <Lock size={24} />
+                </div>
+                <span className="text-xs font-bold text-slate-400 bg-slate-200/50 px-3 py-1 rounded-full">잠김</span>
+              </div>
+              
+              <h2 className="text-lg font-bold text-slate-400 mb-1">
+                Luv ID 발급
+              </h2>
+              <p className="text-slate-400 text-sm">
+                설명서를 먼저 완성해주세요.<br/> 
+                그러면 Luv ID를 발급받을 수 있어요.
+              </p>
+            </div>
+          ) : !hasLuvId ? (
+            // 설명서 있음 + ID 없음 - 발급 가능
+            <Link href="/luvid/create">
+              <motion.div 
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="bg-gradient-to-br from-pink-50 to-purple-50 p-6 rounded-3xl border border-pink-100 relative overflow-hidden group cursor-pointer"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="bg-primary/10 p-2 rounded-xl text-primary">
+                    <Sparkles size={24} />
+                  </div>
+                  <span className="text-xs font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">발급 가능</span>
+                </div>
+                
+                <h2 className="text-lg font-bold text-slate-800 mb-1 group-hover:text-primary transition-colors">
+                  Luv ID 발급하기
+                </h2>
+                <p className="text-slate-600 text-sm mb-4">
+                  설명서를 바탕으로 당신만의<br/> 
+                  연애 프로필 ID를 만들어보세요!
+                </p>
+                
+                <div className="flex items-center gap-2 text-sm font-bold text-primary">
+                  발급하기 <ArrowRight size={16} />
+                </div>
+              </motion.div>
+            </Link>
+          ) : (
+            // 설명서 + ID 모두 있음 - ID 보기
+            <Link href="/luvid/my">
+              <motion.div 
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="bg-gradient-to-br from-indigo-500 to-purple-600 p-6 rounded-3xl border border-indigo-400 relative overflow-hidden group cursor-pointer text-white"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                
+                <div className="flex items-center justify-between mb-4 relative z-10">
+                  <div className="bg-white/20 p-2 rounded-xl">
+                    <Sparkles size={24} />
+                  </div>
+                  <span className="text-xs font-bold bg-white/20 px-3 py-1 rounded-full">활성화</span>
+                </div>
+                
+                <h2 className="text-lg font-bold mb-1 relative z-10">
+                  내 Luv ID 보기
+                </h2>
+                <p className="text-white/90 text-sm mb-4 relative z-10">
+                  나의 연애 프로필 카드를<br/> 
+                  확인하고 공유해보세요!
+                </p>
+                
+                <div className="flex items-center gap-2 text-sm font-bold relative z-10">
+                  보러가기 <ArrowRight size={16} />
+                </div>
+              </motion.div>
+            </Link>
+          )}
         </div>
 
         {/* Footer Text */}
