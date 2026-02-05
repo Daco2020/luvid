@@ -54,8 +54,8 @@ export default function Home() {
             연애가 서툴러도<br/>
             <span className="text-primary">괜찮아요</span>
           </h1>
-          <p className="text-slate-500 text-base font-normal leading-relaxed">
-            천천히, 나를 알아가는 것부터 시작해요.<br className="hidden md:block"/>
+          <p className="text-slate-500 text-sm md:text-base font-normal leading-relaxed">
+            천천히, 나를 알아가는 것부터 시작해요.<br/>
             당신의 마음이 더 선명해지도록 Luvid가 도와드릴게요.
           </p>
         </header>

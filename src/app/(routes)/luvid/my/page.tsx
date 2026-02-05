@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   ArrowLeft, 
   Share2, 
@@ -22,6 +22,7 @@ export default function MyLuvIdPage() {
   const [profile, setProfile] = useState<LuvIdProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [flipped, setFlipped] = useState(false);
+  const [activeTooltip, setActiveTooltip] = useState<number | null>(null);
 
   useEffect(() => {
     async function loadProfile() {
@@ -112,21 +113,29 @@ export default function MyLuvIdPage() {
         {/* 3D Flip Card - Credit Card Ratio (85.6mm x 54mm = 1.586:1) */}
         <div className="perspective-1000 mb-12">
           <motion.div
-            className="relative w-full cursor-pointer mx-auto"
+            className="relative w-full mx-auto"
             style={{ 
               maxWidth: "500px",
               aspectRatio: "1.586",
-              transformStyle: "preserve-3d" 
+              transformStyle: "preserve-3d",
+              cursor: flipped ? "default" : "pointer"
             }}
-            onClick={() => setFlipped(!flipped)}
+            onClick={(e) => {
+              // Only flip if not clicking on interactive elements
+              if ((e.target as HTMLElement).tagName !== 'BUTTON' && 
+                  !(e.target as HTMLElement).closest('button')) {
+                setFlipped(!flipped);
+              }
+            }}
             animate={{ rotateY: flipped ? 180 : 0 }}
             transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
           >
+            {/* Front Side */}
             <div
               className="absolute inset-0 backface-hidden"
               style={{ backfaceVisibility: "hidden" }}
             >
-              <div className={`w-full h-full bg-gradient-to-br ${gradientClass} rounded-3xl p-5 sm:p-6 md:p-8 text-white relative overflow-hidden shadow-2xl`}>
+              <div className={`w-full h-full bg-gradient-to-br ${gradientClass} rounded-3xl py-8 px-8 text-white relative overflow-visible shadow-2xl`}>
                 {/* Holographic effects */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
                 <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full blur-2xl"></div>
@@ -135,34 +144,60 @@ export default function MyLuvIdPage() {
                 <div className="relative z-10 h-full flex flex-col justify-between">
                   {/* Top - ID */}
                   <div className="flex items-center justify-between">
-                    <div className="text-white/60 text-[10px] sm:text-xs font-mono truncate pr-2">
+                    <div className="text-white/60 text-sm font-mono truncate pr-2">
                       {profile.id}
                     </div>
-                    <ArchetypeIcon size={20} className="text-white/40 shrink-0" />
+                    <ArchetypeIcon size={20} className="text-white/60 shrink-0" />
                   </div>
 
                   {/* Middle - Main Info */}
-                  <div>
-                    <h2 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2">{profile.nickname}</h2>
-                    <p className="text-base sm:text-lg text-white/90 italic mb-4 sm:mb-6">"{profile.tagline}"</p>
-
-                    {/* Top 3 Values - Compact */}
-                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                      {profile.topValues.map((value, idx) => (
-                        <span
-                          key={idx}
-                          className="bg-white/20 backdrop-blur-sm px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-medium border border-white/20"
-                        >
-                          {value.label}
-                        </span>
-                      ))}
-                    </div>
+                  <div className="flex-1 flex flex-col justify-center">
+                    <h2 className="text-white text-[28px] md:text-3xl font-bold mb-1 md:mb-2">{profile.nickname}</h2>
+                    <p className="text-base md:text-[16px] text-white/90 italic mb-6 md:mb-8">"{profile.tagline}"</p>
                   </div>
 
-                  {/* Bottom - Love Style */}
-                  <div>
-                    <div className="text-white/60 text-[10px] sm:text-xs mb-1">Love Style</div>
-                    <div className="font-bold text-base sm:text-lg">{profile.archetype}</div>
+                  {/* Bottom - Top 3 Values with Tooltips */}
+                  <div className="space-y-2">
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      {profile.topValues.map((value, idx) => (
+                        <div
+                          key={idx}
+                          className="relative"
+                          onMouseEnter={() => setActiveTooltip(idx)}
+                          onMouseLeave={() => setActiveTooltip(null)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveTooltip(activeTooltip === idx ? null : idx);
+                          }}
+                        >
+                          <span className="bg-white/15 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-semibold border border-white/60 cursor-pointer hover:bg-white/40 transition-colors inline-block">
+                            {value.label}
+                          </span>
+                          
+                          <AnimatePresence>
+                            {activeTooltip === idx && (
+                              <motion.div
+                                initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, y: 10, scale: 0.9 }}
+                                transition={{ duration: 0.2 }}
+                                className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 sm:w-56 pointer-events-none"
+                                style={{ zIndex: 9999 }}
+                              >
+                                <div className="bg-slate-900/95 backdrop-blur-md text-white text-sm p-3 rounded-xl shadow-2xl border border-white/10">
+                                  <div className="font-bold mb-1">{value.label}</div>
+                                  <div className="text-white/80 leading-relaxed">{value.description}</div>
+                                  {/* Arrow */}
+                                  <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-px">
+                                    <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-slate-900/95"></div>
+                                  </div>
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -182,16 +217,19 @@ export default function MyLuvIdPage() {
                 <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-2xl"></div>
 
                 <div className="relative z-10 h-full flex items-center justify-center">
-                  {/* Centered Manual Button */}
+                  {/* Enhanced Manual Button */}
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       router.push("/report/" + profile.reportId);
                     }}
-                    className="bg-white/20 backdrop-blur-sm hover:bg-white/30 border border-white/30 text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-xl transition-all hover:scale-105 flex items-center justify-center gap-2 text-sm md:text-base"
+                    className="group relative bg-gradient-to-r from-white/30 to-white/20 backdrop-blur-md hover:from-white/40 hover:to-white/30 border-2 border-white/40 text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-3 text-sm md:text-base shadow-[0_8px_32px_0_rgba(255,255,255,0.15)] hover:shadow-[0_12px_48px_0_rgba(255,255,255,0.3)]"
                   >
-                    <BookOpen size={20} className="shrink-0" />
+                    <BookOpen size={22} className="shrink-0 group-hover:rotate-12 transition-transform duration-300" />
                     <span className="whitespace-nowrap">{profile.nickname}님의 사용 설명서</span>
+                    
+                    {/* Glow effect */}
+                    <div className="absolute inset-0 rounded-2xl bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10"></div>
                   </button>
                 </div>
               </div>
