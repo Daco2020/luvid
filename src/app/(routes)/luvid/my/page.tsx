@@ -106,7 +106,7 @@ export default function MyLuvIdPage() {
             {profile.nickname}님의<br />연애 프로필 카드
           </h1>
           <p className="text-slate-500">
-            카드를 클릭하면 뒷면을 볼 수 있어요
+            카드를 클릭하면 뒤집을 수 있어요
           </p>
         </div>
 
@@ -133,15 +133,24 @@ export default function MyLuvIdPage() {
             {/* Front Side */}
             <div
               className="absolute inset-0 backface-hidden"
-              style={{ backfaceVisibility: "hidden" }}
+              style={{ 
+                backfaceVisibility: "hidden",
+                pointerEvents: flipped ? "none" : "auto",
+                zIndex: flipped ? 0 : 10
+              }}
             >
-              <div className={`w-full h-full bg-gradient-to-br ${gradientClass} rounded-3xl py-8 px-8 text-white relative overflow-visible shadow-2xl`}>
-                {/* Holographic effects */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-                <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full blur-2xl"></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-white/10 to-white/5 rounded-full blur-3xl"></div>
+              {/* Main Card Container - Visible Overflow for Tooltips */}
+              <div className="w-full h-full rounded-3xl relative shadow-2xl">
+                
+                {/* Background & Holographic Effects - Clipped */}
+                <div className={`absolute inset-0 rounded-3xl overflow-hidden pointer-events-none bg-gradient-to-br ${gradientClass}`}>
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+                  <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full blur-2xl"></div>
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-white/10 to-white/5 rounded-full blur-3xl"></div>
+                </div>
 
-                <div className="relative z-10 h-full flex flex-col justify-between">
+                {/* Content Layer - Unclipped */}
+                <div className="relative z-10 h-full flex flex-col justify-between py-8 px-8 text-white">
                   {/* Top - ID */}
                   <div className="flex items-center justify-between">
                     <div className="text-white/60 text-sm font-mono truncate pr-2">
@@ -152,8 +161,8 @@ export default function MyLuvIdPage() {
 
                   {/* Middle - Main Info */}
                   <div className="flex-1 flex flex-col justify-center">
-                    <h2 className="text-white text-[28px] md:text-3xl font-bold mb-1 md:mb-2">{profile.nickname}</h2>
-                    <p className="text-base md:text-[16px] text-white/90 italic mb-6 md:mb-8">"{profile.tagline}"</p>
+                    <h2 className="text-white text-[26px] md:text-3xl font-bold mb-1 md:mb-2">{profile.nickname}</h2>
+                    <p className="text-[14px] md:text-[16px] text-white/90 italic mb-6 md:mb-8">"{profile.tagline}"</p>
                   </div>
 
                   {/* Bottom - Top 3 Values with Tooltips */}
@@ -162,7 +171,7 @@ export default function MyLuvIdPage() {
                       {profile.topValues.map((value, idx) => (
                         <div
                           key={idx}
-                          className="relative"
+                          className="relative pointer-events-auto"
                           onMouseEnter={() => setActiveTooltip(idx)}
                           onMouseLeave={() => setActiveTooltip(null)}
                           onClick={(e) => {
@@ -186,7 +195,7 @@ export default function MyLuvIdPage() {
                               >
                                 <div className="bg-slate-900/95 backdrop-blur-md text-white text-sm p-3 rounded-xl shadow-2xl border border-white/10">
                                   <div className="font-bold mb-1">{value.label}</div>
-                                  <div className="text-white/80 leading-relaxed">{value.description}</div>
+                                  <div className="text-white/80 leading-relaxed break-keep">{value.description}</div>
                                   {/* Arrow */}
                                   <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-px">
                                     <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-slate-900/95"></div>
@@ -208,7 +217,9 @@ export default function MyLuvIdPage() {
               className="absolute inset-0 backface-hidden"
               style={{ 
                 backfaceVisibility: "hidden",
-                transform: "rotateY(180deg)"
+                transform: "rotateY(180deg)",
+                pointerEvents: flipped ? "auto" : "none",
+                zIndex: flipped ? 10 : 0
               }}
             >
               <div className={`w-full h-full bg-gradient-to-br ${gradientClass} rounded-3xl p-5 sm:p-6 md:p-8 text-white relative overflow-hidden shadow-2xl`}>
@@ -217,19 +228,21 @@ export default function MyLuvIdPage() {
                 <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-2xl"></div>
 
                 <div className="relative z-10 h-full flex items-center justify-center">
-                  {/* Enhanced Manual Button */}
+                  {/* Enhanced Manual Button with Apple-style Glass Effect */}
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       router.push("/report/" + profile.reportId);
                     }}
-                    className="group relative bg-gradient-to-r from-white/30 to-white/20 backdrop-blur-md hover:from-white/40 hover:to-white/30 border-2 border-white/40 text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-3 text-sm md:text-base shadow-[0_8px_32px_0_rgba(255,255,255,0.15)] hover:shadow-[0_12px_48px_0_rgba(255,255,255,0.3)]"
+                    className="group relative overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-2xl transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/40 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] hover:shadow-[0_8px_32px_0_rgba(31,38,135,0.25)] flex items-center justify-center gap-3 text-sm md:text-base pointer-events-auto"
                   >
-                    <BookOpen size={22} className="shrink-0 group-hover:rotate-12 transition-transform duration-300" />
-                    <span className="whitespace-nowrap">{profile.nickname}님의 사용 설명서</span>
+                    <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-transparent opacity-50 transition-opacity duration-300" />
                     
-                    {/* Glow effect */}
-                    <div className="absolute inset-0 rounded-2xl bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10"></div>
+                    {/* Shimmer Effect */}
+                    <div className="absolute inset-0 -translate-x-[150%] skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent group-hover:animate-shimmer" />
+
+                    <BookOpen size={22} className="shrink-0 relative z-10 group-hover:rotate-12 transition-transform duration-300" />
+                    <span className="whitespace-nowrap relative z-10">{profile.nickname}님의 사용 설명서</span>
                   </button>
                 </div>
               </div>
