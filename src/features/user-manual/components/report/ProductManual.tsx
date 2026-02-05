@@ -4,7 +4,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { Battery, Wifi, Cpu, AlertTriangle, CheckCircle, Share2, Sparkles, BookOpen, Heart, MessageCircle, CloudLightning, Shield, Info, X, Star, HeartHandshake, HeartIcon, HeartOff, HeartPlus, HeartPulseIcon, HeartMinus, BoxSelect, LassoSelect, HandFist, InfoIcon, Anchor, Sprout, Home, Waves, TreeDeciduous, Umbrella, Smile, Hammer, Sun, Flame, Map, Telescope, Feather, Footprints, Scale, Gift, HandHeart, SwordIcon, Sword, BatteryChargingIcon, BatteryIcon, Compass, LucideCompass, CompassIcon, MapIcon } from "lucide-react";
+import { Battery, Wifi, Cpu, AlertTriangle, CheckCircle, Share2, Sparkles, BookOpen, Heart, MessageCircle, CloudLightning, Shield, Info, X, Star, HeartHandshake, HeartIcon, HeartOff, HeartPlus, HeartPulseIcon, HeartMinus, BoxSelect, LassoSelect, HandFist, InfoIcon, Anchor, Sprout, Home, Waves, TreeDeciduous, Umbrella, Smile, Hammer, Sun, Flame, Map, Telescope, Feather, Footprints, Scale, Gift, HandHeart, SwordIcon, Sword, BatteryChargingIcon, BatteryIcon, Compass, LucideCompass, CompassIcon, MapIcon, SmileIcon, PencilIcon } from "lucide-react";
 import { PsychologicalSpec, UserManualReport, UserGuideItem } from "../../model/report";
 import { Modal } from "@/shared/components/Modal";
 interface ProductManualProps {
@@ -459,12 +459,30 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
            className="text-center space-y-8 max-w-lg"
         >
            <h2 className="text-2xl md:text-3xl font-bold text-slate-800 leading-snug">
-             이제, 당신에게 꼭 맞는<br/>
-             사랑을 시작할 준비가 되었군요!
+             {isOwner ? (
+               <>
+                 이제, 당신에게 꼭 맞는<br/>
+                 사랑을 시작할 준비가 되었군요!
+               </>
+             ) : (
+               <>
+                 새로운 사랑을 시작할<br/>
+                 준비가 되셨나요?
+               </>
+             )}
            </h2>
            <p className="text-slate-500">
-             지금 바로 <strong className="text-pink-700/75">Luv ID</strong> 를 발급받고<br/>
-             나에게 꼭 맞는 인연을 찾아보세요!
+             {isOwner ? (
+               <>
+                 지금 바로 <strong className="text-pink-700/75">Luv ID</strong> 를 발급받고<br/>
+                 나에게 꼭 맞는 인연을 찾아보세요!
+               </>
+             ) : (
+               <>
+                 당신도 <strong className="text-pink-700/75">나 사용 설명서</strong>를 만들어<br/>
+                 나에게 꼭 맞는 인연을 찾아보세요!
+               </>
+             )}
            </p>
            <div className="flex gap-4">
             {isOwner ? (
@@ -489,10 +507,10 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
               <div className="pt-8 w-full flex justify-center">
                 <button 
                   onClick={() => router.push("/")}
-                  className="flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto"
+                  className="flex items-center gap-2 px-8 py-4 bg-pink-700/75 text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto"
                 >
-                  <Sparkles size={20} />
-                  <span>나 사용 설명서 만들러가기</span>
+                  <PencilIcon size={20} />
+                  <span>설명서 만들러가기</span>
                 </button>
               </div>
             )}
