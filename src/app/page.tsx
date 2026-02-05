@@ -51,12 +51,12 @@ export default function Home() {
           </div>
           
           <h1 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4 leading-tight tracking-tight">
-            연애가 서툴러도<br/>
-            <span className="text-primary">괜찮아요</span>
+            나와 꼭 맞는 연인을<br/>
+            <span className="text-primary">찾고 있나요?</span>
           </h1>
           <p className="text-slate-500 text-sm md:text-base font-normal leading-relaxed">
             천천히, 나를 알아가는 것부터 시작해요.<br/>
-            당신의 마음이 더 선명해지도록 Luvid가 도와드릴게요.
+            당신의 마음이 더 선명해지도록 우리가 도와드릴게요.
           </p>
         </header>
 
@@ -80,7 +80,7 @@ export default function Home() {
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary/40 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                   </span>
-                  Level 1
+                  완료(잠금 - 준비 - 완료)
                 </div>
                 
                 <h2 className="text-xl font-bold text-slate-800 mb-2 group-hover:text-primary transition-colors">

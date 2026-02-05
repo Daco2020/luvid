@@ -7,14 +7,17 @@ import {
   ArrowLeft, 
   Share2, 
   Loader2,
-  BookOpen
+  BookOpen,
+  Copy,
+  HeartHandshake
 } from "lucide-react";
 import { getOrCreateUserId } from "@/features/user-manual/utils/user-storage";
 import { getLuvIdByUserId } from "@/features/luvid/utils/supabase-service";
 import { LuvIdProfile } from "@/features/luvid/model/types";
-import { ARCHETYPE_ICONS, ARCHETYPE_GRADIENTS } from "@/features/user-manual/model/archetype-constants";
+import { ARCHETYPE_ICONS, ARCHETYPE_GRADIENTS, ARCHETYPE_DESCRIPTIONS } from "@/features/user-manual/model/archetype-constants";
 import { useToast } from "@/shared/hooks/useToast";
 import { Toast } from "@/shared/components/Toast";
+import { GlassTooltip } from "@/shared/components/ui/GlassTooltip";
 
 export default function MyLuvIdPage() {
   const router = useRouter();
@@ -23,6 +26,12 @@ export default function MyLuvIdPage() {
   const [loading, setLoading] = useState(true);
   const [flipped, setFlipped] = useState(false);
   const [activeTooltip, setActiveTooltip] = useState<number | null>(null);
+  const [showArchetypeTooltip, setShowArchetypeTooltip] = useState(false);
+  const [showCompatTooltip, setShowCompatTooltip] = useState(false);
+  
+  // This page is for "My" Luv ID, so it's always the owner viewing their own card.
+  // In a future "View" page for other users, we would set this to false.
+  const isOwner = true;
 
   useEffect(() => {
     async function loadProfile() {
@@ -58,6 +67,20 @@ export default function MyLuvIdPage() {
       });
     } catch (err) {
       console.error("Failed to copy:", err);
+    }
+  };
+
+  const copyLuvId = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!profile) return;
+    try {
+      await navigator.clipboard.writeText(profile.id);
+      showToast({
+        title: "Luv ID 복사 완료!",
+        description: "클립보드에 복사되었어요."
+      });
+    } catch (err) {
+      console.error("Failed to copy ID:", err);
     }
   };
 
@@ -151,12 +174,38 @@ export default function MyLuvIdPage() {
 
                 {/* Content Layer - Unclipped */}
                 <div className="relative z-10 h-full flex flex-col justify-between py-8 px-8 text-white">
-                  {/* Top - ID */}
+                  {/* Top - ID & Icon */}
                   <div className="flex items-center justify-between">
-                    <div className="text-white/60 text-sm font-mono truncate pr-2">
-                      {profile.id}
+                    <div 
+                      className="text-white/60 text-sm font-mono truncate pr-2 flex items-center gap-1.5 cursor-pointer hover:text-white transition-colors group pointer-events-auto"
+                      onClick={copyLuvId}
+                      title="클릭하여 Luv ID 복사"
+                    >
+                      <span>{profile.id}</span>
+                      <Copy size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
-                    <ArchetypeIcon size={20} className="text-white/60 shrink-0" />
+                    
+                    <div className="relative pointer-events-auto">
+                      <ArchetypeIcon 
+                        size={24} 
+                        className="text-white/70 shrink-0 cursor-pointer hover:text-white hover:scale-110 transition-all duration-300" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowArchetypeTooltip(!showArchetypeTooltip);
+                        }}
+                        onMouseEnter={() => !('ontouchstart' in window) && setShowArchetypeTooltip(true)}
+                        onMouseLeave={() => !('ontouchstart' in window) && setShowArchetypeTooltip(false)}
+                      />
+                      
+                      <GlassTooltip
+                        isVisible={showArchetypeTooltip && !!ARCHETYPE_DESCRIPTIONS[profile.archetypeId]}
+                        title={profile.archetype}
+                        description={ARCHETYPE_DESCRIPTIONS[profile.archetypeId]}
+                        position="bottom"
+                        align="right"
+                        width="w-56"
+                      />
+                    </div>
                   </div>
 
                   {/* Middle - Main Info */}
@@ -183,27 +232,13 @@ export default function MyLuvIdPage() {
                             {value.label}
                           </span>
                           
-                          <AnimatePresence>
-                            {activeTooltip === idx && (
-                              <motion.div
-                                initial={{ opacity: 0, y: 10, scale: 0.9 }}
-                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                exit={{ opacity: 0, y: 10, scale: 0.9 }}
-                                transition={{ duration: 0.2 }}
-                                className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 sm:w-56 pointer-events-none"
-                                style={{ zIndex: 9999 }}
-                              >
-                                <div className="bg-slate-900/95 backdrop-blur-md text-white text-sm p-3 rounded-xl shadow-2xl border border-white/10">
-                                  <div className="font-bold mb-1">{value.label}</div>
-                                  <div className="text-white/80 leading-relaxed break-keep">{value.description}</div>
-                                  {/* Arrow */}
-                                  <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-px">
-                                    <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-slate-900/95"></div>
-                                  </div>
-                                </div>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
+                          <GlassTooltip
+                            isVisible={activeTooltip === idx}
+                            title={value.label}
+                            description={value.description}
+                            position="top"
+                            align="center"
+                          />
                         </div>
                       ))}
                     </div>
@@ -222,19 +257,19 @@ export default function MyLuvIdPage() {
                 zIndex: flipped ? 10 : 0
               }}
             >
-              <div className={`w-full h-full bg-gradient-to-br ${gradientClass} rounded-3xl p-5 sm:p-6 md:p-8 text-white relative overflow-hidden shadow-2xl`}>
+              <div className={`w-full h-full bg-gradient-to-br ${gradientClass} rounded-3xl p-5 sm:p-6 md:p-8 text-white relative overflow-visible shadow-2xl`}>
                 {/* Holographic effects */}
                 <div className="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
                 <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-2xl"></div>
 
-                <div className="relative z-10 h-full flex items-center justify-center">
+                <div className="relative z-10 h-full flex flex-col items-center justify-center gap-4">
                   {/* Enhanced Manual Button with Apple-style Glass Effect */}
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       router.push("/report/" + profile.reportId);
                     }}
-                    className="group relative overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-2xl transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/40 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] hover:shadow-[0_8px_32px_0_rgba(31,38,135,0.25)] flex items-center justify-center gap-3 text-sm md:text-base pointer-events-auto"
+                    className="group relative overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-2xl transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/40 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] hover:shadow-[0_8px_32px_0_rgba(31,38,135,0.25)] flex items-center justify-center gap-3 text-sm md:text-base pointer-events-auto w-full max-w-[280px]"
                   >
                     <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-transparent opacity-50 transition-opacity duration-300" />
                     
@@ -244,6 +279,47 @@ export default function MyLuvIdPage() {
                     <BookOpen size={22} className="shrink-0 relative z-10 group-hover:rotate-12 transition-transform duration-300" />
                     <span className="whitespace-nowrap relative z-10">{profile.nickname}님의 사용 설명서</span>
                   </button>
+
+                  {/* Compatibility Button (Conditional) */}
+                  <div 
+                    className="relative group/compat pointer-events-auto w-full max-w-[280px]"
+                    onMouseEnter={() => isOwner && setShowCompatTooltip(true)}
+                    onMouseLeave={() => isOwner && setShowCompatTooltip(false)}
+                  >
+                    <button
+                      disabled={isOwner}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (isOwner) return;
+                        
+                        // Logic for shared card view:
+                        // if (hasReport) router.push(`/luvid/compatibility?target=${profile.id}`);
+                        // else { showToast(...); router.push("/"); }
+                      }}
+                      className={`
+                        w-full relative overflow-hidden border font-bold py-3 px-6 md:py-3.5 md:px-8 rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 text-sm
+                        ${isOwner 
+                          ? "bg-white/5 border-white/10 text-white/40 cursor-not-allowed" 
+                          : "bg-white/20 border-white/40 text-white hover:bg-white/30 hover:scale-105 shadow-[0_4px_16px_0_rgba(31,38,135,0.1)]"
+                        }
+                      `}
+                    >
+                      <HeartHandshake size={20} className={isOwner ? "opacity-50" : ""} />
+                      <span>연애 궁합 보러가기</span>
+                    </button>
+
+                    {/* Disabled Info Tooltip (Only for Owner) */}
+                    {isOwner && (
+                      <GlassTooltip
+                        isVisible={showCompatTooltip}
+                        title="궁합 보는 방법"
+                        description={<span>상대방의 카드를 공유받으면 궁합을 볼 수 있어요. 상대에게 먼저 내 카드를 공유해보세요.</span>}
+                        position="bottom"
+                        align="center"
+                        width="w-64"
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
