@@ -166,7 +166,7 @@ export function CompatibilityResultView({ result }: Props) {
           <motion.p 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
+            transition={{ delay: 2.2, duration: 0.5 }}
             className="text-slate-500 font-medium mt-4 text-lg"
           >
             {result.summary}
@@ -177,7 +177,7 @@ export function CompatibilityResultView({ result }: Props) {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
+          transition={{ delay: 2.5, duration: 0.5 }}
           className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 mb-8"
         >
           <h3 className="text-sm font-bold text-slate-400 mb-6 text-center tracking-widest uppercase">Love Balance</h3>
@@ -191,7 +191,7 @@ export function CompatibilityResultView({ result }: Props) {
               key={idx}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 + (idx * 0.15), duration: 0.5 }}
+              transition={{ delay: 3.0 + (idx * 0.15), duration: 0.5 }}
               className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden flex items-start gap-5"
             >
               <div className={`p-4 rounded-2xl shrink-0 ${
