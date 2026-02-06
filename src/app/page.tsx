@@ -224,12 +224,38 @@ export default function Home() {
               <div>{CardContent}</div>
             );
           })()}
+
+          {/* Love Letter Box - Coming Soon (Locked) */}
+          <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden opacity-70 select-none grayscale">
+            <div className="absolute top-0 right-0 p-4 opacity-10">
+              <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-400">
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                <path d="m2 7 8.97 5.7a1.94 1.94 0 0 0 2.06 0L22 7"/>
+              </svg>
+            </div>
+            
+            <div className="relative z-10">
+              <StatusBadge status={CARD_STATUS.LOCKED} />
+              
+              <h2 className="text-xl font-bold text-slate-400 mb-2">
+                Luv Letter 상담소
+              </h2>
+              <p className="text-slate-500 text-sm leading-relaxed mb-6 max-w-[85%]">
+                당신의 연애 고민을 편지로 보내주세요.<br/>
+                Luvid 멘토가 맞춤형 조언을 담아 답장드릴게요.
+              </p>
+              
+              <div className="flex items-center gap-2 text-sm font-bold text-slate-400/70">
+                Coming Soon <Lock size={16} />
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Footer Text */}
         <div className="mt-8 text-center">
           <p className="text-xs text-slate-400 font-medium">
-            "가장 중요한 관계는 바로<br className="md:hidden"/> 나 자신과의 관계입니다."
+            "가장 중요한 관계는 바로 나 자신과의 관계입니다."
           </p>
         </div>
       </main>
