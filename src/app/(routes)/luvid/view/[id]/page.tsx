@@ -10,7 +10,8 @@ import {
   Copy,
   HeartHandshake,
   Info,
-  Pencil
+  Pencil,
+  Share2
 } from "lucide-react";
 import { getLuvIdById } from "@/features/luvid/utils/supabase-service";
 import { LuvIdProfile } from "@/features/luvid/model/types";
@@ -74,19 +75,19 @@ export default function SharedLuvIdPage({ params }: { params: Promise<{ id: stri
     loadProfile();
   }, [resolvedParams.id, router, showToast]);
 
-  const copyLuvId = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!profile) return;
-    try {
-      await navigator.clipboard.writeText(profile.id);
-      showToast({
-        title: "Luv ID가 복사되었어요!",
-        description: "ID를 상대방에게 전달하면 당신과의 궁합을 볼 수 있어요."
-      });
-    } catch (err) {
-      console.error("Failed to copy ID:", err);
-    }
-  };
+  // const copyLuvId = async (e: React.MouseEvent) => {
+  //   e.stopPropagation();
+  //   if (!profile) return;
+  //   try {
+  //     await navigator.clipboard.writeText(profile.id);
+  //     showToast({
+  //       title: "Luv ID가 복사되었어요!",
+  //       description: "ID를 상대방에게 전달하면 당신과의 궁합을 볼 수 있어요."
+  //     });
+  //   } catch (err) {
+  //     console.error("Failed to copy ID:", err);
+  //   }
+  // };
 
   if (loading) {
     return (
@@ -116,7 +117,14 @@ export default function SharedLuvIdPage({ params }: { params: Promise<{ id: stri
             <ArrowLeft size={20} />
             <span className="font-medium">홈</span>
           </button>
-          
+          <button
+            // onClick={handleShare}
+            className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-full font-medium hover:bg-slate-800 transition-colors"
+            style={{ visibility: "hidden" }}
+          >
+            <Share2 size={18} />
+            <span>공유하기</span>
+          </button>
           {/* Share Button Removed for Viewer */}
         </div>
       </div>
@@ -180,12 +188,12 @@ export default function SharedLuvIdPage({ params }: { params: Promise<{ id: stri
                     <div className="relative">
                       <div 
                         className="text-white/70 text-sm font-mono font-semibold truncate pr-2 flex items-center gap-1.5 cursor-pointer hover:text-white transition-colors group pointer-events-auto"
-                        onClick={copyLuvId}
+                        // onClick={copyLuvId}
                         onMouseEnter={() => setShowIdTooltip(true)}
                         onMouseLeave={() => setShowIdTooltip(false)}
                       >
                         <span>{profile.id}</span>
-                        <Copy size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                        {/* <Copy size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" /> */}
                       </div>
                       
                       <GlassTooltip
@@ -340,6 +348,7 @@ export default function SharedLuvIdPage({ params }: { params: Promise<{ id: stri
         {/* Info Text */}
         <div className="text-center text-slate-500 text-sm">
           <p>이 카드는 {profile.nickname}님의 연애 정체성을 나타냅니다.</p>
+          <p className="mt-1">{profile.nickname}님과 얼마나 잘 맞는지 확인해보세요.</p>
         </div>
       </div>
 
