@@ -8,6 +8,7 @@ import { getOrCreateUserId } from "@/features/user-manual/utils/user-storage";
 import { getUserManual } from "@/features/user-manual/utils/supabase-service";
 import { createLuvIdFromReport } from "@/features/luvid/model/converter";
 import { saveLuvId } from "@/features/luvid/utils/supabase-service";
+import { saveMyLuvIdToStorage } from "@/features/luvid/utils/luvid-storage";
 import { LuvIdProfile } from "@/features/luvid/model/types";
 
 export default function CreateLuvIdPage() {
@@ -63,6 +64,9 @@ export default function CreateLuvIdPage() {
       
       // Supabase에 저장
       await saveLuvId(updatedProfile);
+      
+      // LocalStorage에 내 Luv ID 저장
+      saveMyLuvIdToStorage(updatedProfile.id);
       
       // 내 ID 페이지로 이동
       router.push("/luvid/my");

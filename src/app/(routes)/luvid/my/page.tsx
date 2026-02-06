@@ -18,6 +18,8 @@ import { ARCHETYPE_ICONS, ARCHETYPE_GRADIENTS, ARCHETYPE_DESCRIPTIONS } from "@/
 import { useToast } from "@/shared/hooks/useToast";
 import { Toast } from "@/shared/components/Toast";
 import { GlassTooltip } from "@/shared/components/ui/GlassTooltip";
+import { CompatibilityModal } from "@/features/luvid/components/CompatibilityModal";
+import { saveMyLuvIdToStorage } from "@/features/luvid/utils/luvid-storage";
 
 export default function MyLuvIdPage() {
   const router = useRouter();
@@ -28,6 +30,7 @@ export default function MyLuvIdPage() {
   const [activeTooltip, setActiveTooltip] = useState<number | null>(null);
   const [showArchetypeTooltip, setShowArchetypeTooltip] = useState(false);
   const [showCompatTooltip, setShowCompatTooltip] = useState(false);
+  const [showCompatModal, setShowCompatModal] = useState(false);
   
   // This page is for "My" Luv ID, so it's always the owner viewing their own card.
   // In a future "View" page for other users, we would set this to false.
@@ -45,6 +48,9 @@ export default function MyLuvIdPage() {
         }
 
         setProfile(luvIdProfile);
+        
+        // Save Luv ID to localStorage for compatibility modal
+        saveMyLuvIdToStorage(luvIdProfile.id);
       } catch (err) {
         console.error("Failed to load Luv ID:", err);
       } finally {
@@ -280,45 +286,32 @@ export default function MyLuvIdPage() {
                     <span className="whitespace-nowrap relative z-10">{profile.nickname}님의 사용 설명서</span>
                   </button>
 
-                  {/* Compatibility Button (Conditional) */}
+                  {/* Compatibility Button */}
                   <div 
                     className="relative group/compat pointer-events-auto w-full max-w-[280px]"
-                    onMouseEnter={() => isOwner && setShowCompatTooltip(true)}
-                    onMouseLeave={() => isOwner && setShowCompatTooltip(false)}
+                    onMouseEnter={() => setShowCompatTooltip(true)}
+                    onMouseLeave={() => setShowCompatTooltip(false)}
                   >
                     <button
-                      disabled={isOwner}
                       onClick={(e) => {
                         e.stopPropagation();
-                        if (isOwner) return;
-                        
-                        // Logic for shared card view:
-                        // if (hasReport) router.push(`/luvid/compatibility?target=${profile.id}`);
-                        // else { showToast(...); router.push("/"); }
+                        setShowCompatModal(true);
                       }}
-                      className={`
-                        w-full relative overflow-hidden border font-bold py-3 px-6 md:py-3.5 md:px-8 rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 text-sm
-                        ${isOwner 
-                          ? "bg-white/5 border-white/10 text-white/40 cursor-not-allowed" 
-                          : "bg-white/20 border-white/40 text-white hover:bg-white/30 hover:scale-105 shadow-[0_4px_16px_0_rgba(31,38,135,0.1)]"
-                        }
-                      `}
+                      className="w-full relative overflow-hidden border border-white/40 bg-white/20 text-white font-bold py-3 px-6 md:py-3.5 md:px-8 rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 text-sm hover:bg-white/30 hover:scale-105 shadow-[0_4px_16px_0_rgba(31,38,135,0.1)]"
                     >
-                      <HeartHandshake size={20} className={isOwner ? "opacity-50" : ""} />
+                      <HeartHandshake size={20} />
                       <span>연애 궁합 보러가기</span>
                     </button>
 
-                    {/* Disabled Info Tooltip (Only for Owner) */}
-                    {isOwner && (
-                      <GlassTooltip
-                        isVisible={showCompatTooltip}
-                        title="궁합 보는 방법"
-                        description={<span>상대방의 카드를 공유받으면 궁합을 볼 수 있어요. 상대에게 먼저 내 카드를 공유해보세요.</span>}
-                        position="bottom"
-                        align="center"
-                        width="w-64"
-                      />
-                    )}
+                    {/* Guidance Tooltip */}
+                    <GlassTooltip
+                      isVisible={showCompatTooltip}
+                      title="궁합 보는 방법"
+                      description={<span>상대방의 카드를 공유받거나 Luv ID 를 입력하면 궁합을 확인할 수 있어요. 상대에게 먼저 내 카드를 공유해보세요.</span>}
+                      position="bottom"
+                      align="center"
+                      width="w-64"
+                    />
                   </div>
                 </div>
               </div>
@@ -335,6 +328,15 @@ export default function MyLuvIdPage() {
 
       {/* Toast */}
       <Toast message={toast} />
+
+      {/* Compatibility Modal */}
+      <CompatibilityModal
+        isOpen={showCompatModal}
+        onClose={() => setShowCompatModal(false)}
+        isOwner={isOwner}
+        viewedProfileId={profile?.id}
+        hasReport={!!profile?.reportId}
+      />
 
       {/* CSS for 3D effect */}
       <style jsx global>{`
