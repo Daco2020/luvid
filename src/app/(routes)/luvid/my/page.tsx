@@ -3,13 +3,15 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  ArrowLeft, 
-  Share2, 
+import {
+  ArrowLeft,
+  Share2,
   Loader2,
   BookOpen,
   Copy,
-  HeartHandshake
+  HeartHandshake,
+  Info,
+  Pencil
 } from "lucide-react";
 import { getOrCreateUserId } from "@/features/user-manual/utils/user-storage";
 import { getLuvIdByUserId } from "@/features/luvid/utils/supabase-service";
@@ -19,6 +21,7 @@ import { useToast } from "@/shared/hooks/useToast";
 import { Toast } from "@/shared/components/Toast";
 import { GlassTooltip } from "@/shared/components/ui/GlassTooltip";
 import { CompatibilityModal } from "@/features/luvid/components/CompatibilityModal";
+import { NicknameEditModal } from "@/features/luvid/components/NicknameEditModal";
 import { saveMyLuvIdToStorage } from "@/features/luvid/utils/luvid-storage";
 
 export default function MyLuvIdPage() {
@@ -31,6 +34,7 @@ export default function MyLuvIdPage() {
   const [showArchetypeTooltip, setShowArchetypeTooltip] = useState(false);
   const [showCompatTooltip, setShowCompatTooltip] = useState(false);
   const [showCompatModal, setShowCompatModal] = useState(false);
+  const [showNicknameModal, setShowNicknameModal] = useState(false);
   
   // This page is for "My" Luv ID, so it's always the owner viewing their own card.
   // In a future "View" page for other users, we would set this to false.
@@ -183,9 +187,8 @@ export default function MyLuvIdPage() {
                   {/* Top - ID & Icon */}
                   <div className="flex items-center justify-between">
                     <div 
-                      className="text-white/60 text-sm font-mono truncate pr-2 flex items-center gap-1.5 cursor-pointer hover:text-white transition-colors group pointer-events-auto"
+                      className="text-white/70 text-sm font-mono font-semibold truncate pr-2 flex items-center gap-1.5 cursor-pointer hover:text-white transition-colors group pointer-events-auto"
                       onClick={copyLuvId}
-                      title="클릭하여 Luv ID 복사"
                     >
                       <span>{profile.id}</span>
                       <Copy size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -216,7 +219,21 @@ export default function MyLuvIdPage() {
 
                   {/* Middle - Main Info */}
                   <div className="flex-1 flex flex-col justify-center">
-                    <h2 className="text-white text-[26px] md:text-3xl font-bold mb-1 md:mb-2">{profile.nickname}</h2>
+                    <div 
+                      className="group flex items-center gap-2 mb-1 md:mb-2 cursor-pointer w-fit"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowNicknameModal(true);
+                      }}
+                    >
+                      <h2 className="text-white text-[26px] md:text-3xl font-bold decoration-white/30 underline-offset-4 transition-all">
+                        {profile.nickname}
+                      </h2>
+                      {/* <div className="bg-white/20 p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-all scale-90 group-hover:scale-100"> */}
+                      <Pencil size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                        {/* < size={14} className="text-white" /> */}
+                      {/* </div> */}
+                    </div>
                     <p className="text-[14px] md:text-[16px] text-white/90 italic mb-6 md:mb-8">"{profile.tagline}"</p>
                   </div>
 
@@ -337,6 +354,19 @@ export default function MyLuvIdPage() {
         viewedProfileId={profile?.id}
         hasReport={!!profile?.reportId}
       />
+
+      {/* Nickname Edit Modal */}
+      {profile && (
+        <NicknameEditModal
+          isOpen={showNicknameModal}
+          onClose={() => setShowNicknameModal(false)}
+          currentNickname={profile.nickname}
+          luvId={profile.id}
+          onSuccess={(newNickname) => {
+            setProfile(prev => prev ? ({ ...prev, nickname: newNickname }) : null);
+          }}
+        />
+      )}
 
       {/* CSS for 3D effect */}
       <style jsx global>{`
