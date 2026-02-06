@@ -129,7 +129,7 @@ export function CompatibilityModal({
 
       // Fetch both user manuals for compatibility calculation
       const { getLuvIdById: getMyLuvId } = await import("../utils/supabase-service");
-      const { getUserManual } = await import("@/features/user-manual/utils/supabase-service");
+      const { getUserManual } = await import("@/shared/utils/supabase-service");
       const { createProfileFromData, analyzeCompatibility } = await import("../utils/compatibility-algorithm");
       const { saveCompatibilityResult } = await import("../utils/compatibility-service");
 

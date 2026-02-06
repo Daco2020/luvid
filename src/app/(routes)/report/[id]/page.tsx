@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ProductManual } from "@/features/user-manual/components/report/ProductManual";
 import { UserManualReport } from "@/features/user-manual/model/report";
-import { getUserManual } from "@/features/user-manual/utils/supabase-service";
-import { getOrCreateUserId } from "@/features/user-manual/utils/user-storage";
+import { getUserManual } from "@/shared/utils/supabase-service";
+import { getOrCreateUserId } from "@/shared/utils/user-storage";
 
 export default function ResultPage() {
   const params = useParams();

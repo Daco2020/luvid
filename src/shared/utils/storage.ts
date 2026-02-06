@@ -1,4 +1,4 @@
-import { UserManualStorage, userManualStorageSchema } from "../model/section1-schema";
+import { UserManualStorage, userManualStorageSchema } from "../../features/user-manual/model/section1-schema";
 
 export const STORAGE_KEY = "luvid_user_manual_in_progress";
 

@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, BookHeart, Sparkles, Lock } from "lucide-react";
 import { motion } from "framer-motion";
-import { getUserManual } from "@/features/user-manual/utils/supabase-service";
-import { getOrCreateUserId } from "@/features/user-manual/utils/user-storage";
+import { getUserManual } from "@/shared/utils/supabase-service";
+import { getOrCreateUserId } from "@/shared/utils/user-storage";
 import { checkLuvIdExists } from "@/features/luvid/utils/supabase-service";
 
 
@@ -71,7 +71,7 @@ export default function Home() {
         const userId = getOrCreateUserId();
         
         // 설명서 존재 여부 확인 (Supabase에서 조회)
-        const { checkUserManualExists } = await import("@/features/user-manual/utils/supabase-service");
+        const { checkUserManualExists } = await import("@/shared/utils/supabase-service");
         const manualExists = await checkUserManualExists(userId);
         setHasManual(manualExists);
         

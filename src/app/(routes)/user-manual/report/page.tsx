@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { generateUserManual, UserManualReport } from "@/features/user-manual/model/report";
-import { loadUserManual } from "@/features/user-manual/utils/storage";
-import { generateReportId } from "@/features/user-manual/utils/id-generator";
-import { getOrCreateUserId } from "@/features/user-manual/utils/user-storage";
-import { saveUserManual } from "@/features/user-manual/utils/supabase-service";
+import { loadUserManual } from "@/shared/utils/storage";
+import { generateReportId } from "@/shared/utils/id-generator";
+import { getOrCreateUserId } from "@/shared/utils/user-storage";
+import { saveUserManual } from "@/shared/utils/supabase-service";
 
 export default function ReportPage() {
   const router = useRouter();

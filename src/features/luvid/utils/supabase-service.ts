@@ -1,4 +1,4 @@
-import { supabase } from "../../user-manual/utils/supabase";
+import { supabase } from "../../../shared/utils/supabase";
 import { LuvIdProfile } from "../model/types";
 
 const TABLE_NAME = "luvid_profiles";

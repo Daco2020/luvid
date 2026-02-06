@@ -1,6 +1,6 @@
 
 import { supabase } from "./supabase";
-import { UserManualReport } from "../model/report";
+import { UserManualReport } from "../../features/user-manual/model/report";
 
 const TABLE_NAME = "luvid_user_manuals";
 

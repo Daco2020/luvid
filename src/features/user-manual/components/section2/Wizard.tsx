@@ -10,7 +10,7 @@ import { SectionIntro } from "@/shared/components/SectionIntro";
 import { section2Scenarios } from "@/features/user-manual/model/section2-scenarios";
 import type { Scenario, UserChoice, Section2Result, Branch, Choice } from "@/features/user-manual/model/section2-schema";
 import { analyzeSection2 } from "@/features/user-manual/model/section2-analyzer";
-import { saveUserManual, loadUserManual } from "@/features/user-manual/utils/storage";
+import { saveUserManual, loadUserManual } from "@/shared/utils/storage";
 import { ResultSection2 } from "@/features/user-manual/components/section2/ResultSection2";
 import { ScenarioSelection } from "@/features/user-manual/components/section2/ScenarioSelection";
 import { ChatMessage } from "./ChatMessage";

@@ -6,7 +6,7 @@ import {
   clearUserManual,
   STORAGE_KEY,
 } from "../storage";
-import { UserManualStorage } from "../../model/section1-schema";
+import { UserManualStorage } from "../../../features/user-manual/model/section1-schema";
 
 describe("User Manual Storage", () => {
   beforeEach(() => {

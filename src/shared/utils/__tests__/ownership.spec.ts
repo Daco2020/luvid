@@ -1,6 +1,6 @@
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { getOrCreateUserId } from '../user-storage';
+import { getOrCreateUserId } from '../../../features/user-manual/utils/user-storage';
 
 describe('User Ownership Logic', () => {
   beforeEach(() => {

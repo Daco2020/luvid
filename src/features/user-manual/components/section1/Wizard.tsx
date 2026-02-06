@@ -14,7 +14,7 @@ import { SectionIntro } from "@/shared/components/SectionIntro";
 import { section1Questions } from "@/features/user-manual/model/section1-questions";
 import { UserAnswer, AnswerChoice, Section1Result } from "@/features/user-manual/model/section1-schema";
 import { analyzeSection1 } from "@/features/user-manual/model/section1-analyzer";
-import { saveUserManual, loadUserManual } from "@/features/user-manual/utils/storage";
+import { saveUserManual, loadUserManual } from "@/shared/utils/storage";
 
 export function Wizard() {
   const router = useRouter();

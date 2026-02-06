@@ -1,6 +1,6 @@
-import { supabase } from "@/features/user-manual/utils/supabase";
+import { supabase } from "@/shared/utils/supabase";
 import { CompatibilityResult } from "./compatibility-algorithm";
-import { generateCompatibilityId } from "@/features/user-manual/utils/id-generator";
+import { generateCompatibilityId } from "@/shared/utils/id-generator";
 
 const TABLE_NAME = "luvid_compatibility";
 

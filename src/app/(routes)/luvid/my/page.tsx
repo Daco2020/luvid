@@ -13,7 +13,7 @@ import {
   Info,
   Pencil
 } from "lucide-react";
-import { getOrCreateUserId } from "@/features/user-manual/utils/user-storage";
+import { getOrCreateUserId } from "@/shared/utils/user-storage";
 import { getLuvIdByUserId } from "@/features/luvid/utils/supabase-service";
 import { LuvIdProfile } from "@/features/luvid/model/types";
 import { ARCHETYPE_ICONS, ARCHETYPE_GRADIENTS, ARCHETYPE_DESCRIPTIONS } from "@/features/user-manual/model/archetype-constants";

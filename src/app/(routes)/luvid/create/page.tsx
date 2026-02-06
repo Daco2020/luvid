@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Sparkles, ArrowRight, Loader2 } from "lucide-react";
-import { getOrCreateUserId } from "@/features/user-manual/utils/user-storage";
-import { getUserManual } from "@/features/user-manual/utils/supabase-service";
+import { getOrCreateUserId } from "@/shared/utils/user-storage";
+import { getUserManual } from "@/shared/utils/supabase-service";
 import { createLuvIdFromReport } from "@/features/luvid/model/converter";
 import { saveLuvId } from "@/features/luvid/utils/supabase-service";
 import { saveMyLuvIdToStorage } from "@/features/luvid/utils/luvid-storage";
@@ -24,7 +24,7 @@ export default function CreateLuvIdPage() {
         const userId = getOrCreateUserId();
         
         // 1. 사용자의 최근 설명서 조회
-        const { getLatestUserManual } = await import("@/features/user-manual/utils/supabase-service");
+        const { getLatestUserManual } = await import("@/shared/utils/supabase-service");
         const reportData = await getLatestUserManual(userId);
         
         if (!reportData || !reportData.data) {
