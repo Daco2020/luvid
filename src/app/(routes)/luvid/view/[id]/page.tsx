@@ -19,7 +19,7 @@ import { ARCHETYPE_ICONS, ARCHETYPE_GRADIENTS, ARCHETYPE_DESCRIPTIONS } from "@/
 import { useToast } from "@/shared/hooks/useToast";
 import { Toast } from "@/shared/components/Toast";
 import { GlassTooltip } from "@/shared/components/ui/GlassTooltip";
-import { CompatibilityModal } from "@/features/luvid/components/CompatibilityModal";
+import { CompatibilityFeature } from "@/features/luvid/components/CompatibilityFeature";
 import { ShimmerEffect } from "@/shared/components/ui/ShimmerEffect";
 
 // Viewer Page for Luv ID
@@ -33,8 +33,6 @@ export default function SharedLuvIdPage({ params }: { params: Promise<{ id: stri
   const [flipped, setFlipped] = useState(false);
   const [activeTooltip, setActiveTooltip] = useState<number | null>(null);
   const [showArchetypeTooltip, setShowArchetypeTooltip] = useState(false);
-  const [showCompatTooltip, setShowCompatTooltip] = useState(false);
-  const [showCompatModal, setShowCompatModal] = useState(false);
   const [showIdTooltip, setShowIdTooltip] = useState(false);
   
   // This page is for viewing OTHER's Luv ID.
@@ -310,35 +308,12 @@ export default function SharedLuvIdPage({ params }: { params: Promise<{ id: stri
                   </button>
 
                   {/* Compatibility Button */}
-                  <div 
-                    className="relative group/compat pointer-events-auto w-full max-w-[280px]"
-                    onMouseEnter={() => setShowCompatTooltip(true)}
-                    onMouseLeave={() => setShowCompatTooltip(false)}
-                  >
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setShowCompatModal(true);
-                      }}
-                      className="w-full relative overflow-hidden border border-white/40 bg-white/20 text-white font-bold py-3 px-6 md:py-3.5 md:px-8 rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 text-sm hover:bg-white/30 hover:scale-105 shadow-[0_4px_16px_0_rgba(31,38,135,0.1)]"
-                    >
-                      <HeartHandshake size={20} className="shrink-0 relative z-10 group-hover:rotate-12 transition-transform duration-300" />
-                      <span className="whitespace-nowrap relative z-10 text-sm">연애 궁합 보러가기</span>
-
-                      {/* Shimmer Effect */}
-                      <ShimmerEffect className="group-hover:animate-none" delay={2.5} />
-                    </button>
-
-                    {/* Guidance Tooltip */}
-                    <GlassTooltip
-                      isVisible={showCompatTooltip}
-                      title="궁합 보는 방법"
-                      description={<span>나의 Luv ID를 입력하여<br/> {profile.nickname}님과의 궁합을 확인해보세요.</span>}
-                      position="bottom"
-                      align="center"
-                      width="w-64"
-                    />
-                  </div>
+                  <CompatibilityFeature
+                    isOwner={isOwner}
+                    viewedProfileId={profile.id}
+                    hasReport={true} // Viewer checks their own report status inside modal
+                    nickname={profile.nickname}
+                  />
                 </div>
               </div>
             </div>
@@ -354,22 +329,6 @@ export default function SharedLuvIdPage({ params }: { params: Promise<{ id: stri
 
       {/* Toast */}
       <Toast message={toast} />
-
-      {/* Compatibility Modal - Always show "My Luv ID" input for Viewer */}
-      <CompatibilityModal
-        isOpen={showCompatModal}
-        onClose={() => setShowCompatModal(false)}
-        isOwner={isOwner} // false for viewer
-        viewedProfileId={profile?.id}
-        hasReport={true} // Viewer logic handles its own validation, this prop might need refinement or assume viewer has one if they are checking. 
-                         // Actually CompatibilityModal checks Viewer's manual existence if isOwner is false? 
-                         // No, CompatibilityModal checks if the USER (viewer) has a report. 
-                         // But for checking compatibility, the viewer needs THEIR OWN manual.
-                         // Let's pass true here to bypass the prompt about the VIEWED profile having a manual (which they must have if we are seeing this), 
-                         // but the modal logic inside should check the CURRENT USER (Viewer)'s status.
-                         // Wait, CompatibilityModal uses `hasReport` to block. If `isOwner` is false, it prompts viewer to enter their ID.
-                         // Verification of viewer's ID validity happens inside modal submission.
-      />
 
       {/* CSS for 3D effect */}
       <style jsx global>{`

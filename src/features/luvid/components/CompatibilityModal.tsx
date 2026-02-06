@@ -1,9 +1,24 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRef } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, HeartHandshake, Loader2 } from "lucide-react";
+
+const Portal = ({ children }: { children: React.ReactNode }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  if (typeof window === "undefined" || !mounted) return null;
+
+  return createPortal(children, document.body);
+};
 import { getMyLuvIdFromStorage } from "../utils/luvid-storage";
 import { useToast } from "@/shared/hooks/useToast";
 
@@ -37,6 +52,7 @@ export function CompatibilityModal({
   const [myLuvId, setMyLuvId] = useState("");
   const [partnerLuvId, setPartnerLuvId] = useState("");
   const [loading, setLoading] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -50,24 +66,39 @@ export function CompatibilityModal({
       if (!isOwner && viewedProfileId) {
         setPartnerLuvId(viewedProfileId);
       }
+      
+      // Clear error when modal opens
+      setValidationError(null);
     }
   }, [isOpen, isOwner, viewedProfileId]);
 
+  // Real-time validation for Same ID
+  useEffect(() => {
+    // Clear error on input change
+    setValidationError(null);
+
+    // Check for Same ID
+    if (myLuvId && partnerLuvId && 
+        myLuvId.replace(/\s/g, "").toUpperCase() === partnerLuvId.replace(/\s/g, "").toUpperCase()) {
+      setValidationError("동일한 대상은 궁합을 볼 수 없어요");
+    }
+  }, [myLuvId, partnerLuvId]);
+
   const handleAnalyze = async () => {
-    // Validation
+    // Validation (Empty checks)
     if (!myLuvId.trim()) {
-      showToast({
-        title: "입력 오류",
-        description: "나의 Luv ID를 확인할 수 없습니다."
-      });
+      setValidationError("나의 Luv ID를 확인할 수 없어요.");
       return;
     }
 
     if (!partnerLuvId.trim()) {
-      showToast({
-        title: "입력 오류",
-        description: "상대방의 Luv ID를 입력해주세요."
-      });
+      setValidationError("상대방의 Luv ID를 입력해주세요.");
+      return;
+    }
+
+    // Same ID check (Double check)
+    if (myLuvId.replace(/\s/g, "").toUpperCase() === partnerLuvId.replace(/\s/g, "").toUpperCase()) {
+      setValidationError("동일한 대상은 궁합을 볼 수 없어요");
       return;
     }
 
@@ -106,7 +137,7 @@ export function CompatibilityModal({
   return (
     <AnimatePresence>
       {isOpen && (
-        <>
+        <Portal>
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -124,6 +155,7 @@ export function CompatibilityModal({
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               transition={{ type: "spring", duration: 0.5 }}
               className="bg-white rounded-3xl shadow-2xl max-w-md w-full pointer-events-auto overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}
               <div className="bg-gradient-to-r from-pink-500 to-purple-500 p-6 text-white relative">
@@ -154,7 +186,7 @@ export function CompatibilityModal({
                     value={myLuvId}
                     readOnly
                     className="w-full px-4 py-3 bg-slate-100 border border-slate-200 rounded-xl text-slate-800 font-mono text-sm cursor-not-allowed"
-                    placeholder="자동으로 불러옵니다"
+                    placeholder="홈에서 Luv ID를 생성해주세요"
                   />
                 </div>
 
@@ -175,17 +207,28 @@ export function CompatibilityModal({
                     }`}
                     placeholder={isOwner ? "상대방이 공유한 Luv ID를 입력하세요" : "자동으로 불러옵니다"}
                   />
-                  {isOwner && (
-                    <p className="text-xs text-slate-500 mt-2">
-                      상대방에게는 결과가 전달되지 않습니다.<br/>분석 후 상대방에게도 공유해보세요.
-                    </p>
+                  <p className="text-xs text-slate-500 mt-2 text-center">
+                    상대방은 궁합 결과를 알 수 없어요. 분석 후 결과를 공유해보세요.
+                  </p>
+                </div>
+
+                {/* Error Message Space / Placeholder */}
+                <div className="h-6 flex items-center justify-center">
+                  {validationError && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-red-500 text-sm font-medium"
+                    >
+                      {validationError}
+                    </motion.p>
                   )}
                 </div>
 
                 {/* Analyze Button */}
                 <button
                   onClick={handleAnalyze}
-                  disabled={loading || !myLuvId || !partnerLuvId}
+                  disabled={loading}
                   className="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold py-4 rounded-xl hover:from-pink-600 hover:to-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {loading ? (
@@ -203,7 +246,7 @@ export function CompatibilityModal({
               </div>
             </motion.div>
           </div>
-        </>
+        </Portal>
       )}
     </AnimatePresence>
   );

@@ -20,7 +20,7 @@ import { ARCHETYPE_ICONS, ARCHETYPE_GRADIENTS, ARCHETYPE_DESCRIPTIONS } from "@/
 import { useToast } from "@/shared/hooks/useToast";
 import { Toast } from "@/shared/components/Toast";
 import { GlassTooltip } from "@/shared/components/ui/GlassTooltip";
-import { CompatibilityModal } from "@/features/luvid/components/CompatibilityModal";
+import { CompatibilityFeature } from "@/features/luvid/components/CompatibilityFeature";
 import { NicknameEditModal } from "@/features/luvid/components/NicknameEditModal";
 import { saveMyLuvIdToStorage } from "@/features/luvid/utils/luvid-storage";
 import { ShimmerEffect } from "@/shared/components/ui/ShimmerEffect";
@@ -33,8 +33,6 @@ export default function MyLuvIdPage() {
   const [flipped, setFlipped] = useState(false);
   const [activeTooltip, setActiveTooltip] = useState<number | null>(null);
   const [showArchetypeTooltip, setShowArchetypeTooltip] = useState(false);
-  const [showCompatTooltip, setShowCompatTooltip] = useState(false);
-  const [showCompatModal, setShowCompatModal] = useState(false);
   const [showNicknameModal, setShowNicknameModal] = useState(false);
   const [showIdTooltip, setShowIdTooltip] = useState(false);
   
@@ -321,35 +319,12 @@ export default function MyLuvIdPage() {
                   </button>
 
                   {/* Compatibility Button */}
-                  <div 
-                    className="relative group/compat pointer-events-auto w-full max-w-[280px]"
-                    onMouseEnter={() => setShowCompatTooltip(true)}
-                    onMouseLeave={() => setShowCompatTooltip(false)}
-                  >
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setShowCompatModal(true);
-                      }}
-                      className="group relative overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-2xl transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/40 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] hover:shadow-[0_8px_32px_0_rgba(31,38,135,0.25)] flex items-center justify-center gap-3 text-sm md:text-base pointer-events-auto w-full max-w-[280px]"
-                    >
-                      <HeartHandshake size={20} className="shrink-0 relative z-10 group-hover:rotate-12 transition-transform duration-300" />
-                      <span className="whitespace-nowrap relative z-10 text-sm">연애 궁합 보러가기</span>
-                      
-                      {/* Shimmer Effect */}
-                      <ShimmerEffect className="group-hover:animate-none" delay={2.5} />
-                    </button>
-
-                    {/* Guidance Tooltip */}
-                    <GlassTooltip
-                      isVisible={showCompatTooltip}
-                      title="궁합 보는 방법"
-                      description={<span>상대방의 카드를 공유받거나 Luv ID 를 입력하면 궁합을 확인할 수 있어요. 상대에게 먼저 내 카드를 공유해보세요.</span>}
-                      position="bottom"
-                      align="center"
-                      width="w-64"
-                    />
-                  </div>
+                  <CompatibilityFeature
+                    isOwner={isOwner}
+                    viewedProfileId={profile.id}
+                    hasReport={!!profile.reportId}
+                    nickname={profile.nickname}
+                  />
                 </div>
               </div>
             </div>
@@ -366,16 +341,7 @@ export default function MyLuvIdPage() {
       {/* Toast */}
       <Toast message={toast} />
 
-      {/* Compatibility Modal */}
-      <CompatibilityModal
-        isOpen={showCompatModal}
-        onClose={() => setShowCompatModal(false)}
-        isOwner={isOwner}
-        viewedProfileId={profile?.id}
-        hasReport={!!profile?.reportId}
-      />
-
-      {/* Nickname Edit Modal */}
+       {/* Nickname Edit Modal */}
       {profile && (
         <NicknameEditModal
           isOpen={showNicknameModal}
