@@ -117,7 +117,12 @@ export function CompatibilityResultView({ result }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <motion.div 
+      initial={{ opacity: 0, filter: "blur(10px)" }}
+      animate={{ opacity: 1, filter: "blur(0px)" }}
+      transition={{ duration: 1, ease: "easeOut" }}
+      className="min-h-screen bg-background"
+    >
       {/* Header - Consistent with my/page.tsx */}
       <div className="sticky top-0 bg-background/80 backdrop-blur-lg border-b border-slate-100 z-10">
         <div className="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -213,6 +218,6 @@ export function CompatibilityResultView({ result }: Props) {
           ))}
         </div>
       </main>
-    </div>
+    </motion.div>
   );
 }

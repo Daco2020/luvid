@@ -40,8 +40,8 @@ export default function CompatibilityPage() {
         }
 
         // Simulate loading screen for at least 5 seconds to show full animation
-        console.log("🔍 [Compatibility] Starting 6 second delay...");
-        await new Promise(resolve => setTimeout(resolve, 6000));
+        console.log("🔍 [Compatibility] Starting 5 second delay...");
+        await new Promise(resolve => setTimeout(resolve, 5000));
         console.log("🔍 [Compatibility] Delay complete!");
 
         setResult(record.data);
