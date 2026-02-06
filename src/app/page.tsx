@@ -8,6 +8,58 @@ import { getUserManual } from "@/features/user-manual/utils/supabase-service";
 import { getOrCreateUserId } from "@/features/user-manual/utils/user-storage";
 import { checkLuvIdExists } from "@/features/luvid/utils/supabase-service";
 
+
+const CARD_STATUS = {
+  LOCKED: "LOCKED",
+  READY: "READY",
+  COMPLETED: "COMPLETED",
+} as const;
+
+type CardStatus = typeof CARD_STATUS[keyof typeof CARD_STATUS];
+
+const getStatusConfig = (status: CardStatus) => {
+  switch (status) {
+    case CARD_STATUS.LOCKED:
+      return {
+        badge: "잠김",
+        badgeClass: "bg-slate-100 text-slate-500",
+        dotClass: "bg-slate-400",
+        ping: false,
+        iconColor: "text-slate-400",
+      };
+    case CARD_STATUS.READY:
+      return {
+        badge: "준비",
+        badgeClass: "bg-yellow-50 text-yellow-600",
+        dotClass: "bg-yellow-400",
+        ping: true,
+        iconColor: "text-yellow-500",
+      };
+    case CARD_STATUS.COMPLETED:
+      return {
+        badge: "완료",
+        badgeClass: "bg-emerald-50 text-emerald-600",
+        dotClass: "bg-emerald-500",
+        ping: false,
+        iconColor: "text-emerald-500",
+      };
+  }
+};
+
+function StatusBadge({ status }: { status: CardStatus }) {
+  const config = getStatusConfig(status);
+  
+  return (
+    <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold mb-4 ${config.badgeClass}`}>
+      <span className="relative flex h-2 w-2">
+        {config.ping && <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${config.dotClass}`}></span>}
+        <span className={`relative inline-flex rounded-full h-2 w-2 ${config.dotClass}`}></span>
+      </span>
+      {config.badge}
+    </div>
+  );
+}
+
 export default function Home() {
   const [hasManual, setHasManual] = useState(false);
   const [hasLuvId, setHasLuvId] = useState(false);
@@ -75,20 +127,14 @@ export default function Home() {
               </div>
               
               <div className="relative z-10">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-4">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary/40 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-                  </span>
-                  완료(잠금 - 준비 - 완료)
-                </div>
+                <StatusBadge status={hasManual ? CARD_STATUS.COMPLETED : CARD_STATUS.READY} />
                 
                 <h2 className="text-xl font-bold text-slate-800 mb-2 group-hover:text-primary transition-colors">
                   나 사용 설명서 만들기
                 </h2>
                 <p className="text-slate-500 text-sm leading-relaxed mb-6 max-w-[85%]">
-                  내 감정은 언제 편안한지, 스트레스 받을 땐 어떻게 해야 하는지.<br/>
-                  나만의 마음 작동법을 정리해보세요.
+                  나는 어떤 가치를 추구하고 갈등을 어떻게 해결하는지.<br/>
+                  나의 마음 작동법을 확인하고 자신을 탐구해보세요.
                 </p>
                 
                 <div className="flex items-center gap-2 text-sm font-bold text-primary">
@@ -99,90 +145,85 @@ export default function Home() {
           </Link>
 
           {/* Luv ID Card - 상태별 분기 */}
-          {loading ? (
-            <div className="bg-slate-50 p-6 rounded-3xl border border-slate-100 relative overflow-hidden opacity-80">
-              <div className="animate-pulse">
-                <div className="h-6 bg-slate-200 rounded w-1/3 mb-4"></div>
-                <div className="h-4 bg-slate-200 rounded w-2/3"></div>
-              </div>
-            </div>
-          ) : !hasManual ? (
-            // 설명서 없음 - 잠금 상태
-            <div className="bg-slate-50 p-6 rounded-3xl border border-slate-100 relative overflow-hidden opacity-60">
-              <div className="flex items-center justify-between mb-4">
-                <div className="bg-slate-200/50 p-2 rounded-xl text-slate-400">
-                  <Lock size={24} />
-                </div>
-                <span className="text-xs font-bold text-slate-400 bg-slate-200/50 px-3 py-1 rounded-full">잠김</span>
-              </div>
-              
-              <h2 className="text-lg font-bold text-slate-400 mb-1">
-                Luv ID 발급
-              </h2>
-              <p className="text-slate-400 text-sm">
-                설명서를 먼저 완성해주세요.<br/> 
-                그러면 Luv ID를 발급받을 수 있어요.
-              </p>
-            </div>
-          ) : !hasLuvId ? (
-            // 설명서 있음 + ID 없음 - 발급 가능
-            <Link href="/luvid/create">
-              <motion.div 
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="bg-gradient-to-br from-pink-50 to-purple-50 p-6 rounded-3xl border border-pink-100 relative overflow-hidden group cursor-pointer"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <div className="bg-primary/10 p-2 rounded-xl text-primary">
-                    <Sparkles size={24} />
+          {/* Luv ID Card - 상태별 분기 */}
+          {(() => {
+            if (loading) {
+              return (
+                <div className="bg-slate-50 p-6 rounded-3xl border border-slate-100 relative overflow-hidden opacity-80 h-[220px]">
+                  <div className="animate-pulse">
+                    <div className="h-6 bg-slate-200 rounded w-1/3 mb-4"></div>
+                    <div className="h-4 bg-slate-200 rounded w-2/3"></div>
                   </div>
-                  <span className="text-xs font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">발급 가능</span>
+                </div>
+              );
+            }
+
+            const status = !hasManual ? CARD_STATUS.LOCKED : !hasLuvId ? CARD_STATUS.READY : CARD_STATUS.COMPLETED;
+            const config = getStatusConfig(status);
+            
+            const cardConfig = {
+              [CARD_STATUS.LOCKED]: {
+                href: null,
+                desc: <>내 Luv ID를 발급받고 연애 프로필을 완성해보세요.<br/>프로필을 공유하여 서로의 궁합을 확인해 볼 수 있어요.</>,
+                actionText: "나 사용 설명서를 먼저 완성해주세요",
+                actionIcon: <Lock size={16} />,
+                actionClass: "text-slate-400/70",
+                containerClass: "opacity-70 select-none grayscale",
+                titleClass: "text-slate-400"
+              },
+              [CARD_STATUS.READY]: {
+                href: "/luvid/create",
+                desc: <>내 Luv ID를 발급받고 연애 프로필을 완성해보세요.<br/>프로필을 공유하여 서로의 궁합을 확인해 볼 수 있어요.</>,
+                actionText: "발급하기",
+                actionIcon: <ArrowRight size={16} />,
+                actionClass: "text-primary",
+                containerClass: "group",
+                titleClass: "text-slate-800 group-hover:text-primary transition-colors"
+              },
+              [CARD_STATUS.COMPLETED]: {
+                href: "/luvid/my",
+                desc: <>내 Luv ID를 발급받고 연애 프로필을 완성해보세요.<br/>프로필을 공유하여 서로의 궁합을 확인해 볼 수 있어요.</>,
+                actionText: "보러가기",
+                actionIcon: <ArrowRight size={16} />,
+                actionClass: "text-primary",
+                containerClass: "group",
+                titleClass: "text-slate-800 group-hover:text-primary transition-colors"
+              }
+            }[status];
+
+            const CardContent = (
+              <div className={`bg-white p-6 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden ${cardConfig.containerClass}`}>
+                <div className={`absolute top-0 right-0 p-4 opacity-10 ${status === CARD_STATUS.LOCKED ? '' : 'group-hover:opacity-20 transition-opacity'}`}>
+                  <Sparkles size={80} className={config.iconColor} />
                 </div>
                 
-                <h2 className="text-lg font-bold text-slate-800 mb-1 group-hover:text-primary transition-colors">
-                  Luv ID 발급하기
-                </h2>
-                <p className="text-slate-600 text-sm mb-4">
-                  설명서를 바탕으로 당신만의<br/> 
-                  연애 프로필 ID를 만들어보세요!
-                </p>
-                
-                <div className="flex items-center gap-2 text-sm font-bold text-primary">
-                  발급하기 <ArrowRight size={16} />
-                </div>
-              </motion.div>
-            </Link>
-          ) : (
-            // 설명서 + ID 모두 있음 - ID 보기
-            <Link href="/luvid/my">
-              <motion.div 
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="bg-gradient-to-br from-indigo-500 to-purple-600 p-6 rounded-3xl border border-indigo-400 relative overflow-hidden group cursor-pointer text-white"
-              >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-                
-                <div className="flex items-center justify-between mb-4 relative z-10">
-                  <div className="bg-white/20 p-2 rounded-xl">
-                    <Sparkles size={24} />
+                <div className="relative z-10">
+                  <StatusBadge status={status} />
+                  
+                  <h2 className={`text-xl font-bold mb-2 ${cardConfig.titleClass}`}>
+                    Luv ID 카드 발급받기
+                  </h2>
+                  <p className="text-slate-500 text-sm leading-relaxed mb-6 max-w-[85%]">
+                    {cardConfig.desc}
+                  </p>
+                  
+                  <div className={`flex items-center gap-2 text-sm font-bold ${cardConfig.actionClass}`}>
+                    {cardConfig.actionText} {cardConfig.actionIcon}
                   </div>
-                  <span className="text-xs font-bold bg-white/20 px-3 py-1 rounded-full">활성화</span>
                 </div>
-                
-                <h2 className="text-lg font-bold mb-1 relative z-10">
-                  내 Luv ID 보기
-                </h2>
-                <p className="text-white/90 text-sm mb-4 relative z-10">
-                  나의 연애 프로필 카드를<br/> 
-                  확인하고 공유해보세요!
-                </p>
-                
-                <div className="flex items-center gap-2 text-sm font-bold relative z-10">
-                  보러가기 <ArrowRight size={16} />
-                </div>
-              </motion.div>
-            </Link>
-          )}
+              </div>
+            );
+
+            return cardConfig.href ? (
+              <Link href={cardConfig.href}>
+                <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
+                  {CardContent}
+                </motion.div>
+              </Link>
+            ) : (
+              <div>{CardContent}</div>
+            );
+          })()}
         </div>
 
         {/* Footer Text */}
