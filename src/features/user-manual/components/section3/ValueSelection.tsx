@@ -14,7 +14,6 @@ interface ValueSelectionProps {
   onComplete: () => void;
 }
 
-// 무거운 톤 + 투명도로 연한 파스텔 색상 팔레트
 const PASTEL_COLORS = [
   { bg: "bg-white", border: "border-white" },
   { bg: "bg-white", border: "border-white" },
@@ -91,7 +90,7 @@ export function ValueSelection({
         </div>
 
         {/* Value Grid */}
-        <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4 md:gap-6">
+        <div className="grid grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
           {coreValues.map((value) => {
             const selected = isSelected(value.id);
             const animatedColor = chipColors[value.id];

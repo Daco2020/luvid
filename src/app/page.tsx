@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { getUserManual } from "@/shared/utils/supabase-service";
 import { getOrCreateUserId } from "@/shared/utils/user-storage";
 import { checkLuvIdExists } from "@/features/luvid/utils/supabase-service";
+import { PageLoading } from "@/shared/components/PageLoading";
 
 
 const CARD_STATUS = {
@@ -70,13 +71,17 @@ export default function Home() {
       try {
         const userId = getOrCreateUserId();
         
-        // 설명서 존재 여부 확인 (Supabase에서 조회)
-        const { checkUserManualExists } = await import("@/shared/utils/supabase-service");
-        const manualExists = await checkUserManualExists(userId);
+        // 데이터 로딩과 최소 2.5초 대기 시간을 동시에 실행
+        const [manualExists, luvIdExists] = await Promise.all([
+          (async () => {
+            const { checkUserManualExists } = await import("@/shared/utils/supabase-service");
+            return checkUserManualExists(userId);
+          })(),
+          checkLuvIdExists(userId),
+          new Promise((resolve) => setTimeout(resolve, 3500)) // 최소 3.5초 대기
+        ]);
+
         setHasManual(manualExists);
-        
-        // Luv ID 존재 여부 확인
-        const luvIdExists = await checkLuvIdExists(userId);
         setHasLuvId(luvIdExists);
       } catch (err) {
         console.error('Status check failed:', err);
@@ -87,17 +92,24 @@ export default function Home() {
 
     checkStatus();
   }, []);
+
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 relative overflow-hidden">
+      {loading && <PageLoading />}
       
       {/* Background Decor */}
       <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-primary/5 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-secondary/10 rounded-full blur-3xl animate-pulse delay-700" />
 
-      <main className="w-full max-w-2xl z-10">
-        
-        {/* Text-Only Logo */}
-        <header className="mb-10 text-center">
+      {!loading && (
+        <motion.main 
+          initial={{ opacity: 0, filter: "blur(10px)" }}
+          animate={{ opacity: 1, filter: "blur(0px)" }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          className="w-full max-w-2xl z-10"
+        >
+          {/* Text-Only Logo */}
+        <header className="mb-10 mt-20 text-center">
           <div className="mb-4">
             <span className="text-2xl font-display font-bold tracking-tight text-primary">Luvid</span>
           </div>
@@ -251,14 +263,8 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-        {/* Footer Text */}
-        <div className="mt-8 text-center">
-          <p className="text-xs text-slate-400 font-medium">
-            "가장 중요한 관계는 바로 나 자신과의 관계입니다."
-          </p>
-        </div>
-      </main>
+        </motion.main>
+      )}
     </div>
   );
 }

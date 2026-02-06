@@ -45,7 +45,7 @@ export function ResultSection1({ data, onNext }: ResultSection1Props) {
           <div className="space-y-2">
             <p className="text-sm text-slate-500 font-medium">당신의 에너지 충전 방식은...</p>
             <h3 className="text-lg font-bold text-slate-800 break-keep leading-relaxed">
-              앗!!!? 👀
+              에에엣!!!? 👀
             </h3>
             <p className="text-sm text-slate-600 px-2 break-keep leading-relaxed">
               {mainInsight.teaserHint}
@@ -66,9 +66,9 @@ export function ResultSection1({ data, onNext }: ResultSection1Props) {
         </div>
         <p className="text-xs text-slate-500 font-medium leading-relaxed">
           당신이 불확실한 상황에서 어떻게 반응하는지,<br/>
-          갈등을 어떻게 풀어가는지...<br/>
-          흠흠.. 궁금하시죠? 😏<br/>
-          <span className="text-primary font-semibold">모든 테스트 완료 후</span> 공개할게요!
+          스트레스를 어떻게 관리하는지...<br/>
+          궁금하시죠? 😏<br/>
+          <span className="text-primary font-semibold">다음 단계</span>를 진행하는 동안 정리하고 있을게요!
         </p>
       </motion.div>
 

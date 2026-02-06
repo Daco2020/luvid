@@ -97,3 +97,29 @@ export const ARCHETYPE_DESCRIPTIONS: Record<string, string> = {
   consideration: "상대방의 입장에서 먼저 생각하는 세심한 배려가 돋보여요.",
   default: "당신만의 특별한 매력이 빛나는 사람이에요.",
 };
+
+/**
+ * Archetype teaserHint
+ * Short teaserHint for each archetype to be displayed in tooltips
+ */
+export const ARCHETYPE_TEASER_HINTS: Record<string, string> = {
+  honesty: "거짓 없는 솔직한 관계를 원하시나요? 🛡️",
+  communication: "대화 속에서 깊은 연결을 느끼시나요? 💬",
+  respect: "서로의 다름을 있는 그대로 존중하나요? 🤝",
+  stability: "변함없는 든든한 버팀목이 되어주나요? 🏠",
+  emotional_regulation: "감정의 파도에도 평온을 유지하나요? 🌊",
+  independence: "혼자만의 시간도 소중하게 여기나요? 🌳",
+  empathy: "상대의 아픔을 내 것처럼 공감하나요? ☂️",
+  humor: "유쾌한 웃음이 끊이지 않나요? 😄",
+  diligence: "성실함이 신뢰의 기본이라 믿나요? 🔨",
+  positivity: "어떤 상황에도 희망을 잃지 않나요? ☀️",
+  passion: "사랑을 위해 물불 가리지 않나요? 🔥",
+  planning: "함께 그리는 미래가 설레나요? 🗺️",
+  intellectual_curiosity: "함께 성장하며 배우는 게 즐거운가요? 🔭",
+  sensitivity: "작은 변화도 섬세하게 알아차리나요? 🪶",
+  proactiveness: "먼저 다가가는 용기가 있으신가요? 👣",
+  self_control: "스스로를 통제하려고 노력하나요? ⚖️",
+  acceptance: "있는 그대로의 모습을 사랑하시나요? 🐨",
+  consideration: "나보다 상대를 먼저 생각하시나요? 🎁",
+  default: "당신만의 특별한 매력이 궁금한가요? ✨",
+};

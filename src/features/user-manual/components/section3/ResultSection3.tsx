@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Lock, ArrowRight, Heart } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Section3Result } from "../../model/section3-schema";
+import { ARCHETYPE_TEASER_HINTS } from "../../model/archetype-constants";
 
 interface ResultSection3Props {
   result: Section3Result;
@@ -46,10 +47,10 @@ export function ResultSection3({ result }: ResultSection3Props) {
           <div className="space-y-2">
             <p className="text-sm text-slate-500 font-medium">당신이 가장 중요하게 생각하는 가치는...</p>
             <h3 className="text-xl font-bold text-slate-800 break-keep leading-relaxed text-balance">
-              {topPositiveValue.aspect.label}
+              헉 이거였군요! 👀
             </h3>
             <p className="text-sm text-slate-600 px-2 break-keep leading-relaxed">
-              {topPositiveValue.aspect.description}
+              {ARCHETYPE_TEASER_HINTS[topPositiveValue.coreValueId]}
             </p>
           </div>
         </div>
@@ -66,9 +67,10 @@ export function ResultSection3({ result }: ResultSection3Props) {
           <Lock size={16} />
         </div>
         <p className="text-xs text-slate-500 font-medium leading-relaxed">
-          선택하신 다른 가치들과<br/>
-          절대 용납할 수 없는 딜브레이커는...<br/>
-          <span className="text-primary font-semibold">최종 리포트</span>에서 모두 공개됩니다! ✨
+          선택하신 다른 가치들도 궁금하다고요?<br/>
+          그리고 이전의 결과들도 궁금하시겠죠~ <br/>
+          오래 기다리셨어요! 😊<br/>
+          이제 <span className="text-primary font-semibold">최종 결과</span>에서 모두 공개됩니다!
         </p>
       </motion.div>
 

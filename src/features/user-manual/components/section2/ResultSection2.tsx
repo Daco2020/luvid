@@ -56,7 +56,7 @@ export function ResultSection2({ result }: ResultSection2Props) {
             <div className="space-y-2">
               <p className="text-sm text-slate-500 font-medium">당신의 갈등 대처 방법은...</p>
               <h3 className="text-lg font-bold text-slate-800 break-keep leading-relaxed">
-                앗!!!? 👀
+                오호!!!? 👀
               </h3>
               <p className="text-sm text-slate-600 px-2 break-keep leading-relaxed">
                 {insights.conflict.teaserHint}
@@ -76,9 +76,10 @@ export function ResultSection2({ result }: ResultSection2Props) {
             <Lock size={16} />
           </div>
           <p className="text-xs text-slate-500 font-medium leading-relaxed">
-            당신은 이렇게 사과받기를 바라는군요..<br/>
-            흠흠.. 아! 이 내용은 아직 정리중이니까~ 😏<br/>
-            <span className="text-primary font-semibold">섹션 3까지 마치면</span> 보여드릴게요!
+            아하.. 당신은 이렇게 사과받기를 바라는군요..<br/>
+            의외인데요??? 🫢<br/>
+            아! 이 내용은 아직 정리중이니까~ <br/>
+            <span className="text-primary font-semibold">마지막 단계</span>까지 마치면 보여드릴게요!
           </p>
         </motion.div>
 
