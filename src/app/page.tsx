@@ -238,7 +238,7 @@ export default function Home() {
               <StatusBadge status={CARD_STATUS.LOCKED} />
               
               <h2 className="text-xl font-bold text-slate-400 mb-2">
-                Luv Letter 상담소
+                Luv Letter 보내기
               </h2>
               <p className="text-slate-500 text-sm leading-relaxed mb-6 max-w-[85%]">
                 당신의 연애 고민을 편지로 보내주세요.<br/>
