@@ -24,12 +24,55 @@ export function NicknameEditModal({
   const { showToast } = useToast();
   const [nickname, setNickname] = useState(currentNickname);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // Validation function: Korean 2 points, English/Number/Symbol 1 point
+  // Max 16 points (8 Korean or 16 English)
+  const validateNickname = (value: string) => {
+    let score = 0;
+    for (let i = 0; i < value.length; i++) {
+      const charCode = value.charCodeAt(i);
+      // Korean characters (Hangul Syllables, Jamo, Compatibility Jamo)
+      if (
+        (charCode >= 0xAC00 && charCode <= 0xD7A3) || 
+        (charCode >= 0x1100 && charCode <= 0x11FF) || 
+        (charCode >= 0x3130 && charCode <= 0x318F)
+      ) {
+        score += 2;
+      } else {
+        score += 1;
+      }
+    }
+    return score;
+  };
+
+  const score = validateNickname(nickname);
+
+  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newVal = e.target.value;
+    const newScore = validateNickname(newVal);
+    
+    if (newScore > 16) {
+      setError("한글 8자 또는 영문 16자 이내로 입력해주세요.");
+    } else {
+      setError("");
+    }
+    setNickname(newVal);
+  };
 
   const handleSave = async () => {
     if (!nickname.trim()) {
       showToast({
         title: "입력 오류",
         description: "닉네임을 입력해주세요."
+      });
+      return;
+    }
+
+    if (score > 16) {
+      showToast({
+        title: "입력 오류",
+        description: "글자 수 제한을 확인해주세요."
       });
       return;
     }
@@ -97,11 +140,19 @@ export function NicknameEditModal({
                 <input
                   type="text"
                   value={nickname}
-                  onChange={(e) => setNickname(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-800 placeholder-slate-400"
+                  onChange={handleNicknameChange}
+                  className={`w-full px-4 py-3 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
+                    error ? "border-red-300 focus:ring-red-200" : "border-slate-200"
+                  } text-slate-800 placeholder-slate-400`}
                   placeholder="새로운 닉네임 입력"
                   autoFocus
                 />
+                
+                <div className="flex justify-between items-center mt-2 px-1">
+                  <span className={`text-xs ${error ? "text-red-500" : "text-slate-400"}`}>
+                    {error || "한글 8자, 영문 16자 이내"}
+                  </span>
+                </div>
               </div>
 
               <div className="flex gap-2">
@@ -114,7 +165,7 @@ export function NicknameEditModal({
                 </button>
                 <button
                   onClick={handleSave}
-                  disabled={loading || !nickname.trim()}
+                  disabled={loading || !nickname.trim() || !!error || score > 16}
                   className="flex-1 py-3 px-4 rounded-xl bg-blue-500 text-white font-bold hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {loading ? (

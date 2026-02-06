@@ -35,6 +35,7 @@ export default function MyLuvIdPage() {
   const [showCompatTooltip, setShowCompatTooltip] = useState(false);
   const [showCompatModal, setShowCompatModal] = useState(false);
   const [showNicknameModal, setShowNicknameModal] = useState(false);
+  const [showIdTooltip, setShowIdTooltip] = useState(false);
   
   // This page is for "My" Luv ID, so it's always the owner viewing their own card.
   // In a future "View" page for other users, we would set this to false.
@@ -86,8 +87,8 @@ export default function MyLuvIdPage() {
     try {
       await navigator.clipboard.writeText(profile.id);
       showToast({
-        title: "Luv ID 복사 완료!",
-        description: "클립보드에 복사되었어요."
+        title: "Luv ID가 복사되었어요!",
+        description: "ID를 상대방에게 전달하면 당신과의 궁합을 볼 수 있어요."
       });
     } catch (err) {
       console.error("Failed to copy ID:", err);
@@ -186,12 +187,25 @@ export default function MyLuvIdPage() {
                 <div className="relative z-10 h-full flex flex-col justify-between py-8 px-8 text-white">
                   {/* Top - ID & Icon */}
                   <div className="flex items-center justify-between">
-                    <div 
-                      className="text-white/70 text-sm font-mono font-semibold truncate pr-2 flex items-center gap-1.5 cursor-pointer hover:text-white transition-colors group pointer-events-auto"
-                      onClick={copyLuvId}
-                    >
-                      <span>{profile.id}</span>
-                      <Copy size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="relative">
+                      <div 
+                        className="text-white/70 text-sm font-mono font-semibold truncate pr-2 flex items-center gap-1.5 cursor-pointer hover:text-white transition-colors group pointer-events-auto"
+                        onClick={copyLuvId}
+                        onMouseEnter={() => setShowIdTooltip(true)}
+                        onMouseLeave={() => setShowIdTooltip(false)}
+                      >
+                        <span>{profile.id}</span>
+                        <Copy size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </div>
+                      
+                      <GlassTooltip
+                        isVisible={showIdTooltip}
+                        title="Luv ID"
+                        description="Luv ID를 상대방과 주고 받으면 서로의 궁합을 볼 수 있어요."
+                        position="bottom"
+                        align="left"
+                        width="w-64"
+                      />
                     </div>
                     
                     <div className="relative pointer-events-auto">
