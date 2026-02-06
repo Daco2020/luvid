@@ -127,11 +127,35 @@ export function CompatibilityModal({
         return;
       }
 
-      // TODO: Create/fetch compatibility record from DB
-      // For now, generate a temporary compatibility ID
-      const compatibilityId = `${myLuvId}_${partnerLuvId}`;
+      // Fetch both user manuals for compatibility calculation
+      const { getLuvIdById: getMyLuvId } = await import("../utils/supabase-service");
+      const { getUserManual } = await import("@/features/user-manual/utils/supabase-service");
+      const { createProfileFromData, analyzeCompatibility } = await import("../utils/compatibility-algorithm");
+      const { saveCompatibilityResult } = await import("../utils/compatibility-service");
 
-      // Navigate to compatibility page
+      const myProfile = await getMyLuvId(myLuvId);
+      if (!myProfile) {
+        throw new Error("Failed to load your profile");
+      }
+
+      const [myManualData, partnerManualData] = await Promise.all([
+        getUserManual(myProfile.reportId),
+        getUserManual(partnerProfile.reportId)
+      ]);
+
+      if (!myManualData?.data || !partnerManualData?.data) {
+        throw new Error("Unable to fetch user manuals");
+      }
+
+      // Calculate compatibility
+      const profile1 = createProfileFromData(myProfile, myManualData.data);
+      const profile2 = createProfileFromData(partnerProfile, partnerManualData.data);
+      const result = analyzeCompatibility(profile1, profile2);
+
+      // Save to DB
+      const compatibilityId = await saveCompatibilityResult(myLuvId, partnerLuvId, result);
+
+      // Navigate to compatibility page with new ID
       router.push(`/luvid/compatibility/${compatibilityId}`);
     } catch (error) {
       console.error("Compatibility check failed:", error);

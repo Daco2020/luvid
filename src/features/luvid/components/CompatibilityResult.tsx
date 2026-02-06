@@ -1,12 +1,11 @@
-
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { CompatibilityProfile, CompatibilityResult, analyzeCompatibility } from "../utils/compatibility-algorithm";
-import { ArrowLeft, Sparkles, Heart, Zap, RefreshCw, Share2 } from "lucide-react";
+import { motion } from "framer-motion";
+import { CompatibilityResult } from "../utils/compatibility-algorithm";
+import { ArrowLeft, Heart, Zap, RefreshCw, Share2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/shared/hooks/useToast"; // Assuming this hook exists as per my/page.tsx
+import { useToast } from "@/shared/hooks/useToast";
 
 // Radar Chart Component (Simple SVG implementation)
 function RadarChart({ data }: { data: { values: number; conflict: number; lifestyle: number } }) {
@@ -17,7 +16,6 @@ function RadarChart({ data }: { data: { values: number; conflict: number; lifest
   const l = Math.min(1, data.lifestyle / 30);
 
   // Triangle coordinates (normalized radius 100)
-  // Angles: Top(Values) -90deg, Right(Conflict) 30deg, Left(Lifestyle) 150deg
   const r = 100;
   const center = { x: 150, y: 150 };
   
@@ -46,7 +44,7 @@ function RadarChart({ data }: { data: { values: number; conflict: number; lifest
       <text x={bgP2.x + 15} y={bgP2.y + 10} textAnchor="start" className="text-[10px] fill-slate-400 font-bold uppercase">갈등해결</text>
       <text x={bgP3.x - 15} y={bgP3.y + 10} textAnchor="end" className="text-[10px] fill-slate-400 font-bold uppercase">라이프스타일</text>
 
-      {/* Data Polygon */}
+      {/* Data Polygon - Animated */}
       <motion.path 
         d={pathData} 
         fill="rgba(236, 72, 153, 0.2)" 
@@ -54,59 +52,57 @@ function RadarChart({ data }: { data: { values: number; conflict: number; lifest
         strokeWidth="2"
         initial={{ pathLength: 0, opacity: 0 }}
         animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 1, delay: 0.5 }}
+        transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
       />
       {/* Points */}
-      <circle cx={p1.x} cy={p1.y} r="3" fill="#ec4899" />
-      <circle cx={p2.x} cy={p2.y} r="3" fill="#ec4899" />
-      <circle cx={p3.x} cy={p3.y} r="3" fill="#ec4899" />
+      <motion.circle 
+        cx={p1.x} cy={p1.y} r="3" fill="#ec4899"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 1.8 }}
+      />
+      <motion.circle 
+        cx={p2.x} cy={p2.y} r="3" fill="#ec4899"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 1.9 }}
+      />
+      <motion.circle 
+        cx={p3.x} cy={p3.y} r="3" fill="#ec4899"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 2.0 }}
+      />
     </svg>
   );
 }
 
 interface Props {
-  myProfile: CompatibilityProfile;
-  partnerProfile: CompatibilityProfile;
+  result: CompatibilityResult;
 }
 
-export function CompatibilityResultView({ myProfile, partnerProfile }: Props) {
+export function CompatibilityResultView({ result }: Props) {
   const router = useRouter();
   const { showToast } = useToast();
-  const [stage, setStage] = useState<'intro' | 'revealing' | 'result'>('intro');
-  const [result, setResult] = useState<CompatibilityResult | null>(null);
   const [scoreCount, setScoreCount] = useState(0);
 
+  // Score counting animation
   useEffect(() => {
-    // 1. Calculate Score
-    const res = analyzeCompatibility(myProfile, partnerProfile);
-    setResult(res);
+    let start = 0;
+    const end = result.totalScore;
+    const duration = 2000; // 2 seconds
+    const incrementTime = duration / end;
 
-    // 2. Sequence
-    const timer1 = setTimeout(() => setStage('revealing'), 3500); // 3.5s intro (Collision + Fade)
-    
-    return () => clearTimeout(timer1);
-  }, [myProfile, partnerProfile]);
+    const timer = setInterval(() => {
+      start += 1;
+      setScoreCount(start);
+      if (start >= end) {
+        clearInterval(timer);
+      }
+    }, incrementTime);
 
-  useEffect(() => {
-    if (stage === 'revealing' && result) {
-      // Score Counting Animation
-      let start = 0;
-      const end = result.totalScore;
-      const duration = 2000;
-      const incrementTime = duration / end;
-
-      const timer = setInterval(() => {
-        start += 1;
-        setScoreCount(start);
-        if (start >= end) {
-          clearInterval(timer);
-          setStage('result');
-        }
-      }, incrementTime);
-      
-      return () => clearInterval(timer);
-    }
-  }, [stage, result]);
+    return () => clearInterval(timer);
+  }, [result.totalScore]);
 
   const handleShare = async () => {
     try {
@@ -120,48 +116,6 @@ export function CompatibilityResultView({ myProfile, partnerProfile }: Props) {
     }
   };
 
-  // Intro Animation (Collision)
-  if (stage === 'intro') {
-    return (
-      <div className="fixed inset-0 bg-black z-50 flex flex-col items-center justify-center overflow-hidden">
-        <div className="relative w-full h-full flex items-center justify-center">
-          {/* User A Planet - Reverted to bg-gradient (v3 compatible) */}
-          <motion.div
-            initial={{ x: -300, scale: 0.5, opacity: 0 }}
-            animate={{ x: -50, scale: 1.2, opacity: 1 }}
-            transition={{ duration: 2.5, ease: "easeInOut" }}
-            className="absolute w-64 h-64 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 blur-2xl opacity-80 mix-blend-screen"
-          />
-          {/* User B Planet - Reverted to bg-gradient */}
-          <motion.div
-            initial={{ x: 300, scale: 0.5, opacity: 0 }}
-            animate={{ x: 50, scale: 1.2, opacity: 1 }}
-            transition={{ duration: 2.5, ease: "easeInOut" }}
-            className="absolute w-64 h-64 rounded-full bg-gradient-to-bl from-pink-500 to-orange-400 blur-2xl opacity-80 mix-blend-screen"
-          />
-          
-          {/* Collision Flash */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: [0, 1, 0, 0], scale: [1, 2, 4, 4] }}
-            transition={{ delay: 2.2, duration: 1.2 }}
-            className="absolute z-10 w-64 h-64 rounded-full bg-white blur-xl"
-          />
-          
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="absolute bottom-20 text-white/50 font-mono text-sm tracking-widest"
-          >
-            ANALYZING UNIVERSES...
-          </motion.p>
-        </div>
-      </div>
-    );
-  }
-
-  // Result View - Matching Layout with my/page.tsx
   return (
     <div className="min-h-screen bg-background">
       {/* Header - Consistent with my/page.tsx */}
@@ -185,25 +139,26 @@ export function CompatibilityResultView({ myProfile, partnerProfile }: Props) {
       </div>
 
       <main className="max-w-2xl mx-auto px-6 py-12">
-        {/* Score Section */}
+        {/* Score Section with Counting Animation */}
         <div className="text-center mb-12">
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5 }}
             className="relative inline-block"
           >
-            {result && result.grade === 'perfect' && (
+            {result.grade === 'perfect' && (
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
                 className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg"
               >
                 🔥 천생연분
               </motion.div>
             )}
             <span className="text-[100px] font-black text-slate-900 leading-none tracking-tighter">
-              {stage === 'revealing' ? scoreCount : result?.totalScore}
+              {scoreCount}
             </span>
             <span className="text-3xl text-slate-400 font-bold ml-1">점</span>
           </motion.div>
@@ -211,27 +166,32 @@ export function CompatibilityResultView({ myProfile, partnerProfile }: Props) {
           <motion.p 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
             className="text-slate-500 font-medium mt-4 text-lg"
           >
-            {result?.summary}
+            {result.summary}
           </motion.p>
         </div>
 
         {/* Radar Chart */}
-        <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 mb-8">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 mb-8"
+        >
           <h3 className="text-sm font-bold text-slate-400 mb-6 text-center tracking-widest uppercase">Love Balance</h3>
-          {result && <RadarChart data={result.breakdown} />}
-        </div>
+          <RadarChart data={result.breakdown} />
+        </motion.div>
 
         {/* Detail Cards */}
         <div className="space-y-4 mb-12">
-          {result?.details.map((detail, idx) => (
+          {result.details.map((detail, idx) => (
             <motion.div
               key={idx}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 + (idx * 0.1) }}
+              transition={{ delay: 0.6 + (idx * 0.15), duration: 0.5 }}
               className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden flex items-start gap-5"
             >
               <div className={`p-4 rounded-2xl shrink-0 ${

@@ -8,3 +8,13 @@ export function generateReportId(): string {
   // 조합하여 반환 (예: 'lz5j8x9042')
   return `${timestamp}${random}`;
 }
+
+/**
+ * 궁합 분석 고유 ID 생성
+ * @returns COMP-XXXXXX 형식의 ID (예: 'COMP-LZ5J8X042')
+ */
+export function generateCompatibilityId(): string {
+  const timestamp = Date.now().toString(36).toUpperCase();
+  const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+  return `COMP-${timestamp}${random}`;
+}

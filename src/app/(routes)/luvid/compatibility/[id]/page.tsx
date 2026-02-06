@@ -1,85 +1,83 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { CompatibilityResultView } from "@/features/luvid/components/CompatibilityResult";
-import { CompatibilityProfile, createProfileFromData } from "@/features/luvid/utils/compatibility-algorithm";
-import { getLuvIdById } from "@/features/luvid/utils/supabase-service";
-import { getUserManual } from "@/features/user-manual/utils/supabase-service";
-import { UserManualReport } from "@/features/user-manual/model/report";
+import { CompatibilityLoading } from "@/features/luvid/components/CompatibilityLoading";
+import { getCompatibilityResult } from "@/features/luvid/utils/compatibility-service";
+import { CompatibilityResult } from "@/features/luvid/utils/compatibility-algorithm";
 
 export default function CompatibilityPage() {
   const params = useParams();
   const router = useRouter();
+  const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [myProfile, setMyProfile] = useState<CompatibilityProfile | null>(null);
-  const [partnerProfile, setPartnerProfile] = useState<CompatibilityProfile | null>(null);
+  const [result, setResult] = useState<CompatibilityResult | null>(null);
+
+  // Fix hydration issue
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     async function fetchData() {
+      console.log("🔍 [Compatibility] Starting data fetch...");
+      console.log("🔍 [Compatibility] ID:", params.id);
+      console.log("🔍 [Compatibility] Loading state:", loading);
+      
       try {
-        const idParam = decodeURIComponent(params.id as string);
-        const [myId, partnerId] = idParam.split("_");
+        const id = decodeURIComponent(params.id as string);
+        console.log("🔍 [Compatibility] Decoded ID:", id);
 
-        if (!myId || !partnerId) {
-          throw new Error("Invalid compatibility ID");
+        // Fetch compatibility result from DB
+        console.log("🔍 [Compatibility] Fetching from DB...");
+        const record = await getCompatibilityResult(id);
+        console.log("🔍 [Compatibility] Record:", record);
+
+        if (!record) {
+          throw new Error("Compatibility result not found");
         }
 
-        // 1. Fetch LuvProfiles
-        const [myLuvProfile, partnerLuvProfile] = await Promise.all([
-          getLuvIdById(myId),
-          getLuvIdById(partnerId)
-        ]);
+        // Simulate loading screen for at least 3 seconds to show animation
+        console.log("🔍 [Compatibility] Starting 3 second delay...");
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        console.log("🔍 [Compatibility] Delay complete!");
 
-        if (!myLuvProfile || !partnerLuvProfile) {
-          throw new Error("One or both profiles not found");
-        }
-
-        // 2. Fetch User Manuals
-        const [myManualData, partnerManualData] = await Promise.all([
-          getUserManual(myLuvProfile.reportId),
-          getUserManual(partnerLuvProfile.reportId)
-        ]);
-
-        if (!myManualData?.data || !partnerManualData?.data) {
-          throw new Error("Unable to fetch user manuals");
-        }
-
-        // 3. Convert to CompatibilityProfile
-        const profile1 = createProfileFromData(myLuvProfile, myManualData.data as UserManualReport);
-        const profile2 = createProfileFromData(partnerLuvProfile, partnerManualData.data as UserManualReport);
-
-        setMyProfile(profile1);
-        setPartnerProfile(profile2);
-
+        setResult(record.data);
+        console.log("🔍 [Compatibility] Result set:", record.data);
       } catch (err) {
-        console.error(err);
+        console.error("❌ [Compatibility] Error:", err);
         setError("데이터를 불러오는 중 문제가 발생했습니다.");
       } finally {
+        console.log("🔍 [Compatibility] Setting loading to false");
         setLoading(false);
       }
     }
 
-    if (params.id) {
+    if (params.id && mounted) {
       fetchData();
     }
-  }, [params.id]);
+  }, [params.id, mounted]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-black">
-        <div className="text-white/50 animate-pulse">Loading data...</div>
-      </div>
-    );
+  console.log("🎨 [Compatibility] Render - Mounted:", mounted, "Loading:", loading, "Error:", error, "Result:", !!result);
+
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!mounted) {
+    return null;
   }
 
-  if (error || !myProfile || !partnerProfile) {
+  if (loading) {
+    console.log("✅ [Compatibility] Rendering CompatibilityLoading component");
+    return <CompatibilityLoading />;
+  }
+
+  if (error || !result) {
+    console.log("❌ [Compatibility] Rendering error screen");
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-4">
         <h1 className="text-xl font-bold text-slate-800 mb-2">오류가 발생했습니다</h1>
-        <p className="text-slate-500 mb-6">{error || "프로필을 찾을 수 없습니다."}</p>
+        <p className="text-slate-500 mb-6">{error || "결과를 찾을 수 없습니다."}</p>
         <button 
           onClick={() => router.push('/')}
           className="bg-primary text-white px-6 py-3 rounded-xl font-bold hover:bg-primary/90 transition-colors"
@@ -90,10 +88,7 @@ export default function CompatibilityPage() {
     );
   }
 
-  return (
-    <CompatibilityResultView 
-      myProfile={myProfile} 
-      partnerProfile={partnerProfile} 
-    />
-  );
+  console.log("✅ [Compatibility] Rendering result view");
+  return <CompatibilityResultView result={result} />;
 }
+

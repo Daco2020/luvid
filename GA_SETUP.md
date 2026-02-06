@@ -114,6 +114,112 @@ export default function RootLayout({
 
 ---
 
+## 🎯 6단계 (심화): 특정 시점에 이벤트 추적하기
+
+기본적으로 GA는 페이지 이동만 추적하지만, **"이 버튼을 몇 번 눌렀는지"**, **"어떤 기능을 사용했는지"** 같은 걸 직접 기록할 수도 있어요!
+
+### 📌 언제 사용하나요?
+
+- 버튼 클릭 추적 (예: "Luv ID 발급하기" 버튼을 몇 명이 눌렀는지)
+- 중요한 액션 추적 (예: 사용자가 설명서 완성, 궁합 분석 완료 등)
+- 모달 열림/닫힘, 폼 제출 등
+
+### 🛠️ 사용법
+
+**① Client Component에서 추적하기**
+
+먼저 파일 맨 위에 `"use client"`를 적어야 합니다. (이미 있다면 생략)
+
+```tsx
+"use client";
+
+import { sendGAEvent } from "@next/third-parties/google";
+
+export default function MyComponent() {
+  const handleButtonClick = () => {
+    // 🟢 이벤트 전송!
+    sendGAEvent({
+      event: "button_click", // 이벤트 이름 (영어로, 띄어쓰기 대신 _ 사용)
+      value: "luv_id_create_button", // 어떤 버튼인지 구분값
+    });
+
+    // 실제 버튼 동작
+    console.log("버튼이 눌렸어요!");
+  };
+
+  return <button onClick={handleButtonClick}>Luv ID 발급하기</button>;
+}
+```
+
+**② 실제 프로젝트 예시**
+
+예를 들어 `src/app/page.tsx`의 "Luv ID 발급하기" 버튼에 추적을 붙인다면:
+
+```tsx
+"use client";
+
+import Link from "next/link";
+import { sendGAEvent } from "@next/third-parties/google";
+
+export default function Home() {
+  const handleLuvIdClick = () => {
+    sendGAEvent({
+      event: "luv_id_button_click",
+      value: "home_page",
+    });
+  };
+
+  return (
+    <Link href="/luvid/create" onClick={handleLuvIdClick}>
+      <button>Luv ID 발급하기</button>
+    </Link>
+  );
+}
+```
+
+**③ 다양한 이벤트 예시**
+
+```tsx
+// 폼 제출 추적
+const handleSubmit = () => {
+  sendGAEvent({
+    event: "form_submit",
+    value: "user_manual_complete",
+  });
+};
+
+// 모달 열기 추적
+const handleModalOpen = () => {
+  sendGAEvent({
+    event: "modal_open",
+    value: "compatibility_modal",
+  });
+};
+
+// 공유 버튼 클릭 추적
+const handleShare = () => {
+  sendGAEvent({
+    event: "share_button_click",
+    value: "luv_id_card",
+  });
+};
+```
+
+### ✅ 이벤트가 잘 전송되었는지 확인하기
+
+1.  **구글 애널리틱스 접속**: [analytics.google.com](https://analytics.google.com)
+2.  **실시간 확인**: 왼쪽 메뉴 **[보고서]** → **[실시간]** → **[이벤트 (지난 30분)]**
+3.  **버튼 클릭**: 실제로 추적을 붙인 버튼을 눌러보세요.
+4.  **이벤트 이름 확인**: 아까 적은 이벤트 이름 (예: `button_click`, `luv_id_button_click`)이 목록에 뜨면 성공! 🎉
+
+### 💡 팁
+
+- **이벤트 이름은 영어로**: 나중에 보고서에서 보기 편해요.
+- **의미있는 이름 사용**: `button_click` 보다는 `luv_id_create_start` 같이 구체적으로.
+- **너무 많이 추적하지 말기**: 정말 중요한 액션만 추적하세요. (모든 클릭을 다 추적하면 데이터가 복잡해져요)
+
+---
+
 ### 🎉 축하합니다!
 
 이제 여러분의 웹사이트에 누가 들어오는지 구글이 다 기록해줍니다.
@@ -122,4 +228,4 @@ export default function RootLayout({
 - 어떤 버튼을 누르는지
 - 핸드폰으로 오는지 컴퓨터로 오는지
 
-모두 알 수 있게 되었습니다! 고생하셨습니다. 👍
+**그리고 이제는 특정 버튼 클릭이나 중요한 사용자 행동까지도** 직접 추적할 수 있게 되었습니다! 고생하셨습니다. 👍
