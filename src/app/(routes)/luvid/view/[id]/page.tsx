@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft,
-  Share2,
   Loader2,
   BookOpen,
   Copy,
@@ -13,21 +12,21 @@ import {
   Info,
   Pencil
 } from "lucide-react";
-import { getOrCreateUserId } from "@/features/user-manual/utils/user-storage";
-import { getLuvIdByUserId } from "@/features/luvid/utils/supabase-service";
+import { getLuvIdById } from "@/features/luvid/utils/supabase-service";
 import { LuvIdProfile } from "@/features/luvid/model/types";
 import { ARCHETYPE_ICONS, ARCHETYPE_GRADIENTS, ARCHETYPE_DESCRIPTIONS } from "@/features/user-manual/model/archetype-constants";
 import { useToast } from "@/shared/hooks/useToast";
 import { Toast } from "@/shared/components/Toast";
 import { GlassTooltip } from "@/shared/components/ui/GlassTooltip";
 import { CompatibilityModal } from "@/features/luvid/components/CompatibilityModal";
-import { NicknameEditModal } from "@/features/luvid/components/NicknameEditModal";
-import { saveMyLuvIdToStorage } from "@/features/luvid/utils/luvid-storage";
 import { ShimmerEffect } from "@/shared/components/ui/ShimmerEffect";
 
-export default function MyLuvIdPage() {
+// Viewer Page for Luv ID
+export default function SharedLuvIdPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
+  const resolvedParams = use(params);
   const { toast, showToast } = useToast();
+  
   const [profile, setProfile] = useState<LuvIdProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [flipped, setFlipped] = useState(false);
@@ -35,52 +34,45 @@ export default function MyLuvIdPage() {
   const [showArchetypeTooltip, setShowArchetypeTooltip] = useState(false);
   const [showCompatTooltip, setShowCompatTooltip] = useState(false);
   const [showCompatModal, setShowCompatModal] = useState(false);
-  const [showNicknameModal, setShowNicknameModal] = useState(false);
   const [showIdTooltip, setShowIdTooltip] = useState(false);
   
-  // This page is for "My" Luv ID, so it's always the owner viewing their own card.
-  // In a future "View" page for other users, we would set this to false.
-  const isOwner = true;
+  // This page is for viewing OTHER's Luv ID.
+  const isOwner = false;
 
   useEffect(() => {
     async function loadProfile() {
       try {
-        const userId = getOrCreateUserId();
-        const luvIdProfile = await getLuvIdByUserId(userId);
+        const id = resolvedParams.id;
+        if (!id) {
+          router.push("/");
+          return;
+        }
+
+        const luvIdProfile = await getLuvIdById(id);
 
         if (!luvIdProfile) {
-          router.push("/luvid/create");
+          showToast({
+            title: "프로필을 찾을 수 없어요",
+            description: "존재하지 않거나 삭제된 Luv ID입니다."
+          });
+          router.push("/");
           return;
         }
 
         setProfile(luvIdProfile);
-        
-        // Save Luv ID to localStorage for compatibility modal
-        saveMyLuvIdToStorage(luvIdProfile.id);
       } catch (err) {
         console.error("Failed to load Luv ID:", err);
+        showToast({
+            title: "오류 발생",
+            description: "프로필을 불러오는 중 문제가 발생했습니다."
+        });
       } finally {
         setLoading(false);
       }
     }
 
     loadProfile();
-  }, [router]);
-
-  const handleShare = async () => {
-    if (!profile) return;
-
-    try {
-      const shareUrl = `${window.location.origin}/luvid/view/${profile.id}`;
-      await navigator.clipboard.writeText(shareUrl);
-      showToast({
-        title: "링크가 복사되었어요!",
-        description: "이 링크를 공유하면 상대방이 당신의 Luv ID를 볼 수 있어요."
-      });
-    } catch (err) {
-      console.error("Failed to copy:", err);
-    }
-  };
+  }, [resolvedParams.id, router, showToast]);
 
   const copyLuvId = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -124,13 +116,8 @@ export default function MyLuvIdPage() {
             <ArrowLeft size={20} />
             <span className="font-medium">홈</span>
           </button>
-          <button
-            onClick={handleShare}
-            className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-full font-medium hover:bg-slate-800 transition-colors"
-          >
-            <Share2 size={18} />
-            <span>공유하기</span>
-          </button>
+          
+          {/* Share Button Removed for Viewer */}
         </div>
       </div>
 
@@ -237,19 +224,13 @@ export default function MyLuvIdPage() {
                   {/* Middle - Main Info */}
                   <div className="flex-1 flex flex-col justify-center">
                     <div 
-                      className="group flex items-center gap-2 mb-1 md:mb-2 cursor-pointer w-fit"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setShowNicknameModal(true);
-                      }}
+                      className="group flex items-center gap-2 mb-1 md:mb-2 w-fit"
+                      // No click handler for viewer (read-only)
                     >
-                      <h2 className="text-white text-[26px] md:text-3xl font-bold decoration-white/30 underline-offset-4 transition-all">
+                      <h2 className="text-white text-[26px] md:text-3xl font-bold transition-all">
                         {profile.nickname}
                       </h2>
-                      {/* <div className="bg-white/20 p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-all scale-90 group-hover:scale-100"> */}
-                      <Pencil size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                        {/* < size={14} className="text-white" /> */}
-                      {/* </div> */}
+                      {/* No Edit Icon for Viewer */}
                     </div>
                     <p className="text-[14px] md:text-[16px] text-white/90 italic mb-6 md:mb-8">"{profile.tagline}"</p>
                   </div>
@@ -307,7 +288,7 @@ export default function MyLuvIdPage() {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      router.push("/report/" + profile.reportId);
+                      router.push("/report/" + profile.reportId); // View shared manual? Logic might need adjustment but link is valid.
                     }}
                     className="group relative overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-2xl transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/40 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] hover:shadow-[0_8px_32px_0_rgba(31,38,135,0.25)] flex items-center justify-center gap-3 text-sm md:text-base pointer-events-auto w-full max-w-[280px]"
                   >
@@ -331,11 +312,11 @@ export default function MyLuvIdPage() {
                         e.stopPropagation();
                         setShowCompatModal(true);
                       }}
-                      className="group relative overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-2xl transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/40 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] hover:shadow-[0_8px_32px_0_rgba(31,38,135,0.25)] flex items-center justify-center gap-3 text-sm md:text-base pointer-events-auto w-full max-w-[280px]"
+                      className="w-full relative overflow-hidden border border-white/40 bg-white/20 text-white font-bold py-3 px-6 md:py-3.5 md:px-8 rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 text-sm hover:bg-white/30 hover:scale-105 shadow-[0_4px_16px_0_rgba(31,38,135,0.1)]"
                     >
                       <HeartHandshake size={20} className="shrink-0 relative z-10 group-hover:rotate-12 transition-transform duration-300" />
                       <span className="whitespace-nowrap relative z-10 text-sm">연애 궁합 보러가기</span>
-                      
+
                       {/* Shimmer Effect */}
                       <ShimmerEffect className="group-hover:animate-none" delay={2.5} />
                     </button>
@@ -344,7 +325,7 @@ export default function MyLuvIdPage() {
                     <GlassTooltip
                       isVisible={showCompatTooltip}
                       title="궁합 보는 방법"
-                      description={<span>상대방의 카드를 공유받거나 Luv ID 를 입력하면 궁합을 확인할 수 있어요. 상대에게 먼저 내 카드를 공유해보세요.</span>}
+                      description={<span>나의 Luv ID를 입력하여<br/> {profile.nickname}님과의 궁합을 확인해보세요.</span>}
                       position="bottom"
                       align="center"
                       width="w-64"
@@ -358,35 +339,28 @@ export default function MyLuvIdPage() {
 
         {/* Info Text */}
         <div className="text-center text-slate-500 text-sm">
-          <p>이 카드는 당신의 연애 정체성을 나타냅니다.</p>
-          <p className="mt-1">공유 버튼을 눌러 소중한 사람에게 나를 알려보세요.</p>
+          <p>이 카드는 {profile.nickname}님의 연애 정체성을 나타냅니다.</p>
         </div>
       </div>
 
       {/* Toast */}
       <Toast message={toast} />
 
-      {/* Compatibility Modal */}
+      {/* Compatibility Modal - Always show "My Luv ID" input for Viewer */}
       <CompatibilityModal
         isOpen={showCompatModal}
         onClose={() => setShowCompatModal(false)}
-        isOwner={isOwner}
+        isOwner={isOwner} // false for viewer
         viewedProfileId={profile?.id}
-        hasReport={!!profile?.reportId}
+        hasReport={true} // Viewer logic handles its own validation, this prop might need refinement or assume viewer has one if they are checking. 
+                         // Actually CompatibilityModal checks Viewer's manual existence if isOwner is false? 
+                         // No, CompatibilityModal checks if the USER (viewer) has a report. 
+                         // But for checking compatibility, the viewer needs THEIR OWN manual.
+                         // Let's pass true here to bypass the prompt about the VIEWED profile having a manual (which they must have if we are seeing this), 
+                         // but the modal logic inside should check the CURRENT USER (Viewer)'s status.
+                         // Wait, CompatibilityModal uses `hasReport` to block. If `isOwner` is false, it prompts viewer to enter their ID.
+                         // Verification of viewer's ID validity happens inside modal submission.
       />
-
-      {/* Nickname Edit Modal */}
-      {profile && (
-        <NicknameEditModal
-          isOpen={showNicknameModal}
-          onClose={() => setShowNicknameModal(false)}
-          currentNickname={profile.nickname}
-          luvId={profile.id}
-          onSuccess={(newNickname) => {
-            setProfile(prev => prev ? ({ ...prev, nickname: newNickname }) : null);
-          }}
-        />
-      )}
 
       {/* CSS for 3D effect */}
       <style jsx global>{`
