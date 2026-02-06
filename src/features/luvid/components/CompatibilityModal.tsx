@@ -20,6 +20,7 @@ const Portal = ({ children }: { children: React.ReactNode }) => {
   return createPortal(children, document.body);
 };
 import { getMyLuvIdFromStorage } from "../utils/luvid-storage";
+import { getLuvIdById } from "../utils/supabase-service";
 import { useToast } from "@/shared/hooks/useToast";
 
 interface CompatibilityModalProps {
@@ -116,6 +117,15 @@ export function CompatibilityModal({
 
     try {
       setLoading(true);
+
+      // Verify if partner ID exists in DB
+      const partnerProfile = await getLuvIdById(partnerLuvId);
+      
+      if (!partnerProfile) {
+        setValidationError("존재하지 않는 ID입니다. 다시 확인 해주세요.");
+        setLoading(false);
+        return;
+      }
 
       // TODO: Create/fetch compatibility record from DB
       // For now, generate a temporary compatibility ID

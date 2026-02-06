@@ -377,12 +377,12 @@ export function generateUserManual(data: UserManualStorage): UserManualReport | 
   // [Dont 2] Stress Response (NVC + Casual)
   if (s1.patterns.stress_response === "flight" || s1.patterns.stress_response === "freeze") {
     guideDonts.push({
-      title: "내가 혼자 있고 싶어 할 때",
+      title: "혼자 있고 싶어 할 때",
       detailedExample: `"내가 동굴로 들어가면 걱정되겠지만, 혼자만의 시간이 조금 필요할 뿐이야. 충전하고 웃으면서 돌아올 테니까 기다려줘."`,
     });
   } else if (s1.patterns.stress_response === "anxious") {
     guideDonts.push({
-      title: "내가 연락이 닿지 않을 때",
+      title: "연락이 닿지 않을 때",
       detailedExample: `"연락이 안 되면 나쁜 상상이 들어서 너무 불안해... 아무리 바빠도 '바빠'라고 짧게라도 카톡 하나만 남겨줘."`,
     });
   } else if (s1.patterns.stress_response === "fight") {

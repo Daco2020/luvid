@@ -30,7 +30,7 @@ const getStatusConfig = (status: CardStatus) => {
     case CARD_STATUS.READY:
       return {
         badge: "준비",
-        badgeClass: "bg-yellow-50 text-yellow-600",
+        badgeClass: "bg-yellow-100/80 text-yellow-600",
         dotClass: "bg-yellow-400",
         ping: true,
         iconColor: "text-yellow-500",
@@ -38,7 +38,7 @@ const getStatusConfig = (status: CardStatus) => {
     case CARD_STATUS.COMPLETED:
       return {
         badge: "완료",
-        badgeClass: "bg-emerald-50 text-emerald-600",
+        badgeClass: "bg-emerald-100/80 text-emerald-600",
         dotClass: "bg-emerald-500",
         ping: false,
         iconColor: "text-emerald-500",

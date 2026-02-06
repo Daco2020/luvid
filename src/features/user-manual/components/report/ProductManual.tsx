@@ -466,7 +466,7 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
                     className="flex items-center gap-2 px-8 py-4 bg-pink-700/75 text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto"
                   >
                     <HeartHandshake size={20} />
-                    <span>Luv ID 발급받기</span>
+                    <span>Luv ID 카드 발급받기</span>
                   </button>
                 </div>
                 <div className="pt-8">
