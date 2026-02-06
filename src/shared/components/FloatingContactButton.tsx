@@ -60,6 +60,7 @@ export function FloatingContactButton() {
         email: email.trim() || undefined,
         subscribeToLaunch: email.trim().length > 0 && subscribeToLaunch,
         userAgent: navigator.userAgent,
+        currentUrl: window.location.href,
       });
 
       if (result.success) {
@@ -239,7 +240,7 @@ export function FloatingContactButton() {
                         checked={subscribeToLaunch}
                         onChange={(e) => setSubscribeToLaunch(e.target.checked)}
                         disabled={!email.trim()}
-                        className="w-4 h-4 text-slate-900 border-slate-300 rounded focus:ring-2 focus:ring-slate-900 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-4 h-4 text-slate-900 border-slate-300 rounded disabled:opacity-50 disabled:cursor-not-allowed"
                       />
                       <span className="text-xs text-slate-700">
                         Luvid가 정식 출시되면 해당 이메일로 안내를 받으시겠어요?

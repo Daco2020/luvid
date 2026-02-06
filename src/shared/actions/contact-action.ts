@@ -10,6 +10,7 @@ export interface ContactFormData {
   email?: string;
   subscribeToLaunch: boolean;
   userAgent: string;
+  currentUrl: string;
 }
 
 export interface ContactFormResult {
@@ -63,6 +64,8 @@ export async function submitContactForm(
 📨 ${data.email && data.email.trim() ? data.email : "미제공"}
 
 출시 알림 신청: ${data.subscribeToLaunch ? "예" : "아니오"}
+
+📍 ${data.currentUrl}
 
 💻 ${data.userAgent}
     `.trim();
