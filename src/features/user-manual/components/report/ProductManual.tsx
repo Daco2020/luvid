@@ -4,7 +4,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { Battery, Wifi, Cpu, AlertTriangle, CheckCircle, Share2, Sparkles, BookOpen, Heart, MessageCircle, CloudLightning, Shield, Info, X, Star, HeartHandshake, HeartIcon, HeartOff, HeartPlus, HeartPulseIcon, HeartMinus, BoxSelect, LassoSelect, HandFist, InfoIcon, Anchor, Sprout, Home, Waves, TreeDeciduous, Umbrella, Smile, Hammer, Sun, Flame, Map, Telescope, Feather, Footprints, Scale, Gift, HandHeart, SwordIcon, Sword, BatteryChargingIcon, BatteryIcon, Compass, LucideCompass, CompassIcon, MapIcon, SmileIcon, PencilIcon, Fingerprint, LucideFingerprint, FingerprintPattern, TextSelect, LassoSelectIcon, TextCursor } from "lucide-react";
+import { Battery, Wifi, Cpu, AlertTriangle, CheckCircle, Share2, Sparkles, BookOpen, Heart, MessageCircle, CloudLightning, Shield, Info, X, Star, HeartHandshake, HeartIcon, HeartOff, HeartPlus, HeartPulseIcon, HeartMinus, BoxSelect, LassoSelect, HandFist, InfoIcon, Anchor, Sprout, Home, Waves, TreeDeciduous, Umbrella, Smile, Hammer, Sun, Flame, Map, Telescope, Feather, Footprints, Scale, Gift, HandHeart, SwordIcon, Sword, BatteryChargingIcon, BatteryIcon, Compass, LucideCompass, CompassIcon, MapIcon, SmileIcon, PencilIcon, Fingerprint, LucideFingerprint, FingerprintPattern, TextSelect, LassoSelectIcon, TextCursor, ChevronRight } from "lucide-react";
 import { PsychologicalSpec, UserManualReport, UserGuideItem } from "../../model/report";
 import { ARCHETYPE_ICONS, ARCHETYPE_GRADIENTS } from "../../model/archetype-constants";
 import { Modal } from "@/shared/components/Modal";
@@ -352,7 +352,7 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
                      <span className="text-xs font-bold text-slate-800 md:text-lg">{item.title}</span>
                   </div>
                   <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-white flex items-center justify-center text-pink-500 shadow-sm group-hover:scale-110 transition-transform">
-                     <Info size={16} className="md:size-5" /> 
+                     <ChevronRight size={16} className="md:size-5" /> 
                   </div>
                 </div>
              ))}
@@ -390,7 +390,7 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
                      <span className="text-xs font-bold text-slate-800 md:text-lg">{item.title}</span>
                   </div>
                    <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-white flex items-center justify-center text-indigo-500 shadow-sm group-hover:scale-110 transition-transform">
-                     <Info size={16} className="md:size-5" />
+                     <ChevronRight size={16} className="md:size-5" />
                   </div>
                 </div>
              ))}
