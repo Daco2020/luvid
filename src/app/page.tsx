@@ -71,8 +71,10 @@ export default function Home() {
       try {
         const userId = getOrCreateUserId();
         
-        // 데이터 로딩과 최소 2.5초 대기 시간을 동시에 실행
-        const [latestManual, luvIdProfile] = await Promise.all([
+        const shouldShowIntro = !sessionStorage.getItem("intro_shown");
+
+        // 데이터 로딩과 인트로 대기 시간(필요한 경우)을 동시에 실행
+        const promises: Promise<any>[] = [
           (async () => {
             const { getLatestUserManual } = await import("@/shared/utils/supabase-service");
             return getLatestUserManual(userId);
@@ -80,9 +82,20 @@ export default function Home() {
           (async () => {
              const { getLuvIdByUserId } = await import("@/features/luvid/utils/supabase-service");
              return getLuvIdByUserId(userId);
-          })(),
-          new Promise((resolve) => setTimeout(resolve, 3500)) // 최소 3.5초 대기
-        ]);
+          })()
+        ];
+
+        if (shouldShowIntro) {
+          promises.push(new Promise((resolve) => setTimeout(resolve, 3500))); // 인트로 3.5초 대기
+        }
+
+        const results = await Promise.all(promises);
+        const latestManual = results[0];
+        const luvIdProfile = results[1];
+
+        if (shouldShowIntro) {
+          sessionStorage.setItem("intro_shown", "true");
+        }
 
         const manualExists = !!latestManual;
         // Luv ID exists logic:
