@@ -21,7 +21,7 @@ const nunito = Nunito({
 
 export const metadata: Metadata = {
   title: "Luvid",
-  description: "연애가 처음이어도 괜찮아요",
+  description: "나와 꼭 맞는 연인을 찾고 싶나요?",
 };
 
 export default function RootLayout({

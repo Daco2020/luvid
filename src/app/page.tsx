@@ -152,7 +152,7 @@ export default function Home() {
           
           <h1 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4 leading-tight tracking-tight">
             나와 꼭 맞는 연인을<br/>
-            <span className="text-primary">찾고 있나요?</span>
+            <span className="text-primary">찾고 싶나요?</span>
           </h1>
           <p className="text-slate-500 text-sm md:text-base font-normal leading-relaxed">
             천천히, 나를 알아가는 것부터 시작해요.<br/>
