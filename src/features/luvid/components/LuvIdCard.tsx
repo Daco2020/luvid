@@ -73,8 +73,10 @@ export function LuvIdCard({
               <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full blur-2xl"></div>
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-white/10 to-white/5 rounded-full blur-3xl"></div>
             </div>
-            {/* Shimmer Effect */}
-            <ShimmerEffect />
+            {/* Shimmer Effect - Wrapped to prevent overflow */}
+            <div className="absolute inset-0 rounded-3xl overflow-hidden pointer-events-none z-20">
+              <ShimmerEffect />
+            </div>
 
             {/* Content Layer - Unclipped */}
             <div className="relative z-10 h-full flex flex-col justify-between py-6 px-6 sm:py-7 sm:px-7 md:py-8 md:px-8 text-white">
@@ -187,12 +189,14 @@ export function LuvIdCard({
             zIndex: flipped ? 10 : 0
           }}
         >
-          <div className={`w-full h-full bg-gradient-to-br ${gradientClass} rounded-3xl p-5 sm:p-6 md:p-8 text-white relative overflow-visible shadow-2xl`}>
-            {/* Holographic effects */}
-            <div className="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-2xl"></div>
+          <div className="w-full h-full rounded-3xl relative shadow-2xl">
+            {/* Background & Holographic Effects - Clipped */}
+            <div className={`absolute inset-0 rounded-3xl overflow-hidden pointer-events-none bg-gradient-to-br ${gradientClass}`}>
+              <div className="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+              <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-2xl"></div>
+            </div>
 
-            <div className="relative z-10 h-full flex flex-col items-center justify-center gap-3 md:gap-4">
+            <div className="relative z-10 h-full flex flex-col items-center justify-center gap-3 md:gap-4 p-5 sm:p-6 md:p-8">
               {/* Enhanced Manual Button */}
               <button
                 onClick={(e) => {
