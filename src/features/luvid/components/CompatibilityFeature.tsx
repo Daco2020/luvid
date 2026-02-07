@@ -25,7 +25,7 @@ export function CompatibilityFeature({
   return (
     <>
       <div 
-        className="relative group/compat pointer-events-auto w-full max-w-[280px]"
+        className="relative group/compat pointer-events-auto w-full max-w-[240px] md:max-w-[280px]"
         onMouseEnter={() => setShowCompatTooltip(true)}
         onMouseLeave={() => setShowCompatTooltip(false)}
       >
@@ -34,10 +34,10 @@ export function CompatibilityFeature({
             e.stopPropagation();
             setShowCompatModal(true);
           }}
-          className="group relative overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-2xl transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/40 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] hover:shadow-[0_8px_32px_0_rgba(31,38,135,0.25)] flex items-center justify-center gap-3 text-sm md:text-base pointer-events-auto w-full max-w-[280px]"
+          className="group relative overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold py-2.5 px-5 sm:py-3 sm:px-6 md:py-4 md:px-8 rounded-2xl transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/40 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] hover:shadow-[0_8px_32px_0_rgba(31,38,135,0.25)] flex items-center justify-center gap-2 md:gap-3 text-xs sm:text-[13px] md:text-sm lg:text-base pointer-events-auto w-full max-w-[240px] md:max-w-[280px]"
         >
-          <HeartHandshake size={20} className="shrink-0 relative z-10 group-hover:rotate-12 transition-transform duration-300" />
-          <span className="whitespace-nowrap relative z-10 text-sm">연애 궁합 보러가기</span>
+          <HeartHandshake size={16} className="sm:w-[18px] sm:h-[18px] md:w-5 md:h-5 shrink-0 relative z-10 group-hover:rotate-12 transition-transform duration-300" />
+          <span className="whitespace-nowrap relative z-10">연애 궁합 보러가기</span>
           
           {/* Shimmer Effect */}
           <ShimmerEffect className="group-hover:animate-none" delay={2.5} />

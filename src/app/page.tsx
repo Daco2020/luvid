@@ -65,6 +65,7 @@ export default function Home() {
   const [hasManual, setHasManual] = useState(false);
   const [hasLuvId, setHasLuvId] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isIntro, setIsIntro] = useState(false);
 
   useEffect(() => {
     async function checkStatus() {
@@ -72,6 +73,7 @@ export default function Home() {
         const userId = getOrCreateUserId();
         
         const shouldShowIntro = !sessionStorage.getItem("intro_shown");
+        setIsIntro(shouldShowIntro);
 
         // 데이터 로딩과 인트로 대기 시간(필요한 경우)을 동시에 실행
         const promises: Promise<any>[] = [
@@ -124,7 +126,12 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 relative overflow-hidden">
-      {loading && <PageLoading />}
+      {loading && isIntro && <PageLoading />}
+      {loading && !isIntro && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+      )}
       
       {/* Background Decor */}
       <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-primary/5 rounded-full blur-3xl animate-pulse" />
