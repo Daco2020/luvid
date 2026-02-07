@@ -81,10 +81,16 @@ interface Props {
   result: CompatibilityResult;
 }
 
+import { Modal } from "@/shared/components/Modal";
+
+// ... existing code ...
+
 export function CompatibilityResultView({ result }: Props) {
   const router = useRouter();
   const { showToast } = useToast();
   const [scoreCount, setScoreCount] = useState(0);
+  const [showBetaModal, setShowBetaModal] = useState(false);
+  const hasShownModal = React.useRef(false);
 
   // Score counting animation
   useEffect(() => {
@@ -101,7 +107,27 @@ export function CompatibilityResultView({ result }: Props) {
       }
     }, incrementTime);
 
-    return () => clearInterval(timer);
+    // Scroll listener for Beta Modal
+    const handleScroll = () => {
+      if (hasShownModal.current) return;
+
+      const scrollTop = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+
+      // Trigger when user scrolls to bottom (with slight buffer)
+      if (scrollTop + windowHeight >= docHeight - 100) {
+        setShowBetaModal(true);
+        hasShownModal.current = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [result.totalScore]);
 
   const handleShare = async () => {
@@ -146,6 +172,7 @@ export function CompatibilityResultView({ result }: Props) {
       <main className="max-w-2xl mx-auto px-6 py-12">
         {/* Score Section with Counting Animation */}
         <div className="text-center mb-12">
+          {/* ... existing score rendering ... */}
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -190,7 +217,7 @@ export function CompatibilityResultView({ result }: Props) {
         </motion.div>
 
         {/* Detail Cards */}
-        <div className="space-y-4 mb-12">
+        <div className="space-y-4 mb-32"> {/* Increased bottom margin for scroll space */}
           {result.details.map((detail, idx) => (
             <motion.div
               key={idx}
@@ -218,6 +245,15 @@ export function CompatibilityResultView({ result }: Props) {
           ))}
         </div>
       </main>
+
+      {/* Beta Service Modal */}
+      <Modal
+        isOpen={showBetaModal}
+        onClose={() => setShowBetaModal(false)}
+        title="베타 서비스 안내"
+        description={`현재 궁합 분석은 베타 서비스입니다.\n\n궁합을 통해 더 알고 싶은 내용이 있다면\n우측 하단의 문의 버튼을 통해\n피드백을 보내주세요! 💌\n\n검토 후 적극 반영하겠습니다.`}
+        confirmLabel="확인"
+      />
     </motion.div>
   );
 }
