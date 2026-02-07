@@ -4,12 +4,13 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { Battery, Wifi, Cpu, AlertTriangle, CheckCircle, Share2, Sparkles, BookOpen, Heart, MessageCircle, CloudLightning, Shield, Info, X, Star, HeartHandshake, HeartIcon, HeartOff, HeartPlus, HeartPulseIcon, HeartMinus, BoxSelect, LassoSelect, HandFist, InfoIcon, Anchor, Sprout, Home, Waves, TreeDeciduous, Umbrella, Smile, Hammer, Sun, Flame, Map, Telescope, Feather, Footprints, Scale, Gift, HandHeart, SwordIcon, Sword, BatteryChargingIcon, BatteryIcon, Compass, LucideCompass, CompassIcon, MapIcon, SmileIcon, PencilIcon } from "lucide-react";
+import { Battery, Wifi, Cpu, AlertTriangle, CheckCircle, Share2, Sparkles, BookOpen, Heart, MessageCircle, CloudLightning, Shield, Info, X, Star, HeartHandshake, HeartIcon, HeartOff, HeartPlus, HeartPulseIcon, HeartMinus, BoxSelect, LassoSelect, HandFist, InfoIcon, Anchor, Sprout, Home, Waves, TreeDeciduous, Umbrella, Smile, Hammer, Sun, Flame, Map, Telescope, Feather, Footprints, Scale, Gift, HandHeart, SwordIcon, Sword, BatteryChargingIcon, BatteryIcon, Compass, LucideCompass, CompassIcon, MapIcon, SmileIcon, PencilIcon, Fingerprint, LucideFingerprint, FingerprintPattern, TextSelect, LassoSelectIcon, TextCursor } from "lucide-react";
 import { PsychologicalSpec, UserManualReport, UserGuideItem } from "../../model/report";
 import { ARCHETYPE_ICONS, ARCHETYPE_GRADIENTS } from "../../model/archetype-constants";
 import { Modal } from "@/shared/components/Modal";
 import { Toast } from "@/shared/components/Toast";
 import { useToast } from "@/shared/hooks/useToast";
+import { Finger_Paint } from "next/font/google";
 interface ProductManualProps {
   report: UserManualReport;
   isOwner?: boolean; 
@@ -83,7 +84,7 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
       </Modal>
 
       {/* 1. Intro Section */}
-      <section className="h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 text-center">
+      <section className="min-h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 text-center">
         <motion.div
            initial={{ opacity: 0, y: 20 }}
            whileInView={{ opacity: 1, y: 0 }}
@@ -108,7 +109,7 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
       </section>
 
       {/* 2. Identity Section */}
-      <section className="h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 bg-white/50 backdrop-blur-sm">
+      <section className="min-h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 bg-white/50 backdrop-blur-sm">
         <motion.div
            initial={{ opacity: 0, scale: 0.9 }}
            whileInView={{ opacity: 1, scale: 1 }}
@@ -122,17 +123,17 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
            <div className="space-y-2">
              <h2 className="text-sm font-bold text-primary tracking-widest uppercase">당신의 추구미</h2>
              <h3 className="text-3xl md:text-4xl font-bold text-slate-900">{report.identity.archetype}</h3>
-             <p className="text-slate-500 text-lg">"{report.identity.catchphrase}"</p>
+             <p className="text-slate-500 text-sm md:text-lg">"{report.identity.catchphrase}"</p>
            </div>
            
-           <p className="text-slate-600 leading-relaxed break-keep">
+           <p className="text-slate-600 leading-relaxed break-keep text-xs md:text-sm">
              {report.identity.description}
            </p>
         </motion.div>
       </section>
 
       {/* 3. Specs Summary (3 Keys) */}
-      <section className="h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10">
+      <section className="min-h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10">
         <div className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="col-span-1 md:col-span-3 text-center mb-4">
              <h2 className="text-3xl font-bold text-slate-900 mb-2">나를 보여주는 3가지 모습</h2>
@@ -147,7 +148,7 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
 
       {/* 4. Deep Dive 1: Emotion Analysis */}
       {report.details && (
-        <section className="h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 bg-indigo-50/50">
+        <section className="min-h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 bg-indigo-50/50">
           <motion.div
              initial={{ opacity: 0 }}
              whileInView={{ opacity: 1 }}
@@ -184,7 +185,7 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
 
       {/* 5. Deep Dive 2: Relationship Dynamics */}
       {report.details && (
-        <section className="h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 bg-orange-50/50">
+        <section className="min-h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 bg-orange-50/50">
           <motion.div
              initial={{ opacity: 0 }}
              whileInView={{ opacity: 1 }}
@@ -228,7 +229,7 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
         </section>
       )}
       {/* 5.5 Core Values Section */ }
-      <section className="h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 bg-pink-700/75 text-white">
+      <section className="min-h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 bg-pink-700/75 text-white">
         <motion.div
            initial={{ opacity: 0 }}
            whileInView={{ opacity: 1 }}
@@ -275,7 +276,7 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
       </section>
 
       {/* 6. Dealbreakers Section */}
-      <section className="h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 bg-slate-900 text-white">
+      <section className="min-h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 bg-slate-900 text-white">
         <motion.div
            initial={{ opacity: 0 }}
            whileInView={{ opacity: 1 }}
@@ -322,7 +323,7 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
       </section>
 
       {/* 7-1. User Guide (Dos) */}
-      <section className="h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10">
+      <section className="min-h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10">
         <motion.div
            initial={{ opacity: 0, x: -20 }}
            whileInView={{ opacity: 1, x: 0 }}
@@ -344,14 +345,14 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
                   onClick={() => openModal(item)}
                   className="flex items-center justify-between p-5 bg-pink-50 hover:bg-pink-100/80 transition-colors rounded-2xl cursor-pointer group active:scale-[0.98]"
                 >
-                  <div className="flex items-center gap-4">
-                     <span className="w-8 h-8 rounded-full bg-pink-200 text-pink-700 flex items-center justify-center font-bold text-sm">
+                  <div className="flex items-center gap-2 md:gap-4">
+                     <span className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-pink-200 text-pink-700 flex items-center justify-center font-bold text-xs md:text-sm">
                        {i+1}
                      </span>
-                     <span className="font-bold text-slate-800 text-lg">{item.title}</span>
+                     <span className="text-xs font-bold text-slate-800 md:text-lg">{item.title}</span>
                   </div>
-                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-pink-500 shadow-sm group-hover:scale-110 transition-transform">
-                     <Info size={20} />
+                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-white flex items-center justify-center text-pink-500 shadow-sm group-hover:scale-110 transition-transform">
+                     <Info size={16} className="md:size-5" /> 
                   </div>
                 </div>
              ))}
@@ -360,7 +361,7 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
       </section>
 
       {/* 7-2. User Guide (Donts) */}
-      <section className="h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10">
+      <section className="min-h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10">
          <motion.div
            initial={{ opacity: 0, x: 20 }}
            whileInView={{ opacity: 1, x: 0 }}
@@ -382,14 +383,14 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
                   onClick={() => openModal(item)}
                   className="flex items-center justify-between p-5 bg-indigo-50 hover:bg-indigo-100 transition-colors rounded-2xl cursor-pointer group active:scale-[0.98]"
                 >
-                  <div className="flex items-center gap-4">
-                     <span className="w-8 h-8 rounded-full bg-indigo-300 text-indigo-600 flex items-center justify-center font-bold text-sm">
+                  <div className="flex items-center gap-2 md:gap-4">
+                     <span className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-indigo-300 text-indigo-600 flex items-center justify-center font-bold text-xs md:text-sm">
                        {i+1}
                      </span>
-                     <span className="font-bold text-slate-800 text-lg">{item.title}</span>
+                     <span className="text-xs font-bold text-slate-800 md:text-lg">{item.title}</span>
                   </div>
-                   <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-indigo-500 shadow-sm group-hover:scale-110 transition-transform">
-                     <Info size={20} />
+                   <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-white flex items-center justify-center text-indigo-500 shadow-sm group-hover:scale-110 transition-transform">
+                     <Info size={16} className="md:size-5" />
                   </div>
                 </div>
              ))}
@@ -398,7 +399,7 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
       </section>
 
       {/* 8. Disclaimer */}
-      <section className="h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 bg-slate-100">
+      <section className="min-h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 bg-slate-100">
         <motion.div
            initial={{ opacity: 0 }}
            whileInView={{ opacity: 1 }}
@@ -407,11 +408,11 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
         >
            <MapIcon size={32} className="mx-auto text-slate-400 mb-4" /> 
            
-           <h3 className="text-xl font-bold text-slate-800">
+           <h3 className="text-lg md:text-xl font-bold text-slate-800">
              이 설명서는 '현재의 나'를 나타내요
            </h3>
            
-           <p className="text-slate-600 leading-loose break-keep">
+           <p className="text-slate-600 text-xs md:text-base leading-loose break-keep">
              사람의 마음은 날씨처럼 변하기도 하고<br/>
              상황이나 대상에 따라 다른 모습이 나오기도 해요.<br/><br/>
              이 설명서는 당신의 답변을 바탕으로 작성되었지만<br/>
@@ -424,7 +425,7 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
 
 
       {/* 9. Outro */}
-      <section className="h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 bg-gradient-to-b from-white to-slate-50">
+      <section className="min-h-screen w-full snap-start flex flex-col items-center justify-center p-6 relative z-10 bg-gradient-to-b from-white to-slate-50">
         <motion.div
            initial={{ opacity: 0, scale: 0.95 }}
            whileInView={{ opacity: 1, scale: 1 }}
@@ -447,7 +448,7 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
            <p className="text-slate-500">
              {isOwner ? (
                <>
-                 지금 바로 <strong className="text-pink-700/75">Luv ID</strong> 를 발급받고<br/>
+                 지금 바로 <strong className="text-pink-700/75">Luv ID 카드</strong>를 발급받고<br/>
                  나에게 꼭 맞는 인연을 찾아보세요!
                </>
              ) : (
@@ -457,13 +458,13 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
                </>
              )}
            </p>
-           <div className="flex gap-4">
+           <div className="flex flex-col md:flex-row gap-4">
             {isOwner ? (
               <>
                 <div className="pt-8">
                   <button 
                     onClick={() => router.push("/")}
-                    className="flex items-center gap-2 px-8 py-4 bg-pink-700/75 text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto"
+                    className="w-54 flex items-center gap-2 px-8 py-4 bg-pink-700/75 text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto"
                   >
                     <HeartHandshake size={20} />
                     <span>Luv ID 카드 발급받기</span>
@@ -472,10 +473,10 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
                 <div className="pt-8">
                   <button 
                     onClick={handleShare}
-                    className="flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto"
+                    className="w-54 flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto"
                   >
                     <Share2 size={20} />
-                    <span>설명서 공유하기</span>
+                    <span>사용 설명서 공유하기</span>
                   </button>
                 </div>
               </>
@@ -483,7 +484,7 @@ export function ProductManual({ report, isOwner = true }: ProductManualProps) {
               <div className="pt-8 w-full flex justify-center">
                 <button 
                   onClick={() => router.push("/")}
-                  className="flex items-center gap-2 px-8 py-4 bg-pink-700/75 text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto"
+                  className="w-54 flex items-center gap-2 px-8 py-4 bg-pink-700/75 text-white rounded-full font-bold hover:scale-105 transition-transform shadow-xl mx-auto"
                 >
                   <PencilIcon size={20} />
                   <span>설명서 만들러가기</span>

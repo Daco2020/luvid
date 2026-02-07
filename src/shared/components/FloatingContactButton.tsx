@@ -2,11 +2,19 @@
 
 import { useState, useTransition } from "react";
 import { Send, X, ChevronRight, ChevronLeft } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { submitContactForm, ContactType } from "@/shared/actions/contact-action";
 
 type ModalStep = "closed" | "select-type" | "write-message" | "email-input";
 
+const HIDDEN_PATHS = [
+  "/user-manual/emotional-patterns",
+  "/user-manual/conflict-styles",
+  "/user-manual/value-tournament",
+];
+
 export function FloatingContactButton() {
+  const pathname = usePathname();
   const [step, setStep] = useState<ModalStep>("closed");
   const [contactType, setContactType] = useState<ContactType | null>(null);
   const [message, setMessage] = useState("");
@@ -15,6 +23,11 @@ export function FloatingContactButton() {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
+
+  // 위자드 화면에서는 버튼 숨김
+  if (pathname && HIDDEN_PATHS.some(path => pathname.startsWith(path))) {
+    return null;
+  }
 
   const handleOpenModal = () => {
     setStep("select-type");
