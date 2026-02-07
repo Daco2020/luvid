@@ -72,17 +72,33 @@ export default function Home() {
         const userId = getOrCreateUserId();
         
         // 데이터 로딩과 최소 2.5초 대기 시간을 동시에 실행
-        const [manualExists, luvIdExists] = await Promise.all([
+        const [latestManual, luvIdProfile] = await Promise.all([
           (async () => {
-            const { checkUserManualExists } = await import("@/shared/utils/supabase-service");
-            return checkUserManualExists(userId);
+            const { getLatestUserManual } = await import("@/shared/utils/supabase-service");
+            return getLatestUserManual(userId);
           })(),
-          checkLuvIdExists(userId),
+          (async () => {
+             const { getLuvIdByUserId } = await import("@/features/luvid/utils/supabase-service");
+             return getLuvIdByUserId(userId);
+          })(),
           new Promise((resolve) => setTimeout(resolve, 3500)) // 최소 3.5초 대기
         ]);
 
+        const manualExists = !!latestManual;
+        // Luv ID exists logic:
+        // 1. Must have a profile.
+        // 2. Its report_id must match the latest manual's id.
+        // If mismatch, we persist 'hasLuvId' as false so the user sees "Update/Create" card.
+        // But wait, if mismatch, user HAS a Luv ID but it is outdated.
+        // If we set hasLuvId = false, the UI will show "READY" state (Create Luv ID).
+        // Clicking it goes to /luvid/create.
+        // /luvid/create (updated above) will fetch existing ID and update it.
+        // So effectively, setting hasLuvId = false when mismatched is the correct behavior to prompt update.
+        
+        const isLuvIdUpToDate = luvIdProfile && latestManual && luvIdProfile.reportId === latestManual.id;
+        
         setHasManual(manualExists);
-        setHasLuvId(luvIdExists);
+        setHasLuvId(!!isLuvIdUpToDate);
       } catch (err) {
         console.error('Status check failed:', err);
       } finally {

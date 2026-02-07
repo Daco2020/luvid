@@ -10,6 +10,7 @@ import { createLuvIdFromReport } from "@/features/luvid/model/converter";
 import { saveLuvId } from "@/features/luvid/utils/supabase-service";
 import { saveMyLuvIdToStorage } from "@/features/luvid/utils/luvid-storage";
 import { LuvIdProfile } from "@/features/luvid/model/types";
+import { ARCHETYPE_GRADIENTS } from "@/features/user-manual/model/archetype-constants";
 
 export default function CreateLuvIdPage() {
   const router = useRouter();
@@ -37,11 +38,11 @@ export default function CreateLuvIdPage() {
           userId,
           reportData.id,
           reportData.data,
-          nickname || reportData.data.userName
+          "" // 닉네임 기본값 없음
         );
 
         setProfile(generatedProfile);
-        setNickname(generatedProfile.nickname);
+        setNickname(""); // 빈 값으로 시작
       } catch (err) {
         console.error("Profile generation failed:", err);
         setError("프로필 생성 중 오류가 발생했습니다.");
@@ -108,15 +109,13 @@ export default function CreateLuvIdPage() {
 
   if (!profile) return null;
 
+  const gradientClass = ARCHETYPE_GRADIENTS[profile.archetypeId] || ARCHETYPE_GRADIENTS.default;
+
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-2xl mx-auto py-12">
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full mb-4">
-            <Sparkles size={20} />
-            <span className="font-bold">Luv ID 발급</span>
-          </div>
+        <div className="text-center mb-12 mt-20">
           <h1 className="text-3xl font-bold text-slate-800 mb-2">
             당신만의 연애 프로필이<br />완성되었어요!
           </h1>
@@ -129,7 +128,7 @@ export default function CreateLuvIdPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl p-8 text-white mb-8 relative overflow-hidden"
+          className={`bg-gradient-to-br ${gradientClass} rounded-3xl p-8 text-white mb-8 relative overflow-hidden`}
         >
           {/* Holographic effect */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
@@ -151,8 +150,8 @@ export default function CreateLuvIdPage() {
               />
             </div>
 
-            {/* Tagline */}
-            <p className="text-lg mb-6 text-white/90">"{profile.tagline}"</p>
+            {/* Tagline
+            <p className="text-lg mb-6 text-white/90">"{profile.tagline}"</p> */}
 
             {/* Archetype */}
             <div className="bg-white/10 rounded-2xl p-4 mb-4">

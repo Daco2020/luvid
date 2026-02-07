@@ -25,7 +25,7 @@ export async function saveLuvId(profile: LuvIdProfile): Promise<void> {
 }
 
 /**
- * Luv ID 조회 (user_id 기준)
+ * Luv ID 조회 (user_id 기준 - 최신순)
  */
 export async function getLuvIdByUserId(userId: string): Promise<LuvIdProfile | null> {
   if (!supabase) throw new Error("Supabase client not initialized");
@@ -34,6 +34,8 @@ export async function getLuvIdByUserId(userId: string): Promise<LuvIdProfile | n
     .from(TABLE_NAME)
     .select("*")
     .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(1)
     .single();
 
   if (error) {

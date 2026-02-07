@@ -99,7 +99,7 @@ export function Wizard() {
 
       if (roundWinners.length === 1) {
         // 결승 완료 → 부정 토너먼트로
-        handlePositiveTournamentComplete(aspectId);
+        handlePositiveTournamentComplete(updatedMatches);
       } else {
         // 다음 라운드 진행
         setPositiveBracket(roundWinners);
@@ -111,12 +111,9 @@ export function Wizard() {
   };
 
   // 긍정 토너먼트 완료 → 부정 인트로로 이동
-  const handlePositiveTournamentComplete = (winnerId: string) => {
-    // 마지막 매치(결승) 업데이트
-    const updatedMatches = [...positiveMatches];
-    updatedMatches[updatedMatches.length - 1].winnerId = winnerId;
-    setPositiveMatches(updatedMatches);
-
+  const handlePositiveTournamentComplete = (finalMatches: typeof positiveMatches) => {
+    // 이미 결과가 포함된 matches가 전달되므로 추가 업데이트 불필요
+    setPositiveMatches(finalMatches);
     setStep("intro_negative");
   };
 
@@ -160,7 +157,7 @@ export function Wizard() {
 
       if (roundWinners.length === 1) {
         // 결승 완료 → 결과 분석으로
-        handleNegativeTournamentComplete(aspectId);
+        handleNegativeTournamentComplete(updatedMatches);
       } else {
         // 다음 라운드 진행
         setNegativeBracket(roundWinners);
@@ -172,40 +169,39 @@ export function Wizard() {
   };
 
   // 부정 토너먼트 완료 → 결과 분석
-  const handleNegativeTournamentComplete = (winnerId: string) => {
-    // 마지막 매치(결승) 업데이트
-    const updatedMatches = [...negativeMatches];
-    updatedMatches[updatedMatches.length - 1].winnerId = winnerId;
-    setNegativeMatches(updatedMatches);
+  const handleNegativeTournamentComplete = (finalMatches: typeof negativeMatches) => {
+    setNegativeMatches(finalMatches);
 
     // 분석 실행
-    const positiveWinnerId = positiveMatches[positiveMatches.length - 1].winnerId;
-    const positiveRunnerUpId =
-      positiveMatches[positiveMatches.length - 2].winnerId === positiveWinnerId
-        ? positiveMatches[positiveMatches.length - 2].aspectAId
-        : positiveMatches[positiveMatches.length - 2].aspectBId;
+    // 긍정 결과
+    const positiveFinalMatch = positiveMatches[positiveMatches.length - 1];
+    const positiveWinnerId = positiveFinalMatch.winnerId;
+    const positiveRunnerUpId = positiveFinalMatch.winnerId === positiveFinalMatch.aspectAId 
+      ? positiveFinalMatch.aspectBId 
+      : positiveFinalMatch.aspectAId;
 
-    const negativeWinnerId = winnerId;
-    const negativeRunnerUpId =
-      updatedMatches[updatedMatches.length - 2].winnerId === negativeWinnerId
-        ? updatedMatches[updatedMatches.length - 2].aspectAId
-        : updatedMatches[updatedMatches.length - 2].aspectBId;
+    // 부정 결과
+    const negativeFinalMatch = finalMatches[finalMatches.length - 1];
+    const negativeWinnerId = negativeFinalMatch.winnerId;
+    const negativeRunnerUpId = negativeFinalMatch.winnerId === negativeFinalMatch.aspectAId 
+      ? negativeFinalMatch.aspectBId 
+      : negativeFinalMatch.aspectAId;
 
     const analysisResult = analyzeSection3({
       selectedCoreValues: selectedCoreValueIds,
       positiveTournament: {
         matches: positiveMatches.map((m, i) => ({
           id: `pos_match_${i}`,
-          round: i < 2 ? 1 : 2,
+          round: calculateRound(i, positiveMatches.length),
           ...m,
         })),
         winnerId: positiveWinnerId,
         runnerUpId: positiveRunnerUpId,
       },
       negativeTournament: {
-        matches: updatedMatches.map((m, i) => ({
+        matches: finalMatches.map((m, i) => ({
           id: `neg_match_${i}`,
-          round: i < 2 ? 1 : 2,
+          round: calculateRound(i, finalMatches.length),
           ...m,
         })),
         winnerId: negativeWinnerId,
@@ -314,4 +310,17 @@ export function Wizard() {
       </AnimatePresence>
     </div>
   );
+}
+
+function calculateRound(index: number, totalMatches: number): number {
+  // 16강 기준 (총 15경기)
+  if (totalMatches === 15) {
+    if (index < 8) return 1; // 16강 (8경기)
+    if (index < 12) return 2; // 8강 (4경기)
+    if (index < 14) return 3; // 4강 (2경기)
+    return 4; // 결승 (1경기)
+  }
+  
+  // Fallback (matches count might vary if unfinished, but here we assume finished)
+  return 1;
 }
