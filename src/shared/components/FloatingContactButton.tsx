@@ -92,12 +92,13 @@ export function FloatingContactButton() {
   return (
     <>
       {/* 플로팅 버튼 */}
+      {/* 플로팅 버튼 */}
       <button
         onClick={handleOpenModal}
-        className="fixed bottom-6 right-6 z-50 w-12 h-12 bg-black rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 flex items-center justify-center"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 z-90 w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-black rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 active:scale-95 flex items-center justify-center p-0"
         aria-label="문의하기"
       >
-        <Send className="w-5 h-5 text-white transition-transform" />
+        <Send className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white transition-transform ml-[-2px] mt-[1px]" />
       </button>
 
       {/* 모달 오버레이 */}
